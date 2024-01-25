@@ -1,0 +1,57 @@
+project:
+  type: website
+
+website:
+  title: "calculang-at-fosdem"
+  page-footer:
+    right: "Made with 💓 and [calculang](https://calculang.dev)" # needs updates in other places
+    center: '<a type="button" data-cc="c-settings" class="cc-link">Cookies/analytics preferences</a>'
+  twitter-card: true # creator=@calculang? Update stuff to calculang.dev options?
+  
+  sidebar:
+    title: '📊 Thingys'
+    pinned: false
+    style: 'docked'
+    collapse-below: 'xxl' # not supported https://github.com/quarto-dev/quarto-cli/discussions/6443
+    #contents:
+    #  - section: "Model Visuals 📊"
+    #    contents:
+    #    - auto: "specs/**"
+    #  - section: "Model Tools 🛠️🧰 "
+    #    contents:
+    #    - 'pages/some-devtools.qmd'
+
+  #navbar:
+  #  left:
+  #    - text: "More Models"
+  #      file: vizys-index.qmd
+  #    - href: privacy.qmd
+  #      text: Privacy
+  #sidebar: # works if remove page-layout:custom, but wide
+  #  - title: "Tutorials"
+  #    style: "docked"
+  #    background: light
+  #    contents:
+  #      - auto: "specs/**/*.qmd"
+
+
+format:
+  html:
+    theme:
+      light: [styles.scss, cosmo]
+    #  dark: [styles.scss, darkly] # maintain styles.scss to disable Google Fonts, see https://cbrnr.github.io/blog/removing-google-fonts/
+    link-external-newwindow: true
+    toc: false
+
+    # cookie consent from https://github.com/orestbida/cookieconsent
+    # and Plausible analytics
+    include-in-header:
+      - text: |
+          <link rel="stylesheet" href="/resources/cookieconsent-2.9.1/dist/cookieconsent.css" media="print" onload="this.media='all'">
+    include-after-body: # cookieconsent.html
+      - text: |
+          <script defer src="/resources/cookieconsent-2.9.1/dist/cookieconsent.js"></script> |
+          <script defer src="/cookieconsent-init.js"></script>
+          <script defer type="text/plain" data-cookiecategory="analytics" data-domain="calculang-at-fosdem.pages.dev" src="https://plausible.io/js/script.js"></script>
+    code-tools: true
+    code-fold: true

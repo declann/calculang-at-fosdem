@@ -1,0 +1,2220 @@
+--- 
+#title: "Savings Calculator"
+#author: "Declan"
+format:
+  dashboard:
+    code-fold: true
+    code-summary: "Show the code"
+    orientation: columns
+    include-in-header:
+      text: <script type="module"> if (!("anchorName" in document.documentElement.style)) { import("https://unpkg.com/@oddbird/css-anchor-positioning");  }</script>
+
+    # ? scrolling: true ?
+
+---
+
+
+```{ojs}
+//| output: false
+
+// raycasting
+viewof player_x_in = Inputs.input(1.7)
+viewof player_y_in = Inputs.input(5.5)
+viewof ray_angle_in = Inputs.input(null)
+viewof step_in = Inputs.input(3)
+viewof x_in = Inputs.input(3.5)
+viewof y_in = Inputs.input(3.5)
+viewof f_in = Inputs.input(0)
+viewof key_stream_version_in = Inputs.input(0)
+viewof keys_stream_version_in = Inputs.input("hi")
+
+// savings
+viewof annual_payment_in = Inputs.input(1000)
+viewof duration_in = Inputs.input(5)
+viewof interest_rate_in = Inputs.input(.02)
+viewof year_in = Inputs.input(2)
+viewof i_in = Inputs.input(2)
+viewof date_in = Inputs.input(new Date())
+viewof timing_in = Inputs.input("start of today")
+
+
+// starfield
+viewof star_in = Inputs.input(3)
+viewof speed_in = Inputs.input(3)
+viewof frame_in = Inputs.input(2)
+viewof random_seed_in = Inputs.input("hello")
+
+
+// savings-rec
+viewof actual_interest_rate_co_in = Inputs.input(2)
+
+mini_binds = {
+  return ({
+    duration_in: 1 ? Tangle({min: 0, max: 20, label: 'duration_in'}) : 0, //Inputs.range([0,10], {label:'duration', value: 5, step: 1, width:100}),
+    year_in: Tangle({min: -10, max: 20, label: 'year_in'}) //Inputs.range([0,10], {label:'year', value: 5, step: 1, width:100})
+    , annual_payment_in: Tangle({min: 0, max: 20000, label:'annual_payment_in'})
+    , interest_rate_in: Tangle({min: 0, max: 0.1, format: d3.format('.2f'), label:'interest_rate_in'}) // precision how?
+    , actual_interest_rate_co_in: Tangle({min: -1, max: 20, label:'actual_interest_rate_co_in'})
+    , f_in: Tangle({min: -1, max: 200, label:'f_in'})
+    //, keys_stream_function_in: md`(keys_stream_function_in)`
+    , step_in: Tangle({min: -1, max: 20, label:'step_in'})
+    , x_in: Tangle({min: -1, max: 200, label:'x_in'})
+    , y_in: Tangle({min: -1, max: 200, label:'y_in'})
+    , player_x_in: Tangle({min: -1, max: 10,format: d3.format('.2f'), label:'player_x_in'})
+    , player_y_in: Tangle({min: -1, max: 10, format: d3.format('.2f'),label:'player_y_in'})
+    , ray_angle_in: /*Inputs.range([-10,10], {label:'ray_angle_in'})*/Tangle({min: -1, max: 10, format: d3.format('.2f'),label:'ray_angle_in'})
+    , i_in: Tangle({min: -10, max: 200, label:'i_in'})
+    , date_in: Inputs.date({label: "date", value: "2024-01-23"})
+    , timing_in: Inputs.select(["start of today", "start of tomorrow"])
+    , random_seed_in: Inputs.text({label: 'random_seed_in'})
+    , frame_in: Tangle({min: -1, max: 200, label:'frame_in'})
+    , star_in: Tangle({min: -1, max: 200, label:'star_in'})
+    , speed_in: Tangle({min: -1, max: 20, label:'speed_in'})
+
+  })
+}
+
+Inputs.bind(mini_binds.duration_in, viewof duration_in)
+Inputs.bind(mini_binds.year_in, viewof year_in)
+Inputs.bind(mini_binds.annual_payment_in, viewof annual_payment_in)
+Inputs.bind(mini_binds.interest_rate_in, viewof interest_rate_in)
+Inputs.bind(mini_binds.actual_interest_rate_co_in, viewof actual_interest_rate_co_in)
+Inputs.bind(mini_binds.f_in, viewof f_in)
+Inputs.bind(mini_binds.x_in, viewof x_in)
+Inputs.bind(mini_binds.y_in, viewof y_in)
+Inputs.bind(mini_binds.player_x_in, viewof player_x_in)
+Inputs.bind(mini_binds.player_y_in, viewof player_y_in)
+Inputs.bind(mini_binds.step_in, viewof step_in)
+Inputs.bind(mini_binds.ray_angle_in, viewof ray_angle_in)
+Inputs.bind(mini_binds.i_in, viewof i_in)
+Inputs.bind(mini_binds.date_in, viewof date_in)
+Inputs.bind(mini_binds.timing_in, viewof timing_in)
+Inputs.bind(mini_binds.random_seed_in, viewof random_seed_in)
+Inputs.bind(mini_binds.frame_in, viewof frame_in)
+Inputs.bind(mini_binds.speed_in, viewof speed_in)
+Inputs.bind(mini_binds.star_in, viewof star_in)
+
+// TODO MAKE STEPS HIGHLIGHT REACT TO STEP_IN TANGLE
+
+```
+
+```{ojs}
+//| output: false
+
+// working interactivity
+
+html`<style>
+
+.inputs {
+  padding: 20px;
+}
+
+button.btn {
+  background-color: antiquewhite;
+  color: blue;
+  padding:0;
+}
+
+.calculang {
+  line-height: 40px;
+  color: blue;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+    transition: all 0.2s linear;
+  
+}
+
+.calculang.calculang_overwritten {
+  text-decoration: line-through;
+  font-weight: bold;
+}
+
+${formulae_hidden.length ? `.calculang {
+    background: #aaf3;
+}` : ''}
+
+
+${formulae_hidden.map(d => `.calculang_f_${d} + .calculang_f_${d}`).join(', ')} {
+  filter: blur(7px);
+  line-height: 5px;
+  opacity: 0.5;
+} /* + selector to exclude first! https://coderwall.com/p/uugurw/css-selector-trick-select-all-elements-except-the-first */
+${formulae_hidden.map(d => `.calculang_f_${d}`).join(', ')} {
+  opacity: 0.5;
+  background: white;
+}${formulae_hidden.map(d => `.calculang_f_${d} .calculang_tooltip`).join(', ')} {
+  opacity: 0.1;
+  background: white;
+}
+${formulae_hidden.map(d => `.calculang_f_${d} > .calculang_title`).join(', ')} {
+  background-color: lightgreen;
+  font-size: 0.5em;
+}
+
+span.calculang_call {
+  white-space:nowrap;
+  cursor: zoom-in;
+  color: red;
+  font-weight: bold;
+  background-color: lightblue;
+}
+
+.calculang_call.calculang_call_input {
+  cursor: none;
+  background-color: pink;
+}
+
+.calculang .calculang_title span {
+  padding: 3px;
+  background: #af54;
+  font-size: 1.5em;
+  font-weight: bold;
+  border: 1px solid grey;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+    transition: all 0.2s linear;
+
+}
+
+.calculang_title.calculang_title_renamed {
+  text-decoration: line-through;
+  text-decoration-style: dashed;
+}
+</style>`
+```
+
+```{ojs}
+//| output: false
+//model = require(`${entrypoint_no_cul_js}.js`)//
+
+/*models = ({savings: 3,//require(`${entrypoint_no_cul_js}.js`),
+  raycasting2: require('https://calculang.dev/models/raycasting/raycasting.js')})*/
+
+// TODO work with memo savings-rec
+
+fizzbuzz = await require(`https://calculang.dev/models/fizzbuzz/fizzbuzz.js`)
+year_remaining = await require(`https://calculang.dev/models/year-remaining/year-remaining.js`)
+starfield = await require(`https://calculang.dev/models/starfield/starfield.js`)
+// UPDATE1 LOAD MODEL USING CORRECT REF
+  raycasting2 = await require(`http://localhost:8080/raycasting/raycasting.js?${refresh}${Date.now()}`);
+
+savings = await require(`https://calculang.dev/models/savings/savings.js`);
+
+savings_rec = await require(`https://calculang.dev/models/savings/savings-rec.js`)
+
+
+introspection_fetch = await fetch(`${entrypoint_no_cul_js}.introspection.json`)
+
+introspection = await introspection_fetch.json({typed:true})
+
+introspection_nomemo_fetch = await fetch(`${entrypoint_no_cul_js}${calculang_source_nomemo.length ? '-nomemo' : ''}.introspection.json`)
+
+introspection_nomemo = await introspection_nomemo_fetch.json({typed:true})
+
+
+calculang_source_introspection = calculang_source_nomemo.length ? introspection_nomemo : introspection
+
+formulae_objs = Object.values(calculang_source_introspection.cul_functions).filter(d => d.reason == 'definition' && inputs.indexOf(d.name+'_in') == -1)
+input_formulae_objs = Object.values(calculang_source_introspection.cul_functions).filter(d => d.reason == 'definition' && inputs.indexOf(d.name+'_in') != -1)
+
+inputs = _.uniq(Object.values(calculang_source_introspection.cul_functions).filter(d => d.reason == 'input definition').map(d => d.name).sort())
+
+fns0 = Object.values(calculang_source_introspection.cul_functions).filter(d => d.cul_scope_id == 0).map(d => d.inputs).flat()
+
+
+import { CodeMirror, loadCodeMirrorModules } from "@jmatsushita/codemirror@670";
+
+cmImports = loadCodeMirrorModules([
+  "view@6.22.2", // chk versions?
+  "state@6.3.3",
+  "language@6.9.3",
+  "lang-javascript"
+  //"commands@6.3.2",
+]);
+
+EditorView = cmImports.view.EditorView
+
+EditorState = cmImports.state.EditorState
+
+Decoration = cmImports.view.Decoration
+
+set = (input, value) => {
+  input.value = value;
+  input.dispatchEvent(new Event("input", {bubbles: true}));
+}
+
+//////////// plugin 1: decoration & cul navigation for function-level
+
+syntaxTree = cmImports.language.syntaxTree
+
+formulaDecorations = {
+  return (options) => {
+    //set(options.formulae_visible, [""]) // this was doing a lot of jank!!
+    const formulaDecorations = cmImports.view.ViewPlugin.fromClass(
+      class {
+
+        constructor(view) {
+          this.decorations = formulaDecoration(view);
+        }
+
+        update(update) {
+          if (update.docChanged || update.viewportChanged)
+            this.decorations = formulaDecoration(update.view);
+        }
+      },
+      {
+        decorations: (v) => v.decorations,
+
+        eventHandlers: {
+          mousedown: (e, view) => { // HMMM I'll need to resolve that calls get precedence!!! Should be working:
+            let classList = [...e.target.classList, ...e.target.parentElement.classList] // very open, be aware of bugs ?!
+            if (e.target.classList.contains("cul_call")) // TODO
+              1;//set(viewof formulae_shown, [target.textContent]); TODO
+            else if (
+              //e.target.classList.contains("deposits") ||
+              //e.target.parentElement.classList.contains("deposits")
+              classList.filter(d => d.includes("calculang_f_")).length
+            )
+              set(options.formulae_visible, [classList.find(d => d.includes("calculang_f_")).slice("calculang_f_".length)]);
+
+          }
+        }
+      }
+    );
+
+    return [formulaDecorations];
+  }
+}
+
+// Decoration.lines
+formulaDecoration = (view) => Decoration.set(
+  formula_line_details
+    .map((d) =>
+      _.range(d.lineStart, d.lineEnd + 0.1).map((e) =>
+        Decoration.line({
+          attributes: {
+            class: "calculang" + " " + "calculang_f_"+d.name + (d.overwritten ? ' calculang_overwritten' : '') /* +style available */ // leaving scope and other potential conflicts out
+          }
+        }).range(view.state.doc.line(e).from)
+      )
+    )
+    .flat())
+
+formula_line_details = Object.values(calculang_source_introspection.cul_functions)
+  .filter((d) => d.reason.includes("definition") && d.name.slice(-3) != '_in' && d.cul_scope_id == cul_scope_id)
+  .map(({ name, loc, reason }) => ({
+    name,
+    lineStart: loc?.start.line,
+    lineEnd: loc?.end.line,
+    overwritten: name.slice(-1) == '_' && !(Object.values(calculang_source_introspection.cul_functions).filter(d => d.imported == name && d.cul_source_scope_id == cul_scope_id)).length // and not explicit imported/used in parent defn
+  }))
+
+formula_line_details_0 = Object.values(calculang_source_introspection.cul_functions)
+  .filter((d) => d.reason.includes("definition") && d.name.slice(-3) != '_in' && d.cul_scope_id == 0)
+  .map(({ name, loc, reason }) => ({
+    name,
+    lineStart: loc?.start.line,
+    lineEnd: loc?.end.line,
+    overwritten: name.slice(-1) == '_' && !(Object.values(calculang_source_introspection.cul_functions).filter(d => d.imported == name)).length // and not explicit imported/used in parent defn
+  }))
+
+//////////// plugin 2: decoration & cul navigation for call-level, also decoration for titles. By syntax tree analysis
+// uses formulae_all, inputs: should derive from entrypoint/introspection before splitting up
+// also sets formae_visible
+
+// inconsistent naming !
+
+formulae_hidden = formulae_all.filter((d) => !formulae_visible.includes(d))
+
+formulae_all = formula_line_details.map((d) => d.name) // poor?
+
+//inputs = _.uniq(Object.values(introspection.cul_input_map).flat())
+
+calculang_identifier_decorations = {
+  return (options) => {
+    //set(options.formulae_visible, formulae_all) // WHERE DOES THIS NEED TO GO?
+    const decorations = cmImports.view.ViewPlugin.fromClass(
+      class {
+
+        constructor(view) {
+          this.decorations = identifier_decorations(view);
+        }
+
+        update(update) {
+          //debugger; this is called a LOT!!
+          //if (update.docChanged || update.focusChanged|| update.viewportChanged || update.geometryChanged || update.heightChanged) // expensive things on scroll, but didn't run on full doc for some reason?!
+            this.decorations = identifier_decorations(update.view);
+            // why 
+        }
+      },
+      {
+        decorations: (v) => v.decorations,
+
+        eventHandlers: {
+          mousedown: (e, view) => {
+            let classList = [...e.target.classList, ...e.target.parentElement.classList] // very open, be aware of bugs ?!
+            if (e.target.classList.contains("calculang_call") || classList.includes("calculang_title")) { // TODO only if the containing formula is visible, I have options.formulae_visible:
+              set(options.formulae_visible, [e.target.textContent])
+              document.querySelector('.calculang_f_'+e.target.textContent).scrollIntoView(scrollIntoViewOpts)
+            }
+
+            else if (
+              //e.target.classList.contains("deposits") ||
+              //e.target.parentElement.classList.contains("deposits")
+              classList.filter(d => d.includes("calculang_f_")).length
+            )
+              set(options.formulae_visible, [classList.find(d => d.includes("calculang_f_")).slice("calculang_f_".length)]);
+          }
+        }
+      }
+    );
+
+    return [decorations];
+  }
+}
+
+// Decoration.marks specified by ranges
+identifier_decorations = view => {
+  let decorations = [];
+
+  //for (let { from, to } of view.visibleRanges) {
+    console.log(view.state)
+    console.log(view.visibleRanges)
+  //for (let { from, to } of [{from: 0, to: 1000}]) {
+    //debugger;
+    //debugger;
+    for (let { from, to } of view.visibleRanges) {
+    //for (let { from, to } of [{from:0, to:5000}]) {
+      //cmImports.language.syntaxTreeAvailable(view.state, )
+      //cmImports.language.forceParsing(view, )
+      
+    cmImports.language.syntaxTree(view.state).iterate({
+      from,
+      to,
+      enter: (node) => {
+        if (node.name == "VariableDefinition") {
+          let name = view.state.doc.sliceString(node.from, node.to);
+          if (formulae_all.includes(name)) {
+            decorations.push(
+              Decoration.mark({ class: "calculang_title" }).range(
+                node.from,
+                node.to
+              )
+            );
+          }
+          if (formulae_all.includes(name + '_')) {
+            decorations.push(
+              Decoration.mark({ class: "calculang_title calculang_title_renamed" }).range(
+                node.from,
+                node.to
+              )
+            );
+          }
+        }
+
+        if (node.name == "VariableName") {
+          let name = view.state.doc.sliceString(node.from, node.to);
+          if (formulae_all.includes(name)) {
+            if (inputs.includes(name + "_in"))
+              decorations.push(
+                Decoration.mark({ class: "calculang_call calculang_call_input" }).range(
+                  node.from,
+                  node.to
+                )
+              );
+            else
+              decorations.push(
+                Decoration.mark({ class: "calculang_call" }).range(node.from, node.to)
+              );
+          }
+        }
+      }
+    });
+  }
+  return Decoration.set(decorations);
+}
+
+
+
+```
+
+<!--## Row {height=50%}-->
+
+## Col
+
+<!--## formulas 🕵🏼‍♀️ {width=800px}-->
+
+
+
+::: {.fill #left}
+
+:::: {.fill}
+
+
+::::
+
+<style>
+  .card:has(#left) {
+    background-color: #69ff6111;
+  }
+  #left {
+    /*background-color: ;*/
+    border: 0;
+  }
+  #left * .card-body {
+    background-color: white;
+    padding: 0;
+    border: 0;
+  }
+  #left .observablehq {
+    background-color: white;
+  }
+  .card:has(.modeldept) {
+    background-color: #D81B6011;
+  }
+</style>
+
+
+
+
+<!-- hassle for modularity => tabs (so pretty in Quarto) need to become select box or buttons. Style later -->
+
+
+```{ojs}
+//| output: false
+viewof x = Inputs.input(0)
+
+formulae_visible
+
+formulae_all
+
+inputs
+
+formulae_hidden
+
+md`---`
+
+//////////////// code for getting source
+
+examples_yaml = await (await fetch('https://calculang.dev/gallery.yml')).text()
+
+yaml = require('js-yaml@4.1.0/dist/js-yaml.min.js')
+
+examples = yaml.load(examples_yaml)
+
+selected_model = Generators.input(a_thing2)
+
+example_details = examples.map(d => d.tiles).flat().find(d => d.id == selected_model)
+
+modelname = example_details.id.replace('-','_') // replace due to object lookups
+
+q = new URLSearchParams(location.search)
+
+
+default_example_id = q.get('id') ?? ''
+show_hidden = true// q.get('hidden') == 'hidden' ?? true
+
+
+dir = dirname(example_entrypoint)
+
+
+//https://www.abeautifulsite.net/posts/javascript-functions-for-basename-and-dirname/
+function dirname(path) {
+  return path.match(/.*\//);
+}
+
+
+
+
+example_entrypoint = entrypoint
+
+entrypoint = (example_details.entrypoint[0] == "/" ? "https://calculang.dev" : "") +
+  example_details.entrypoint
+
+entrypoint_no_cul_js = entrypoint.slice(0,-7)
+
+//viewof entrypoint = Inputs.select(new Map(entrypoints_all.map((d,i) => [d[1],i])), {label:'model 👀', value:1}) // leaving on simple-climate as it breaks if not default :o
+
+// hacky, do qs parsing?
+// I should view .mjs instead of .cul.js for memo case?
+cul_resources = {
+  if (cul_js_cul)
+  return Object.values(introspection_nomemo.cul_scope_ids_to_resource).map(loc => loc.slice(2).slice(0,loc.indexOf('?') != -1 ? loc.indexOf('?')-2 : 999)).map(d => d + ((d.slice(-3) != '.js') ? '.js' : '')).map(loc => dir+ loc)
+  else return [...Array(Object.keys(introspection_nomemo.cul_scope_ids_to_resource).length)].map((_, i) => entrypoint_no_cul_js /* this is not modelname! this should be related to entrypoit, not id */+(calculang_source_nomemo.length? '-nomemo' : '') +'_esm/'+'cul_scope_'+i+'.mjs')
+}
+
+//cul_resources
+
+output = {
+  let o = [];
+  cul_resources.forEach(loc => {
+    o.push(fetch(loc).then(d => d.text()))
+  })
+  return o
+}
+
+// TODO replace duplicate (source) code by a message
+
+calculang = [await output[0], cul_resources.length > 1 ? await output[1] : ''
+, cul_resources.length > 2 ? await output[2] : ''
+, cul_resources.length > 3 ? await output[3] : ''
+, cul_resources.length > 4 ? await output[4] : ''
+, cul_resources.length > 5 ? await output[5] : ''
+, cul_resources.length > 6 ? await output[6] : '' // TODO warn when overflows
+, cul_resources.length > 7 ? await output[7] : ''].filter(d => d != '')
+//calculang
+
+// "x.cul.js formulae?"
+fff = calculang.map(d => d.split('\n')).map(d => [d.findIndex(e => e.indexOf('inputs:' + (options.includes('inputs') ? 'BLAH' : '')) != -1) ?? 999, ...d]).map(d => d.filter((e,i) => i <= d[0] || d[0] == -1)).map(d => d.slice(1)).map(d => d.join('\n')).map((d,i) => `***[${introspection.cul_scope_ids_to_resource[i].split('?')[0].replaceAll('-nomemo', '')}](${cul_resources[i].replaceAll('-nomemo','')}) ${cul_js_cul ? `-> [js](${entrypoint_no_cul_js}_esm/cul_scope_${i}.mjs)` : ``}***
+
+~~~js
+${d.replaceAll('export const ' + (options.includes('export consts')
+ ? 'BLAH' : ''), '')}
+~~~
+`
+)
+
+fff2 = calculang.filter((d,i) => i == cul_scope_id).map(d => d.split('\n')).map(d => [d.findIndex(e => e.indexOf('inputs:' + (options.includes('inputs') ? 'BLAH' : '')) != -1) ?? 999, ...d]).map(d => d.filter((e,i) => i <= d[0] || d[0] == -1)).map(d => d.slice(1)).map(d => d.join('\n'))
+
+.map((d,i) => `${d.replaceAll('export const ' + (options.includes('export consts')
+ ? 'BLAH' : ''), '')}`
+)
+
+
+fff
+
+```
+
+:::: {#fdsa}
+
+![](./logo4.svg){width=40} <strong style="font-size:1.5em;">calculang model</strong>
+
+
+<style>
+  #fdsa {
+    background-color: lightgreen;
+    padding: 10px;
+    margin-bottom:20px;
+    border-radius: 0 20px 20px 20px;
+    min-height: fit-content;
+  }
+</style>
+
+```{ojs}
+//md`${fff.join('\n\n')}`
+
+enabled = ["raycasting2", "savings", "savings_rec", "starfield", "fizzbuzz", "year_remaining"]
+
+a_thing2 = html`<select style="font-size: 1.5em">
+${examples.map(category => `<optgroup label="${category.category}">
+  ${category.tiles.filter(tile => ((!tile.disabled) || show_hidden)).filter(d => enabled.includes(d.id.replace('-','_'))).map(d => `<option value="${d.id}"${d.id == default_example_id ? ' selected="selected"' : ''}}>${d.title}</option>`)}
+  ${category.tiles.filter(d => d.id == default_example_id && d.disabled && (!show_hidden)).map(d => `<option value="${d.id}"${d.id == default_example_id ? ' selected="selected"' : ''}}>${d.title}</option>`)}
+</optgroup>
+`)}</select>`
+
+md`${example_details.modular ? '♻️' : ''} *${example_details.subtitle}*`
+
+viewof cul_scope_id = Inputs.range([0,15], {label: 'cul scope id', value:0, step:1})
+
+
+
+{
+  var o = {};
+  show.forEach(d => {
+    if (mini_binds[d])
+    o[d] = mini_binds[d]
+    //else o[d] = md`${d}`
+  })
+  return Inputs.form(o, {template: els => htl.html`<div class="styled">${Object.values(els)}</div><style>
+  div.styled {
+    text-align: left;
+    /*column-count: 2;*/
+  }
+  div.styled span {
+    margin-right: 20px;
+    /*font-size:0.7em;*/
+    /*font-weight: bold;*/
+  }
+  div.styled span {
+    width:70px;
+    /*font-weight: bold;*/
+  }
+  div.styled label:not(div>label):after {
+    //content: ":";
+  }
+</style>`}) // https://observablehq.com/@martien/horizontal-inputs
+// still not reliable, do set implementation?
+}
+
+```
+
+::::
+
+<!-- details here is nice to collapse the editor, but alters layout when open -->
+
+```{ojs}
+
+show = _.uniq(Object.values(calculang_source_introspection.cul_functions).filter(d => d.reason == 'input definition').map(d => d.name).sort()).filter(d => formula_line_details_0.filter(e => e.name + '_in' == d && (e.overwritten == undefined || e.overwritten == false)).length)
+
+st = {
+  entrypoint_no_cul_js;
+  // I cannot fetch !!!
+  //fetch(`${entrypoint_no_cul_js}${1 ? '-nomemo' : ''}.introspection.json`);
+  //await introspection_nomemo; // I can depend on modelname but NOT inputs or introspection !
+  return ['year_in', 'duration_in', 'f_in'] // "annual_payment_in", "duration_in", "interest_rate_in", "year_in"
+  // not working
+}
+
+//fff2.join('\n\n')
+
+/*mjs_q_eval
+
+aa
+
+model*/
+
+viewof editor = CodeMirror(
+  // This needs to be entrypoint scopeid?
+  fff2.join('\n\n'),
+  {
+    extensions: [ // wrap indicators would be nice
+      // myDefaultTheme, // TODO bring this in, + dark version
+      cmImports["lang-javascript"].javascript(),
+      //cmImports["language"].foldGutter(),
+      //EditorView.decorations.of(Decoration.set(yellow.range(r)))
+      /* BUILDING cmCheckboxPluginViewof, // does cul code annotation and navigation, depending on showStripes
+      cmOverlayPluginViewof,*/
+      overlay ? overlay_answers : EditorState.readOnly.of(readonly),
+      overlay ? overlay_workings : EditorState.readOnly.of(readonly),
+      formulaDecorations({formulae_visible: viewof formulae_visible}), // https://codemirror.net/examples/zebra/
+      /* TODO don't process Import/Exports for now */ calculang_identifier_decorations({formulae_visible: viewof formulae_visible}),
+      EditorView.lineWrapping,
+      EditorView.editable.of(readonly),
+      EditorState.readOnly.of(readonly)
+    ]
+  }
+)
+```
+
+```{ojs}
+//| output: false
+
+///////////// overlay plugin:
+
+//// evals; from generator in reactive-workings
+
+interest_rate_expected = () => 0
+//interest_rate_expected = () => 0
+
+///// COPY EVALS
+mjs_q_eval =  { return ({"raycasting2":[[{name: "ray_angle", value:raycasting2.ray_angle({ ray_angle_in })},{name: "tan_ray_angle", value:raycasting2.tan_ray_angle({ ray_angle_in })},{name: "ray_angle", value:raycasting2.ray_angle({ ray_angle_in })},{name: "ray_angle", value:raycasting2.ray_angle({ ray_angle_in })},{name: "y", value:raycasting2.y({ y_in })},{name: "x", value:raycasting2.x({ x_in })},{name: "x", value:raycasting2.x({ x_in })},{name: "y", value:raycasting2.y({ y_in })},{name: "map", value:raycasting2.map({})},{name: "y", value:raycasting2.y({ y_in })},{name: "x", value:raycasting2.x({ x_in })},{name: "map_check_v", value:raycasting2.map_check_v({ y_in, x_in })},{name: "map_check_v", value:raycasting2.map_check_v({ y_in, x_in })},{name: "map", value:raycasting2.map({})},{name: "y", value:raycasting2.y({ y_in })},{name: "x", value:raycasting2.x({ x_in })},{name: "step", value:raycasting2.step({ step_in })},{name: "player_x", value:raycasting2.player_x({ f_in, keys_stream_version_in, keys_stream_function_in })},{name: "player_y", value:raycasting2.player_y({ f_in, keys_stream_version_in, keys_stream_function_in })},{name: "rhy", value:raycasting2.rhy({ ray_angle_in, step_in, f_in, keys_stream_version_in, keys_stream_function_in })},{name: "inverse_tan_ray_angle", value:raycasting2.inverse_tan_ray_angle({ ray_angle_in })},{name: "rhx", value:raycasting2.rhx({ f_in, keys_stream_version_in, keys_stream_function_in, ray_angle_in, step_in:raycasting2.step({ step_in }) - 1 }), handler: () => {set(viewof step_in, raycasting2.step({ step_in }) - 1)}},{name: "step", value:raycasting2.step({ step_in })},{name: "ray_looking_up", value:raycasting2.ray_looking_up({ ray_angle_in })},{name: "inverse_tan_ray_angle", value:raycasting2.inverse_tan_ray_angle({ ray_angle_in })},{name: "ray_looking_up", value:raycasting2.ray_looking_up({ ray_angle_in })},{name: "step", value:raycasting2.step({ step_in })},{name: "player_y", value:raycasting2.player_y({ f_in, keys_stream_version_in, keys_stream_function_in })},{name: "rhy", value:raycasting2.rhy({ ray_angle_in, f_in, keys_stream_version_in, keys_stream_function_in, step_in:raycasting2.step({ step_in }) - 1 }), handler: () => {set(viewof step_in, raycasting2.step({ step_in }) - 1)}},{name: "step", value:raycasting2.step({ step_in })},{name: "step", value:raycasting2.step({ step_in })},{name: "player_y", value:raycasting2.player_y({ f_in, keys_stream_version_in, keys_stream_function_in })},{name: "rhy", value:raycasting2.rhy({ ray_angle_in, f_in, keys_stream_version_in, keys_stream_function_in, step_in:raycasting2.step({ step_in }) - 1 }), handler: () => {set(viewof step_in, raycasting2.step({ step_in }) - 1)}},{name: "step", value:raycasting2.step({ step_in })},{name: "map_check", value:raycasting2.map_check({ x_in:raycasting2.rhx({ step_in, f_in, keys_stream_version_in, keys_stream_function_in, ray_angle_in }), y_in:raycasting2.rhy({ ray_angle_in, step_in, f_in, keys_stream_version_in, keys_stream_function_in }) }), handler: () => {set(viewof x_in, raycasting2.rhx({ step_in, f_in, keys_stream_version_in, keys_stream_function_in, ray_angle_in })); set(viewof y_in, raycasting2.rhy({ ray_angle_in, step_in, f_in, keys_stream_version_in, keys_stream_function_in }))}},{name: "rhx", value:raycasting2.rhx({ step_in, f_in, keys_stream_version_in, keys_stream_function_in, ray_angle_in })},{name: "rhy", value:raycasting2.rhy({ ray_angle_in, step_in, f_in, keys_stream_version_in, keys_stream_function_in })},{name: "rhv", value:raycasting2.rhv({ f_in, keys_stream_version_in, keys_stream_function_in, ray_angle_in, step_in })},{name: "rhx", value:raycasting2.rhx({ f_in, keys_stream_version_in, keys_stream_function_in, ray_angle_in, step_in })},{name: "rhy", value:raycasting2.rhy({ ray_angle_in, f_in, keys_stream_version_in, keys_stream_function_in, step_in })},{name: "rhv", value:raycasting2.rhv({ f_in, keys_stream_version_in, keys_stream_function_in, ray_angle_in, step_in })},{name: "rh_hit_object", value:raycasting2.rh_hit_object({ f_in, keys_stream_version_in, keys_stream_function_in, ray_angle_in })},{name: "rh_hit_object", value:raycasting2.rh_hit_object({ f_in, keys_stream_version_in, keys_stream_function_in, ray_angle_in })},{name: "rh_hit_object", value:raycasting2.rh_hit_object({ f_in, keys_stream_version_in, keys_stream_function_in, ray_angle_in })},{name: "rh_hit_object", value:raycasting2.rh_hit_object({ f_in, keys_stream_version_in, keys_stream_function_in, ray_angle_in })},{name: "rh_hit_x", value:raycasting2.rh_hit_x({ f_in, keys_stream_version_in, keys_stream_function_in, ray_angle_in })},{name: "player_x", value:raycasting2.player_x({ f_in, keys_stream_version_in, keys_stream_function_in })},{name: "rh_hit_y", value:raycasting2.rh_hit_y({ f_in, keys_stream_version_in, keys_stream_function_in, ray_angle_in })},{name: "player_y", value:raycasting2.player_y({ f_in, keys_stream_version_in, keys_stream_function_in })},{name: "ray_looking_right", value:raycasting2.ray_looking_right({ ray_angle_in })},{name: "step", value:raycasting2.step({ step_in })},{name: "player_x", value:raycasting2.player_x({ f_in, keys_stream_version_in, keys_stream_function_in })},{name: "rvx", value:raycasting2.rvx({ ray_angle_in, f_in, keys_stream_version_in, keys_stream_function_in, step_in:raycasting2.step({ step_in }) - 1 }), handler: () => {set(viewof step_in, raycasting2.step({ step_in }) - 1)}},{name: "step", value:raycasting2.step({ step_in })},{name: "step", value:raycasting2.step({ step_in })},{name: "player_x", value:raycasting2.player_x({ f_in, keys_stream_version_in, keys_stream_function_in })},{name: "rvx", value:raycasting2.rvx({ ray_angle_in, f_in, keys_stream_version_in, keys_stream_function_in, step_in:raycasting2.step({ step_in }) - 1 }), handler: () => {set(viewof step_in, raycasting2.step({ step_in }) - 1)}},{name: "step", value:raycasting2.step({ step_in })},{name: "step", value:raycasting2.step({ step_in })},{name: "player_y", value:raycasting2.player_y({ f_in, keys_stream_version_in, keys_stream_function_in })},{name: "player_x", value:raycasting2.player_x({ f_in, keys_stream_version_in, keys_stream_function_in })},{name: "rvx", value:raycasting2.rvx({ ray_angle_in, step_in, f_in, keys_stream_version_in, keys_stream_function_in })},{name: "tan_ray_angle", value:raycasting2.tan_ray_angle({ ray_angle_in })},{name: "rvy", value:raycasting2.rvy({ f_in, keys_stream_version_in, keys_stream_function_in, ray_angle_in, step_in:raycasting2.step({ step_in }) - 1 }), handler: () => {set(viewof step_in, raycasting2.step({ step_in }) - 1)}},{name: "step", value:raycasting2.step({ step_in })},{name: "ray_looking_right", value:raycasting2.ray_looking_right({ ray_angle_in })},{name: "tan_ray_angle", value:raycasting2.tan_ray_angle({ ray_angle_in })},{name: "map_check", value:raycasting2.map_check({ x_in:raycasting2.rvx({ ray_angle_in, step_in, f_in, keys_stream_version_in, keys_stream_function_in }), y_in:raycasting2.rvy({ step_in, f_in, keys_stream_version_in, keys_stream_function_in, ray_angle_in }) }), handler: () => {set(viewof x_in, raycasting2.rvx({ ray_angle_in, step_in, f_in, keys_stream_version_in, keys_stream_function_in })); set(viewof y_in, raycasting2.rvy({ step_in, f_in, keys_stream_version_in, keys_stream_function_in, ray_angle_in }))}},{name: "rvx", value:raycasting2.rvx({ ray_angle_in, step_in, f_in, keys_stream_version_in, keys_stream_function_in })},{name: "rvy", value:raycasting2.rvy({ step_in, f_in, keys_stream_version_in, keys_stream_function_in, ray_angle_in })},{name: "rvv", value:raycasting2.rvv({ ray_angle_in, f_in, keys_stream_version_in, keys_stream_function_in, step_in })},{name: "rvx", value:raycasting2.rvx({ ray_angle_in, f_in, keys_stream_version_in, keys_stream_function_in, step_in })},{name: "rvy", value:raycasting2.rvy({ f_in, keys_stream_version_in, keys_stream_function_in, ray_angle_in, step_in })},{name: "rvv", value:raycasting2.rvv({ ray_angle_in, f_in, keys_stream_version_in, keys_stream_function_in, step_in })},{name: "rv_hit_object", value:raycasting2.rv_hit_object({ ray_angle_in, f_in, keys_stream_version_in, keys_stream_function_in })},{name: "rv_hit_object", value:raycasting2.rv_hit_object({ ray_angle_in, f_in, keys_stream_version_in, keys_stream_function_in })},{name: "rv_hit_object", value:raycasting2.rv_hit_object({ ray_angle_in, f_in, keys_stream_version_in, keys_stream_function_in })},{name: "rv_hit_object", value:raycasting2.rv_hit_object({ ray_angle_in, f_in, keys_stream_version_in, keys_stream_function_in })},{name: "rv_hit_x", value:raycasting2.rv_hit_x({ ray_angle_in, f_in, keys_stream_version_in, keys_stream_function_in })},{name: "player_x", value:raycasting2.player_x({ f_in, keys_stream_version_in, keys_stream_function_in })},{name: "rv_hit_y", value:raycasting2.rv_hit_y({ ray_angle_in, f_in, keys_stream_version_in, keys_stream_function_in })},{name: "player_y", value:raycasting2.player_y({ f_in, keys_stream_version_in, keys_stream_function_in })},{name: "rv_hit_length", value:raycasting2.rv_hit_length({ y_in, x_in, ray_angle_in, f_in, keys_stream_version_in, keys_stream_function_in })},{name: "rh_hit_length", value:raycasting2.rh_hit_length({ y_in, x_in, f_in, keys_stream_version_in, keys_stream_function_in, ray_angle_in })},{name: "r_hit_h_or_v", value:raycasting2.r_hit_h_or_v({ y_in, x_in, ray_angle_in, f_in, keys_stream_version_in, keys_stream_function_in })},{name: "rv_hit_object", value:raycasting2.rv_hit_object({ ray_angle_in, f_in, keys_stream_version_in, keys_stream_function_in })},{name: "rh_hit_object", value:raycasting2.rh_hit_object({ f_in, keys_stream_version_in, keys_stream_function_in, ray_angle_in })},{name: "r_hit_object", value:raycasting2.r_hit_object({ y_in, x_in, ray_angle_in, f_in, keys_stream_version_in, keys_stream_function_in })},{name: "r_hit_object", value:raycasting2.r_hit_object({ y_in, x_in, ray_angle_in, f_in, keys_stream_version_in, keys_stream_function_in })},{name: "r_hit_object", value:raycasting2.r_hit_object({ y_in, x_in, ray_angle_in, f_in, keys_stream_version_in, keys_stream_function_in })},{name: "r_hit_object", value:raycasting2.r_hit_object({ y_in, x_in, ray_angle_in, f_in, keys_stream_version_in, keys_stream_function_in })},{name: "player_angle", value:raycasting2.player_angle({ f_in, keys_stream_version_in, keys_stream_function_in })},{name: "ray_angle", value:raycasting2.ray_angle({ ray_angle_in })},{name: "angle_offset0", value:raycasting2.angle_offset0({ f_in, keys_stream_version_in, keys_stream_function_in, ray_angle_in })},{name: "angle_offset0", value:raycasting2.angle_offset0({ f_in, keys_stream_version_in, keys_stream_function_in, ray_angle_in })},{name: "angle_offset0", value:raycasting2.angle_offset0({ f_in, keys_stream_version_in, keys_stream_function_in, ray_angle_in })},{name: "angle_offset0", value:raycasting2.angle_offset0({ f_in, keys_stream_version_in, keys_stream_function_in, ray_angle_in })},{name: "r_hit_h_or_v", value:raycasting2.r_hit_h_or_v({ y_in, x_in, ray_angle_in, f_in, keys_stream_version_in, keys_stream_function_in })},{name: "rv_hit_length", value:raycasting2.rv_hit_length({ y_in, x_in, ray_angle_in, f_in, keys_stream_version_in, keys_stream_function_in })},{name: "rh_hit_length", value:raycasting2.rh_hit_length({ y_in, x_in, f_in, keys_stream_version_in, keys_stream_function_in, ray_angle_in })},{name: "angle_offset0", value:raycasting2.angle_offset0({ f_in, keys_stream_version_in, keys_stream_function_in, ray_angle_in })},{name: "r_length", value:raycasting2.r_length({ y_in, x_in, ray_angle_in, f_in, keys_stream_version_in, keys_stream_function_in })},{name: "keys_stream_version", value:raycasting2.keys_stream_version({ keys_stream_version_in })},{name: "keys_stream_function", value:raycasting2.keys_stream_function({ keys_stream_function_in })},{name: "f", value:raycasting2.f({ f_in })},{name: "keys", value:raycasting2.keys({ keys_stream_version_in, keys_stream_function_in, f_in })},{name: "keys", value:raycasting2.keys({ keys_stream_version_in, keys_stream_function_in, f_in })},{name: "keys", value:raycasting2.keys({ keys_stream_version_in, keys_stream_function_in, f_in })},{name: "keys", value:raycasting2.keys({ keys_stream_version_in, keys_stream_function_in, f_in })},{name: "keys", value:raycasting2.keys({ keys_stream_version_in, keys_stream_function_in, f_in })},{name: "keys", value:raycasting2.keys({ keys_stream_version_in, keys_stream_function_in, f_in })},{name: "keys", value:raycasting2.keys({ keys_stream_version_in, keys_stream_function_in, f_in })},{name: "keys", value:raycasting2.keys({ keys_stream_version_in, keys_stream_function_in, f_in })},{name: "key_up", value:raycasting2.key_up({ keys_stream_version_in, keys_stream_function_in, f_in })},{name: "key_down", value:raycasting2.key_down({ keys_stream_version_in, keys_stream_function_in, f_in })},{name: "key_left", value:raycasting2.key_left({ keys_stream_version_in, keys_stream_function_in, f_in })},{name: "key_right", value:raycasting2.key_right({ keys_stream_version_in, keys_stream_function_in, f_in })},{name: "f", value:raycasting2.f({ f_in })},{name: "player_angle", value:raycasting2.player_angle({ keys_stream_version_in, keys_stream_function_in, f_in:raycasting2.f({ f_in }) - 1 }), handler: () => {set(viewof f_in, raycasting2.f({ f_in }) - 1)}},{name: "f", value:raycasting2.f({ f_in })},{name: "leftness", value:raycasting2.leftness({ keys_stream_version_in, keys_stream_function_in, f_in })},{name: "f", value:raycasting2.f({ f_in })},{name: "player_x", value:raycasting2.player_x({ keys_stream_version_in, keys_stream_function_in, f_in:raycasting2.f({ f_in }) - 1 }), handler: () => {set(viewof f_in, raycasting2.f({ f_in }) - 1)}},{name: "f", value:raycasting2.f({ f_in })},{name: "forwardness", value:raycasting2.forwardness({ keys_stream_version_in, keys_stream_function_in, f_in })},{name: "speed", value:raycasting2.speed({})},{name: "player_angle", value:raycasting2.player_angle({ f_in, keys_stream_version_in, keys_stream_function_in })},{name: "f", value:raycasting2.f({ f_in })},{name: "player_y", value:raycasting2.player_y({ keys_stream_version_in, keys_stream_function_in, f_in:raycasting2.f({ f_in }) - 1 }), handler: () => {set(viewof f_in, raycasting2.f({ f_in }) - 1)}},{name: "f", value:raycasting2.f({ f_in })},{name: "forwardness", value:raycasting2.forwardness({ keys_stream_version_in, keys_stream_function_in, f_in })},{name: "speed", value:raycasting2.speed({})},{name: "player_angle", value:raycasting2.player_angle({ f_in, keys_stream_version_in, keys_stream_function_in })}]],"savings":[[{name: "year", value:savings.year({ year_in })},{name: "year", value:savings.year({ year_in })},{name: "deposits", value:savings.deposits({ year_in, duration_in, annual_payment_in })},{name: "balance", value:savings.balance({ duration_in, annual_payment_in, interest_rate_in, year_in:savings.year({ year_in }) - 1 }), handler: () => {set(viewof year_in, savings.year({ year_in }) - 1)}},{name: "year", value:savings.year({ year_in })},{name: "deposits", value:savings.deposits({ year_in, duration_in, annual_payment_in })},{name: "interest", value:savings.interest({ year_in, duration_in, annual_payment_in, interest_rate_in })},{name: "year", value:savings.year({ year_in })},{name: "year", value:savings.year({ year_in })},{name: "duration", value:savings.duration({ duration_in })},{name: "annual_payment", value:savings.annual_payment({ annual_payment_in })},{name: "year", value:savings.year({ year_in })},{name: "balance", value:savings.balance({ duration_in, annual_payment_in, interest_rate_in, year_in:savings.year({ year_in }) - 1 }), handler: () => {set(viewof year_in, savings.year({ year_in }) - 1)}},{name: "year", value:savings.year({ year_in })},{name: "interest_rate", value:savings.interest_rate({ interest_rate_in })}]],"savings_rec":[[{name: "year", value:savings_rec.year({ year_in })},{name: "actual_interest_rate_co", value:savings_rec.actual_interest_rate_co({ actual_interest_rate_co_in })},{name: "interest_rate_expected", value:interest_rate_expected({})},{name: "actual_interest_rates", value:savings_rec.actual_interest_rates({})},{name: "year", value:savings_rec.year({ year_in })}],[],[{name: "year", value:savings_rec.year({ year_in })},{name: "year", value:savings_rec.year({ year_in })},{name: "deposits", value:savings_rec.deposits({ year_in })},{name: "balance", value:savings_rec.balance({ actual_interest_rate_co_in, year_in:savings_rec.year({ year_in }) - 1 }), handler: () => {set(viewof year_in, savings_rec.year({ year_in }) - 1)}},{name: "year", value:savings_rec.year({ year_in })},{name: "deposits", value:savings_rec.deposits({ year_in })},{name: "interest", value:savings_rec.interest({ year_in, actual_interest_rate_co_in })},{name: "year", value:savings_rec.year({ year_in })},{name: "year", value:savings_rec.year({ year_in })},{name: "duration", value:savings_rec.duration({})},{name: "annual_payment", value:savings_rec.annual_payment({})},{name: "year", value:savings_rec.year({ year_in })},{name: "balance", value:savings_rec.balance({ actual_interest_rate_co_in, year_in:savings_rec.year({ year_in }) - 1 }), handler: () => {set(viewof year_in, savings_rec.year({ year_in }) - 1)}},{name: "year", value:savings_rec.year({ year_in })},{name: "interest_rate", value:savings_rec.interest_rate({ year_in, actual_interest_rate_co_in })}]],"starfield":[[{name: "random_seed", value:starfield.random_seed({ random_seed_in })},{name: "seeded", value:starfield.seeded({ random_seed_in:starfield.random_seed({ random_seed_in }) }), handler: () => {set(viewof random_seed_in, starfield.random_seed({ random_seed_in }))}},{name: "random_seed", value:starfield.random_seed({ random_seed_in })},{name: "random", value:starfield.random({ random_seed_in, star_in:starfield.star({ star_in }), id: "x" }), handler: () => {set(viewof star_in, starfield.star({ star_in }))}},{name: "star", value:starfield.star({ star_in })},{name: "random", value:starfield.random({ random_seed_in, star_in:starfield.star({ star_in }), id: "y" }), handler: () => {set(viewof star_in, starfield.star({ star_in }))}},{name: "star", value:starfield.star({ star_in })},{name: "random", value:starfield.random({ random_seed_in, star_in:starfield.star({ star_in }), id: "z" }), handler: () => {set(viewof star_in, starfield.star({ star_in }))}},{name: "star", value:starfield.star({ star_in })},{name: "frame", value:starfield.frame({ frame_in })},{name: "z0", value:starfield.z0({ random_seed_in, star_in })},{name: "z", value:starfield.z({ random_seed_in, star_in, speed_in, frame_in:starfield.frame({ frame_in }) - 1 }), handler: () => {set(viewof frame_in, starfield.frame({ frame_in }) - 1)}},{name: "frame", value:starfield.frame({ frame_in })},{name: "speed", value:starfield.speed({ speed_in })},{name: "z", value:starfield.z({ random_seed_in, star_in, speed_in, frame_in:starfield.frame({ frame_in }) - 1 }), handler: () => {set(viewof frame_in, starfield.frame({ frame_in }) - 1)}},{name: "frame", value:starfield.frame({ frame_in })},{name: "speed", value:starfield.speed({ speed_in })},{name: "z", value:starfield.z({ frame_in, random_seed_in, star_in, speed_in })},{name: "frame", value:starfield.frame({ frame_in })},{name: "x0", value:starfield.x0({ random_seed_in, star_in })},{name: "visible", value:starfield.visible({ random_seed_in, star_in, speed_in, frame_in:starfield.frame({ frame_in }) - 1 }), handler: () => {set(viewof frame_in, starfield.frame({ frame_in }) - 1)}},{name: "frame", value:starfield.frame({ frame_in })},{name: "x0", value:starfield.x0({ random_seed_in, star_in })},{name: "x0", value:starfield.x0({ random_seed_in, star_in })},{name: "z", value:starfield.z({ frame_in, random_seed_in, star_in, speed_in })},{name: "frame", value:starfield.frame({ frame_in })},{name: "y0", value:starfield.y0({ random_seed_in, star_in })},{name: "visible", value:starfield.visible({ random_seed_in, star_in, speed_in, frame_in:starfield.frame({ frame_in }) - 1 }), handler: () => {set(viewof frame_in, starfield.frame({ frame_in }) - 1)}},{name: "frame", value:starfield.frame({ frame_in })},{name: "y0", value:starfield.y0({ random_seed_in, star_in })},{name: "y0", value:starfield.y0({ random_seed_in, star_in })},{name: "z", value:starfield.z({ frame_in, random_seed_in, star_in, speed_in })},{name: "x", value:starfield.x({ frame_in, random_seed_in, star_in, speed_in })},{name: "x0", value:starfield.x0({ random_seed_in, star_in })},{name: "x0", value:starfield.x0({ random_seed_in, star_in })},{name: "x", value:starfield.x({ random_seed_in, star_in, speed_in, frame_in:starfield.frame({ frame_in }) - 1 }), handler: () => {set(viewof frame_in, starfield.frame({ frame_in }) - 1)}},{name: "frame", value:starfield.frame({ frame_in })},{name: "y", value:starfield.y({ frame_in, random_seed_in, star_in, speed_in })},{name: "y0", value:starfield.y0({ random_seed_in, star_in })},{name: "y0", value:starfield.y0({ random_seed_in, star_in })},{name: "y", value:starfield.y({ random_seed_in, star_in, speed_in, frame_in:starfield.frame({ frame_in }) - 1 }), handler: () => {set(viewof frame_in, starfield.frame({ frame_in }) - 1)}},{name: "frame", value:starfield.frame({ frame_in })}]],"fizzbuzz":[[{name: "i", value:fizzbuzz.i({ i_in })},{name: "i", value:fizzbuzz.i({ i_in })},{name: "fizz", value:fizzbuzz.fizz({ i_in })},{name: "buzz", value:fizzbuzz.buzz({ i_in })},{name: "fizz", value:fizzbuzz.fizz({ i_in })},{name: "buzz", value:fizzbuzz.buzz({ i_in })},{name: "i", value:fizzbuzz.i({ i_in })}]],"year_remaining":[[{name: "date", value:year_remaining.date({ date_in })},{name: "year", value:year_remaining.year({ date_in })},{name: "isLeap", value:year_remaining.isLeap({ date_in })},{name: "date", value:year_remaining.date({ date_in })},{name: "date", value:year_remaining.date({ date_in })},{name: "date", value:year_remaining.date({ date_in })},{name: "date", value:year_remaining.date({ date_in })},{name: "daysIntoYearStartTomorrow", value:year_remaining.daysIntoYearStartTomorrow({ date_in })},{name: "timing", value:year_remaining.timing({ timing_in })},{name: "daysIntoYearStartToday", value:year_remaining.daysIntoYearStartToday({ date_in })},{name: "daysIntoYearStartTomorrow", value:year_remaining.daysIntoYearStartTomorrow({ date_in })},{name: "daysIntoYear", value:year_remaining.daysIntoYear({ timing_in, date_in })},{name: "daysInYear", value:year_remaining.daysInYear({ date_in })},{name: "fractionIntoYear", value:year_remaining.fractionIntoYear({ timing_in, date_in })}]]}
+)}
+
+
+fns_with_mjs_q_eval ={ return (
+{"raycasting2":[[{name:"tan_ray_angle",value:raycasting2.tan_ray_angle({ray_angle_in})},{name:"inverse_tan_ray_angle",value:raycasting2.inverse_tan_ray_angle({ray_angle_in})},{name:"ray_looking_up",value:raycasting2.ray_looking_up({ray_angle_in})},{name:"ray_looking_right",value:raycasting2.ray_looking_right({ray_angle_in})},{name:"map",value:raycasting2.map({})},{name:"map_check_v",value:raycasting2.map_check_v({y_in,x_in})},{name:"map_check",value:raycasting2.map_check({y_in,x_in})},{name:"rhx",value:raycasting2.rhx({step_in,f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rhy",value:raycasting2.rhy({ray_angle_in,step_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"rhv",value:raycasting2.rhv({step_in,f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rh_hit_object",value:raycasting2.rh_hit_object({f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rh_hit_x",value:raycasting2.rh_hit_x({f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rh_hit_y",value:raycasting2.rh_hit_y({f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rh_hit_v",value:raycasting2.rh_hit_v({f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rh_hit_step",value:raycasting2.rh_hit_step({f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rh_hit_length",value:raycasting2.rh_hit_length({y_in,x_in,f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rvx",value:raycasting2.rvx({ray_angle_in,step_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"rvy",value:raycasting2.rvy({step_in,f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rvv",value:raycasting2.rvv({ray_angle_in,step_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"rv_hit_object",value:raycasting2.rv_hit_object({ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"rv_hit_x",value:raycasting2.rv_hit_x({ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"rv_hit_y",value:raycasting2.rv_hit_y({ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"rv_hit_v",value:raycasting2.rv_hit_v({ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"rv_hit_step",value:raycasting2.rv_hit_step({ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"rv_hit_length",value:raycasting2.rv_hit_length({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"r_hit_h_or_v",value:raycasting2.r_hit_h_or_v({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"r_hit_object",value:raycasting2.r_hit_object({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"r_hit_x",value:raycasting2.r_hit_x({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"r_hit_y",value:raycasting2.r_hit_y({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"r_hit_v",value:raycasting2.r_hit_v({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"r_hit_step",value:raycasting2.r_hit_step({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"angle_offset0",value:raycasting2.angle_offset0({f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"angle_offset1",value:raycasting2.angle_offset1({f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"r_length",value:raycasting2.r_length({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"r_inverse_length",value:raycasting2.r_inverse_length({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"keys_stream_function",value:raycasting2.keys_stream_function({keys_stream_function_in})},{name:"keys_stream_version",value:raycasting2.keys_stream_version({keys_stream_version_in})},{name:"keys",value:raycasting2.keys({keys_stream_version_in,keys_stream_function_in,f_in})},{name:"key_up",value:raycasting2.key_up({keys_stream_version_in,keys_stream_function_in,f_in})},{name:"key_down",value:raycasting2.key_down({keys_stream_version_in,keys_stream_function_in,f_in})},{name:"key_left",value:raycasting2.key_left({keys_stream_version_in,keys_stream_function_in,f_in})},{name:"key_right",value:raycasting2.key_right({keys_stream_version_in,keys_stream_function_in,f_in})},{name:"forwardness",value:raycasting2.forwardness({keys_stream_version_in,keys_stream_function_in,f_in})},{name:"leftness",value:raycasting2.leftness({keys_stream_version_in,keys_stream_function_in,f_in})},{name:"player_angle",value:raycasting2.player_angle({f_in,keys_stream_version_in,keys_stream_function_in})},{name:"player_x",value:raycasting2.player_x({f_in,keys_stream_version_in,keys_stream_function_in})},{name:"player_y",value:raycasting2.player_y({f_in,keys_stream_version_in,keys_stream_function_in})},{name:"speed",value:raycasting2.speed({})},{name:"f",value:raycasting2.f({f_in})},{name:"ray_angle",value:raycasting2.ray_angle({ray_angle_in})},{name:"step",value:raycasting2.step({step_in})},{name:"x",value:raycasting2.x({x_in})},{name:"y",value:raycasting2.y({y_in})}]],"savings":[[{name:"balance",value:savings.balance({year_in,duration_in,annual_payment_in,interest_rate_in})},{name:"deposits",value:savings.deposits({year_in,duration_in,annual_payment_in})},{name:"interest",value:savings.interest({year_in,duration_in,annual_payment_in,interest_rate_in})},{name:"year",value:savings.year({year_in})},{name:"annual_payment",value:savings.annual_payment({annual_payment_in})},{name:"duration",value:savings.duration({duration_in})},{name:"interest_rate",value:savings.interest_rate({interest_rate_in})}]],"savings_rec":[[{name:"year",value:savings_rec.year({year_in})},{name:"actual_interest_rates",value:savings_rec.actual_interest_rates({})},{name:"actual_interest_rate_co",value:savings_rec.actual_interest_rate_co({actual_interest_rate_co_in})},{name:"interest_rate",value:savings_rec.interest_rate({year_in,actual_interest_rate_co_in})}],[{name:"annual_payment",value:savings_rec.annual_payment({})},{name:"duration",value:savings_rec.duration({})}],[{name:"balance",value:savings_rec.balance({year_in,actual_interest_rate_co_in})},{name:"deposits",value:savings_rec.deposits({year_in})},{name:"interest",value:savings_rec.interest({year_in,actual_interest_rate_co_in})}]],"starfield":[[{name:"random_seed",value:starfield.random_seed({random_seed_in})},{name:"seeded",value:starfield.seeded({random_seed_in})},{name:"random",value:starfield.random({random_seed_in})},{name:"frame",value:starfield.frame({frame_in})},{name:"star",value:starfield.star({star_in})},{name:"star_life",value:starfield.star_life({})},{name:"x0",value:starfield.x0({random_seed_in,star_in})},{name:"y0",value:starfield.y0({random_seed_in,star_in})},{name:"z0",value:starfield.z0({random_seed_in,star_in})},{name:"speed",value:starfield.speed({speed_in})},{name:"z",value:starfield.z({frame_in,random_seed_in,star_in,speed_in})},{name:"visible",value:starfield.visible({frame_in,random_seed_in,star_in,speed_in})},{name:"x",value:starfield.x({frame_in,random_seed_in,star_in,speed_in})},{name:"y",value:starfield.y({frame_in,random_seed_in,star_in,speed_in})},{name:"px",value:starfield.px({frame_in,random_seed_in,star_in,speed_in})},{name:"py",value:starfield.py({frame_in,random_seed_in,star_in,speed_in})}]],"fizzbuzz":[[{name:"fizz",value:fizzbuzz.fizz({i_in})},{name:"buzz",value:fizzbuzz.buzz({i_in})},{name:"fizzbuzz",value:fizzbuzz.fizzbuzz({i_in})},{name:"i",value:fizzbuzz.i({i_in})}]],"year_remaining":[[{name:"date",value:year_remaining.date({date_in})},{name:"year",value:year_remaining.year({date_in})},{name:"isLeap",value:year_remaining.isLeap({date_in})},{name:"daysInYear",value:year_remaining.daysInYear({date_in})},{name:"daysIntoYearStartTomorrow",value:year_remaining.daysIntoYearStartTomorrow({date_in})},{name:"daysIntoYearStartToday",value:year_remaining.daysIntoYearStartToday({date_in})},{name:"daysIntoYear",value:year_remaining.daysIntoYear({timing_in,date_in})},{name:"fractionIntoYear",value:year_remaining.fractionIntoYear({timing_in,date_in})},{name:"fractionLeftInYear",value:year_remaining.fractionLeftInYear({timing_in,date_in})},{name:"timing",value:year_remaining.timing({timing_in})}]]}
+)}
+
+
+ 
+{
+ window.fns_with_mjs_q_eval = fns_with_mjs_q_eval
+ window.mjs_q_eval = mjs_q_eval
+ // trigger an update animation here, but is that good without checking if individual numbers changed ?
+ // setup a history?
+}
+
+
+
+{
+  // can I make this run on editor scroll? or make CM generate full dom?
+      //document.getElementById('a-'+32).textContent = fmt(fns_with_mjs_q_eval[32]);
+// Seems like these cells stop if there is a single error,
+// like modifying an element that isn't yet created
+// Quarto/OJS gives no error!
+// maybe due to output: false? DANGEROUS
+//console.log('UPDATE')
+
+  fns_with_mjs_q_eval[modelname][cul_scope_id].forEach((v, i) => {
+    let d = document.getElementById('a-'+i)
+    if (d)
+    d.textContent = fmt2(v.name, v.value)//fmt(v);
+  })
+  mjs_q_eval[modelname][cul_scope_id].forEach(({name, value}, i) => {
+        let d = document.getElementById('w-'+i)
+    if (d)    document.getElementById('w-'+i).textContent = fmt2(name, value); // does this get used? on update?
+  })
+}
+
+// todo fmt hints or templates? like a type or unit?
+fmt2 = (name, value) => {
+  name = name.toLowerCase();
+  if (name.includes("_co")) return d3.format(",.0f")(value)
+  if (name.includes("rate") || name.includes("percent") || name.includes("fraction")) return d3.format(".2%")(value)
+  if ((name.includes("year")) || name.includes("term") || name.includes("duration") || name.includes("frame")) return d3.format(",.0f")(value)
+  if (name.includes("object") || typeof value != 'number') return JSON.stringify(value)
+
+  return d3.format(",.2f")(value)
+}
+
+
+////
+
+// how to call a function
+
+fns_with_mjs = Object.values(calculang_source_introspection.cul_functions)
+  .filter(
+    (d) =>
+      d.reason == "definition" /*input definition doesn't have a loc*/ &&
+      d.cul_scope_id == cul_scope_id
+  )
+  .map((d) => ({ ...d, mjs: `{${d.inputs.join(",")}}` })) // assuming completely on one line
+
+// ex- calls_with_mjs, relates to that in generator
+calls = calculang_source_introspection.cul_links
+  .filter(d => !d.from.includes('undefined')).filter((d) => d.reason == "call" && cul_scope_id == +d.to.split("_")[0]) // bugs for double digit scopes
+
+
+// ex CheckboxWidget
+class AnswersWorkingsOverlayWidget extends cmImports.view.WidgetType {
+  constructor(v, call, call_i, type) {
+    //a = v;
+    super();
+    this.v = v;
+    this.call = call;
+    this.call_i = call_i;
+    this.type = type;
+    //this.evals = type == "definition" ? mjs_q_eval : fns_with_mjs_q_eval;
+    //this.info = type == "definition" ? fns_with_mjs : calls_with_mjs_qualified;
+  }
+
+  toDOM() {
+    // mjs_q_eval; use this to test flicker/parse issues for plugins setting values (now set setparately by DOM calls)
+    let wrap = document.createElement("span");
+    //wrap.className = "tooltip";
+    //wrap.textContent = "101.19";
+    wrap.setAttribute("aria-hidden", "true"); // not in a good place, todo fix
+    wrap.className = "calculang_tooltip";
+    if (this.type == "definition") {
+      return htl.html`<span class="calculang_tooltip answer" id="c-a-${this.v}"><!--<input type="checkbox"></input>--><span id="a-${this.v}" class="tooltiptext" anchor="c-a-${this.v}">${fmt2(
+        window.fns_with_mjs_q_eval[modelname][cul_scope_id][this.v].name, window.fns_with_mjs_q_eval[modelname][cul_scope_id][this.v].value//999
+      )}</span></span>`;
+    }
+    return htl.html`<span onclick=${() => {
+      /* TODO*/ set(viewof formulae_visible, [ // I'm supposed to use options.formulae_visible !!
+        calls[this.v].from.slice(2)
+      ]);
+      document.querySelector('.calculang_f_'+calls[this.v].from.slice(2)).scrollIntoView(scrollIntoViewOpts)
+      if (window.mjs_q_eval[modelname][cul_scope_id][this.v].handler) window.mjs_q_eval[modelname][cul_scope_id][this.v].handler();
+
+    }} class="calculang_tooltip" id="c-w-${this.call_i}"><!--&nbsp;<input type="checkbox"></input>--><span id="w-${this.call_i}" class="tooltiptext" anchor="c-w-${this.call_i}">${fmt2( window.mjs_q_eval[modelname][cul_scope_id][this.call_i].name,
+     window.mjs_q_eval[modelname][cul_scope_id][this.call_i].value
+    )}</span></span>`;
+    return wrap;
+  }
+
+  ignoreEvent() {
+    return false;
+  }
+}
+
+function workings(view) {
+  return Decoration.set(
+    [
+      ...calls.map((d, i) =>
+        Decoration.widget({
+          widget: new AnswersWorkingsOverlayWidget(i, d, i),
+          side: 1
+        }).range(
+          d.loc.start.index +
+            d.from.length -
+            2 - Math.floor(d.from.length/2) // this split is wrong for interest_rate for example!
+        )
+      )
+    ]
+  );
+}
+
+function answers(view) {
+  return Decoration.set(
+    [
+      ...fns_with_mjs.map((d, i) =>
+        Decoration.widget({
+          widget: new AnswersWorkingsOverlayWidget(i, d, i, "definition"),
+          side: 1
+        }).range(
+          //                    }).range(view.state.doc.line(e).from)
+
+          view.state.doc.line(d.loc.start.line).to
+          //d.from.length -
+          /* todo take midpoint start-end */
+        )
+      )
+    ] /* todo take midpoint start-end */
+  );
+}
+
+
+overlay_answers = {
+  // prevent input events coming from the contenteditable div that
+  // propagates and triggers a cell refresh; we shall handle it ourselves.
+  const answers_decorations = cmImports.view.ViewPlugin.fromClass(
+    class {
+      constructor(view) {
+        this.decorations = answers(view);
+      }
+      update(update) {
+        // updates cause difficulty clicking numbers - thankfully not needed
+
+        //this.decorations = answers(update.view);
+
+        // not necessary for read-only
+      }
+    },
+    {
+      decorations: (v) => v.decorations,
+      eventHandlers: {}
+    }
+  );
+
+  return [answers_decorations];
+}
+
+overlay_workings = {
+  // prevent input events coming from the contenteditable div that
+  // propagates and triggers a cell refresh; we shall handle it ourselves.
+  const checkboxPlugin = cmImports.view.ViewPlugin.fromClass(
+    class {
+      constructor(view) {
+        this.decorations = workings(view);
+      }
+
+      update(update) {
+        // updates cause difficulty clicking numbers - thankfully not needed
+        // not necessary for read-only
+        //if (update.docChanged || update.viewportChanged)
+         //this.decorations = workings(update.view);
+      }
+    },
+    {
+      decorations: (v) => v.decorations,
+
+      eventHandlers: {
+        mousedown: (e, view) => {
+          console.log("HELLO222");
+
+          let target = e.target;
+
+          console.log("FDSAFSAD", e.target.classList);
+          if (
+            1 || // DN
+            (target.nodeName == "INPUT" &&
+              target.parentElement /*! I removed this bang*/.classList
+                .contains("cm-boolean-toggle"))
+          )
+            1;//return toggleBoolean(view, view.posAtDOM(target));
+        }
+      }
+    }
+  );
+
+  return [checkboxPlugin];
+}
+
+
+
+fmt = d => (typeof d == 'number') ? (Math.abs(d) < 2 ? d3.format('.2%')(d) : d3.format(fmt_fmt)(d)) : JSON.stringify(d)
+
+embed = require("vega-embed")
+
+{
+  f_in;
+  mutable frame_val = f_in;
+}
+```
+
+<details><summary>🤫</summary>
+```{ojs}
+//| echo: false
+
+scrollIntoViewOpts = ({behaviour:'smooth'})
+
+Inputs.button([
+  ["expand all", () => set(viewof formulae_visible, formulae_all)],
+  ["collapse all", () => set(viewof formulae_visible, [])],
+  ["xx", () => {console.log(viewof editor.value)}]
+])
+
+
+viewof options = Inputs.checkbox(["export consts", "inputs"/*, "lists (todo)"*/], {label: "unhide?", value: ["export consts", "inputs"]})
+
+viewof overlay = Inputs.toggle({ label: "overlay?", value: true })
+
+//md`---`
+
+
+viewof cul_js = Inputs.radio(["📝 calculang source 💬", "✨ JS/ESM output ✨ (modular annotations bad)"], {label: "🫶", value: "📝 calculang source 💬"})
+
+cul_js_cul = cul_js == "📝 calculang source 💬" ? true : false
+viewof calculang_source_nomemo = Inputs.checkbox(["nomemo"], {value: ["nomemo"], label: 'see memo? 💀', disabled:cul_js=="📝 calculang source 💬"})
+viewof opt = Inputs.toggle({label:'options'})
+viewof readonly = Inputs.toggle({label:'readonly'})
+
+viewof formulae_visible = Inputs.input(["balance", "interest", "deposits"])
+
+viewof fmt_fmt = Inputs.text({value:",.2f", label: 'format'})
+
+viewof actions = Inputs.toggle({label:'vega actions?', value:false})
+
+
+```
+</details>
+
+
+:::
+
+
+<!-- can I make this column optional? --> 
+## Viz {#right}
+
+<strong style="font-size:1.5em;"><!--application(s)--></strong> <p style="background-color:pink; padding: 5px; border-radius: 0 10px 10px 10px; font-size: 1.3em">🎠🎈🕹️</p>
+
+
+::: {#raycasting2 .modeldept title="raycasting2"}
+
+
+
+```{ojs}
+
+
+// https://observablehq.com/d/867e1424e1d093ab
+
+mutable frame_val = 0
+
+
+mutable keys_shared = []
+
+//Inputs.bind(Scrubber(_.range(0, 200), { autoplay: false, delay: 50 }), viewof f_in)
+
+
+
+
+
+viewof keys_stream = { // https://observablehq.com/d/867e1424e1d093ab
+  let e = html`<div class='target' style='color:pink; background:#eee' tabIndex=1>Keyboard target</div>`;
+  let keys = [];
+  e.value = keys;
+  let gap = new Date();
+  e.addEventListener("keyup", (evt) => {
+    keys.push({
+      key: evt.key,
+      delay: new Date() - gap,
+      frame: mutable frame_val + 1
+    });
+    keys_shared.push({
+      key: evt.key,
+      delay: new Date() - gap,
+      frame: mutable frame_val + 1
+    });
+    gap = new Date();
+    e.dispatchEvent(new CustomEvent("input"));
+    evt.preventDefault(); // for revealjs? not enough
+          set(viewof f_in, viewof f_in.value+1)
+
+  });
+  e.addEventListener("keydown", (evt) => {
+    mutable show_ray = false;
+    evt.preventDefault();
+  });
+
+  return e;
+}
+
+viewof scene = embed(scene_spec, { renderer: "svg", padding: 0, actions, config: { autosize: 'fit-y' }})
+/*viewof scene2 = embed({...scene_spec, encoding: {...scene_spec.encoding, color: {
+      //condition: { param: "ray_angle_in", value: "blue" },
+      field: "r_hit_h_or_v",
+      type: "ordinal",
+      legend: guides
+    }}}, { renderer: "svg", padding: 0, actions, config: { autosize: 'fit-y' }})*/
+
+/*Inputs.bind(Inputs.text({
+  label: "keys_stream_version_in",
+  value: "abc",
+  length: 200
+}), viewof keys_stream_version_in)*/
+
+```
+
+<details><summary>🤫</summary>
+
+
+```{ojs}
+
+viewof refresh = Inputs.button("refresh calculang model")
+
+htl.html`<button onclick=${() => (mutable scene_data0 = scene_data)}>insert data -> vega editor (dev)</button>`
+
+viewof guides = Inputs.toggle({ label: "guides", value: false })
+
+viewof model_x = Inputs.range([0,10], {step:1, label: 'model version'})
+
+viewof scene_size = Inputs.range([0.1,1], {value:0.5, label: 'size'})
+
+viewof show_ray_steps = Inputs.toggle({label: 'show ray steps?', value: false})
+
+
+
+```
+</details>
+
+```{ojs}
+//| output: false
+htl.html`<button onclick=${() => (mutable scene_data0 = scene_data)}>insert data -> vega editor (dev)</button>`
+Inputs.bind(Inputs.range([-10,100], {step:1, label: 'step'}), viewof step_in)
+
+{
+  scene;
+  window.dispatchEvent(new Event('resize'))
+}
+
+
+
+  //.html-fill-container>.html-fill-item { /* messy! interacts with other styling */
+  //  flex: none;
+  //}
+html`
+<style>
+  #raycasting2 .fit-y svg {
+  background: linear-gradient(to bottom, lightblue, pink, white);
+  }
+  #reflection svg {
+    margin-top: -10px;
+  background: linear-gradient(to bottom, orange, pink, white);
+
+    /*filter: blur(10px);
+      background: white; linear-gradient(to bottom, lightblue, green, white);*/
+      transform: scaleY(-0.7); /*translateY(65px);*/
+      mask: linear-gradient(to bottom, transparent, black 98%);
+  }
+
+</style>
+`
+
+//Inputs.table(scene_data)
+
+scene_spec = { return ({
+  config: {autosize: 'fit'},
+    "data": {"name": "source"},
+
+  datasets: {'source': scene_data0 },
+  width: "container",
+  height: 350*scene_size,
+  //height: 400,
+  //height: "container",
+  //background: "linear-gradient(blue, pink)",
+  mark: { type: "bar", clip: true },
+  //transform: [{calculate: "2*datum.r_hit_v+(0)", as: "r_hit_v__r_hit_h_or_v"}],
+  encoding: {
+    x: {
+      field: "ray_angle_in",
+      type: "ordinal",
+      axis: guides ? { format: ",.2f", grid: false } : null,
+      sort: "descending"
+    },
+    y: {
+      field: "r_inverse_length",
+      type: "quantitative",
+      scale: { domain: [0, 1] },
+      axis: guides ? { grid: false } : null
+    },
+    stroke: {value: 'black'},
+    strokeOpacity: {      condition: { param: "ray_angle_in", value: 1 },
+      value: 0.1,
+},
+    strokeWidth: {
+      condition: { param: "ray_angle_in", value: 2 },
+      value: 1,
+    },
+    color: {
+      condition: { param: "ray_angle_in", value: "red" },
+      //"datum": {
+        //"value": "1",
+      //},
+      scale: {domain: [2,3,4,5,6,7],range: ["hsl(250, 76%, 60%)","hsl(250, 76%, 72%)","hsl(200, 76%, 60%)","hsl(200, 76%, 72%)","hsl(100, 76%, 60%)","hsl(100, 76%, 72%)"]},
+      field: "r_hit_v__r_hit_h_or_v",
+      //type: "nominal",
+      legend: guides
+    },
+    opacity: {
+      field: 'r_length',
+      legend: guides,
+      scale: {domain: [0,15], range: [1,.1]},
+      type: 'quantitative'
+    }
+  },
+  params: [
+    {
+      name: "player_angle_in",
+      value: { player_angle_in: 0 },
+      select: {
+        type: "point",
+        //on: "mousemove{0,50}",
+        on: "[touchdown, touchup] > touchmove, [mousedown, mouseup] > mousemove", //{10, 100}",
+        //        on: "[mousedown, mouseup] > mousemove",
+        nearest: true,
+        toggle: false,
+        clear: false,
+        encodings: ["x"]
+      }
+    },
+
+    {
+      name: "ray_angle_in",
+      value: { ray_angle_in: 0 },
+      select: {
+        type: "point",
+        //on: "mousemove{0,50}",
+        on: "mousemove", //{10, 100}",
+        //        on: "[mousedown, mouseup] > mousemove",
+        nearest: true,
+        toggle: false,
+        clear: false,
+        encodings: ["x"]
+      }
+    }
+  ]
+}) }
+
+player_angle_in = raycasting2.player_angle({keys_stream_function_in,
+keys_stream_version_in, f_in})
+
+// add additional for signalled ray angle exactly??
+scene_data = calcuvegadata({
+  $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+  models: [raycasting2],
+  spec: ({...scene_spec, a: {field: 'r_hit_v', b: {field:'r_hit_h_or_v'}}}),
+  domains: {
+    //step_in: _.range(0, 8.1, 1),
+    ray_angle_in: _.range(-1 / 2, 1.01 / 2, 0.01).map((d) => d + player_angle_in) //[ray_angle_in, ray_angle_in + 0.4, ray_angle_in - 0.4]
+  },
+  input_cursors: [
+    {
+keys_stream_function_in,
+keys_stream_version_in, f_in,
+//player_angle_in /* needed for fisheye */
+    }
+  ]
+}).map(d => ({...d, r_hit_v__r_hit_h_or_v: 2*d.r_hit_v+(d.r_hit_h_or_v == 'h' ? 1 : 0)}))
+//| output: false
+//| 
+scene_updates = {
+  //scene.signal("ray_angle_in", ray_angle_in); causes infinite re-runs
+  scene.data("source", scene_data).resize().run();
+  //scene2.data("source", scene_data).resize().run();
+}
+
+scene.addSignalListener("player_angle_in", (a, b) => {
+  /*viewof aa.value = b.ray_angle_in; //scene.signal("ray_angle_in");
+  viewof aa.dispatchEvent(new CustomEvent("input", { bubbles: true }));
+  */
+ //if (b.ray_angle_in[0] !== ray_angle_in) {
+  //console.log(b.ray_angle_in[0], ray_angle_in, b.ray_angle_in[0] !== ray_angle_in)
+ //viewof ray_angle_in.value = b.ray_angle_in[0]; //scene.signal("ray_angle_in");
+ // viewof ray_angle_in.dispatchEvent(
+ //   new CustomEvent("input", { bubbles: true })
+  //);
+  //debugger;
+  //// set(viewof player_angle_in, b.ray_angle_in[0])
+  //set(viewof formulae_visible, 'r_inverse_length') /// this is bad during brushing if I want to scan length for example :o
+ //}
+})
+
+scene.addSignalListener("ray_angle_in", (a, b) => {
+  mutable show_ray = true;
+  set(viewof ray_angle_in, b.ray_angle_in[0])
+  console.log('ooo',b.ray_angle_in[0])
+})
+
+ray_angle_in
+
+scene_data
+
+mjs_q_eval
+
+fns_with_mjs_q_eval
+
+Inputs.bind(Inputs.range([-100,100], {step: 0.1}), viewof ray_angle_in)
+//Inputs.bind(Inputs.range([-100,100], {step: 0.1}), viewof player_angle_in)
+Inputs.bind(Inputs.range([-10,10], {step:1}), viewof year_in)
+
+viewof opacity_vertical = Inputs.range([0, 1], {
+  step: 0.1,
+  value: 0.5,
+  label: "vert"
+})
+
+```
+
+```{ojs}
+//| output: false
+
+
+////////// level visual
+
+// coordinate show_ray_steps
+{
+  formulae_visible.forEach(f => {
+    if (Object.values(introspection_nomemo.cul_functions).find(d => d.name == f && d.inputs.includes('step_in')))
+      set(viewof show_ray_steps, true)
+  })
+}
+
+{
+  if (!show_ray) set(viewof show_ray_steps, false)
+}
+
+show_ray_steps
+
+// coordinate show_ray
+mutable show_ray = false
+
+show_ray
+
+level.addSignalListener('step_in', (_,b) => {
+  set(viewof step_in, b[0])
+  // TODO process the formula part [1]
+  console.log(b);
+})
+
+```
+
+```{ojs}
+
+
+viewof level = embed(level_spec, {renderer: 'svg', actions})
+
+```
+
+```{ojs}
+//| output: false
+
+import { calcuvegadata } from "baafa4b071a5b66a"
+
+import {Scrubber} from "@mbostock/scrubber"
+
+keys_stream_function_in = (a) => [
+        ...keys_shared]
+
+level_data = calcuvegadata({
+  models: [raycasting2],
+  spec: rays,
+  domains: {
+    step_in: _.range(0, 8.1, 1),
+    ray_angle_in: [ray_angle_in, ],//_.range(-1 / 2, 1.01 / 2, /*0.025*20 ROUNDING CAUSES BUG TO NOT SHOW*/).map((d) => d + ray_angle_in) //[ray_angle_in, ray_angle_in + 0.4, ray_angle_in - 0.4]
+  },
+  input_cursors: [{       keys_stream_function_in,
+keys_stream_version_in, f_in,
+//player_angle0_in//: ray_angle_in
+
+
+}]
+})
+
+
+fov_cursor = { return ({    keys_stream_function_in,
+    keys_stream_version_in,
+    f_in,
+})}
+fov_data = [{id:0, x:raycasting2.player_x(fov_cursor), y:raycasting2.player_y(fov_cursor)},{id:1, x:raycasting2.rvx({...fov_cursor, step_in: 10, ray_angle_in: player_angle_in-.5}), y:raycasting2.rvy({...fov_cursor, step_in: 10, ray_angle_in: player_angle_in-.5})},{id:1, x:raycasting2.rvx({...fov_cursor, step_in: 10, ray_angle_in: player_angle_in+.5}), y:raycasting2.rvy({...fov_cursor, step_in: 10, ray_angle_in: player_angle_in+.5})}]
+
+player_data =  calcuvegadata({
+  models: [raycasting2],
+  spec: player_spec,
+  domains: {
+  },
+  input_cursors: [{
+    keys_stream_function_in,
+    keys_stream_version_in,
+    f_in,
+  }]
+})
+
+ray_steps_data =  calcuvegadata({
+  models: [raycasting2],
+  spec: ray_steps_spec,
+  domains: {
+    step_in: _.range(0,8.1)
+  },
+  input_cursors: [{
+    keys_stream_function_in,
+    keys_stream_version_in,
+    f_in,
+    ray_angle_in
+  }]
+})
+
+
+map_data = _.range(0.5,8).map(x_in => _.range(0.5,8).map(y_in => ({x_in, y_in, map_check: raycasting2.map_check({x_in,y_in})}))).flat()
+
+updates_level = {
+  if (ray_angle_in != null)
+  //level.signal("ray_angle_in", ray_angle_in);
+  level
+    .data("source", level_data) /*.resize()*/
+    .run();
+}
+
+level.data('player_data', player_data).run()
+level.data('ray_steps_data', ray_steps_data).run()
+
+level.signal('player_angle_in', player_angle_in).run()
+
+
+
+updates_fov = {
+  level
+    .data("fov", fov_data) /*.resize()*/
+    .run();
+}
+
+
+mutable scene_data0 = []
+mutable level_data0 = [] // includes data in spec for when I Open in Vega Editor
+mutable fov_data0 = [] 
+
+rays = {return [
+{
+      from: { data: "source" },
+      type: "symbol",
+      encode: {
+        enter: {
+          x: { field: "r_hit_x", scale: "x" },
+          y: { field: "r_hit_y", scale: "y" },
+          size: { field: "r_length", scale: "length" },
+          fill: { value: "orange" },
+          //opacity: {value: 0.4},
+          fillOpacity: {value: 0.1},
+          stroke: { value: "black" },
+          shape: { value: "square" }
+        },
+        update: {
+          x: { field: "r_hit_x", scale: "x" },
+          y: { field: "r_hit_y", scale: "y" },
+          size: { field: "r_length", scale: "length" },
+        }
+      }
+
+},
+({
+  from: { data: "source" },
+  //mark: {type: "rule", clip: true},
+  type: 'rule',
+  encode: {
+    enter: {
+      stroke: { value: "red" },
+      strokeWidth: { value: 3 },
+      strokeOpacity: { value: 1 },
+      strokeDash: {value: [8,8]}
+    },
+    update: {
+      x: { field: "player_x", scale: "x" },
+      y: { field: "player_y", scale: "y" },
+      x2: { field: "r_hit_x", scale: "x" },
+      y2: { field: "r_hit_y", scale: "y" }
+      //stroke: { field: "ray_angle_in" }
+    }
+  }
+})]}
+
+
+hits = {return ({
+      //
+    })}
+
+
+fov_spec = {return ({
+  from: { data: "fov" },
+  type: "line",
+  encode: {
+    enter: {
+      stroke: { value: "#0FFF50" },
+      strokeWidth: { value: 5.01 },
+      strokeOpacity: { value: 1 },
+      interpolate: {value: 'linear-closed'}
+    },
+    update: {
+      x: { field: "x", scale: "x" },
+      y: { field: "y", scale: "y" },
+      fill: { value: "green" },
+      fillOpacity: {value: 0.2}
+      //x2: { field: "rvx", scale: "x" },
+      //y2: { field: "rvy", scale: "y" }
+      //stroke: { field: "ray_angle_in" }
+    }
+  }
+})}
+
+map_spec = {return ({
+  from: { data: "map_data" },
+  type: "rect",
+  encode: {
+    enter: {
+      x: { signal: "floor(datum.x_in)", scale: 'x' },
+      x2: { signal: "floor(datum.x_in)+1-0.05", scale: 'x' },
+      y: { signal: "floor(datum.y_in)" , scale: 'y'},
+      y2: { signal: "floor(datum.y_in)+1-0.05", scale: 'y' },
+      fill: { field: 'map_check', scale: 'map_check'}
+      //color: { field: "floor(datum.y_in)+1" },
+
+    },
+  }
+})}
+
+
+player_spec = {return ({
+      // PLAYER
+      from: { data: "player_data" },
+      type: "symbol",
+      encode: {
+        enter: {
+          x: { field: "player_x", scale: "x" },
+          y: { field: "player_y", scale: "y" },
+          size: { value: 500 },
+          fill: { value: "yellow" },
+          stroke: { value: "black" },
+          shape: { value: "arrow" }
+        },
+        update: {
+          x: { field: "player_x", scale: "x" },
+          y: { field: "player_y", scale: "y" },
+          angle: { signal: "-180 - 90 - player_angle_in * 180 / PI" }
+        }
+      }
+    })}
+
+ray_steps_spec = {return ([
+{
+      // HORIZONTAL REDS
+      from: { data: "ray_steps_data" },
+      name: 'h',
+      type: "symbol",
+      encode: {
+        enter: {
+          //opacity: { value: opacity_vertical },
+          //opacity: { field: "if_ray_hit_horizontal", scale: "hit" },
+          x: { field: "rhx", scale: "x" },
+          y: { field: "rhy", scale: "y" },
+          size: { value: 300 },
+          fill: { value: "red" },
+          shape: { value: "circle" },
+          strokeWidth: {value: 5},
+        },
+        update: {
+          stroke: { signal: "(datum.step_in == step_in[0] && step_in[1] == 'h') ? 'yellow' : null"},//, scale: "hit" },
+          x: { field: "rhx", scale: "x" },
+          y: { field: "rhy", scale: "y" }
+        }
+      }
+    },
+    {
+      // VERTICAL GREENS
+      from: { data: "ray_steps_data" },
+      type: "symbol",
+      name: 'v',
+      encode: {
+        enter: {
+          //opacity: { value: opacity_vertical },
+          //opacity: { field: "if_ray_hit_vertical", scale: "hit" },
+          x: { field: "rvx", scale: "x" },
+          y: { field: "rvy", scale: "y" },
+          size: { value: 200 },
+          fill: { value: "green" },
+          shape: { value: "circle" },
+          strokeWidth: {value: 5},
+
+        },
+        update: {
+          //opacity: { value: opacity_vertical },
+          stroke: { signal: "(datum.step_in == step_in[0] && step_in[1] == 'v') ? 'yellow' : null"},//, scale: "hit" },
+          x: { field: "rvx", scale: "x" },
+          y: { field: "rvy", scale: "y" }
+        }
+      }
+    }])}
+
+
+
+level_spec = { return ({
+  data: [
+    { name: "source", values: level_data0 }, // layer 5 for rays by step
+    { name: "fov", values: fov_data0 },
+    { name: "map_data", values: map_data },
+    { name: "player_data", values: [] },
+    { name: "hits_data", values: [] },
+    { name: "ray_steps_data", values: [] },
+  ],
+  //background: "grey",
+  //width: 'container',
+  width: 400,
+  height: 300,
+  background: '#ddd',
+  signals: [
+    { name: "player_angle_in" },
+
+
+    {
+      "name": "step_in",
+      value: [-10,'?'],
+      "on": [{"events": "@h:mouseover", "update": "[datum.step_in, 'h']"},{"events": "@v:mouseover", "update": "[datum.step_in, 'v']"}]
+    }
+  ],
+  scales: [
+    { name: "x", type: "linear", domain: [0, 8], range: "width" },
+    { name: "y", type: "linear", domain: [0, 8], range: "height", reverse: true },
+    { name: "hit", type: "ordinal", domain: [0, 1], range: [0.01, 0.1] },
+    { name: "length", type: "linear", domain: [2, 8], range: [1000, 10]  },
+    { name: "length2", type: "linear", domain: [2, 6], range: [1000, 0]  },
+    { name: "map_check", type: "ordinal", domain: [0, 1, 2, 3], range: ["white", "hsl(250, 76%, 60%)","hsl(200, 76%, 60%)","hsl(100, 76%, 60%)"] }
+  ],
+  marks: [
+    map_spec,
+
+    fov_spec,
+    ...(show_ray ? rays : []),
+    player_spec,
+    ...(show_ray_steps ? ray_steps_spec : []),
+
+  ],
+  axes: [
+    { orient: "top", scale: "x", labelFontSize: 20, labelColor: 'blue'},
+    { orient: "left", scale: "y", labelFontSize: 20, labelColor: 'blue'}
+  ],
+})
+}
+
+
+html`<style>
+
+.modeldept {
+  display: none;
+}
+
+#${modelname}.modeldept {
+  display: block;
+}
+</style>`
+
+
+
+  {
+    savings_viz.addSignalListener('doubleclick', _ => {
+      set(viewof overlay, true)
+    })
+  }
+
+```
+
+:::
+
+::: {#savings .modeldept}
+
+```{ojs}
+
+mutable savings_data0 = []
+
+
+savings_spec = { return ({
+  //width: 'container', height:'container', bad for mobile
+  width: 'container', height: 350,
+  "data": {"name": "source"},
+  datasets: {'source': savings_data0 },
+  mark: { type: 'text', fontSize: 20, tooltip: true},
+  encoding: {
+    x: {field: 'formula'},
+    color: {field: 'formula', legend: false},
+    y: {field: 'year_in'},
+    text: {field: 'value'/*, format:',.2f'*/}
+  },
+
+  params: [
+    {
+      name: "formula",
+      //value: { ray_angle_in: 0 },
+      select: {
+        type: "point",
+        //on: "mousemove{0,50}",
+        on: "mouseup, touchup, [mousedown, mouseup] > mousemove",
+        //on: "[touchdown, touchup] > touchmove, [mousedown, mouseup] > mousemove", //{10, 100}",
+        //        on: "[mousedown, mouseup] > mousemove",
+        nearest: true,
+        toggle: false,
+        clear: false,
+        encodings: ["x", "y"]
+      }
+    }
+  ]
+}) }
+
+savings_data = calcuvegadata({
+  models: [savings],
+  spec: savings_spec,
+  domains: {
+    year_in: _.range(-1,duration_in+0.1),
+    formula: ['balance', 'interest', 'deposits']
+  },
+  input_cursors: [{duration_in,interest_rate_in,annual_payment_in}]
+}).map(d => ({...d, value: fmt2(d.formula, d.value)})) // fmt2 doesn't matter in this case
+
+//Inputs.table(savings_data)
+
+viewof savings_viz = embed(savings_spec, {renderer:'svg', actions,
+patch: s => {s.signals.push({
+  
+    name: "doubleclick",
+    value: 0,
+      "on": [{"events": "dblclick", "update": "datum"}]
+  
+});
+ return s}
+
+  })
+
+
+
+//Inputs.table(savings_data)
+```
+
+<style>
+
+
+/*body {
+  height: 100vh;
+}*/
+
+.pc {
+  height: 100%;
+}
+
+
+/*.vega-embed {
+  width: 100%;
+  height: calc(100%);
+}*/
+
+/* svg, .chart-wrapper, .vega-embed, .vega-embed-wrapper, .observablehq, .ojs-cell-2-2, .html-fill-item, .cell-output, .card, .bslib-grid, .bslib-card { */
+/*#savings .chart-wrapper, .vega-embed, .vega-embed-wrapper, #savings .observablehq, #savings .html-fill-item {
+  height:80%
+}*/
+
+.cell-output, .card, .bslib-grid, .marks.svg, .chart-wrapper, .vega-embed, .vega-embed-wrapper {
+  /*height: 100%*/
+}
+
+
+
+
+  </style>
+
+
+
+```{ojs}
+//| output: false
+
+htl.html`<button onclick=${() => (mutable savings_data0 = savings_data)}>insert data -> vega editor (dev)</button>`
+
+
+{
+  savings_viz; // force resize event on load or user sees nothing
+  // see limitations here: https://vega.github.io/vega-lite/docs/size.html#specifying-responsive-width-and-height
+  window.dispatchEvent(new Event('resize'))
+}
+
+
+savings_viz.addSignalListener("formula", (a, b) => {
+  /*viewof aa.value = b.ray_angle_in; //scene.signal("ray_angle_in");
+  viewof aa.dispatchEvent(new CustomEvent("input", { bubbles: true }));
+  */
+ //if (b.ray_angle_in[0] !== ray_angle_in) {
+  //console.log(b.ray_angle_in[0], ray_angle_in, b.ray_angle_in[0] !== ray_angle_in)
+ //viewof ray_angle_in.value = b.ray_angle_in[0]; //scene.signal("ray_angle_in");
+ // viewof ray_angle_in.dispatchEvent(
+ //   new CustomEvent("input", { bubbles: true })
+  //);
+  set(viewof formulae_visible, [b.formula[0]])
+  set(viewof year_in, b.year_in[0])
+  document.querySelector('.calculang_f_'+b.formula[0]).scrollIntoView(scrollIntoViewOpts)
+ //}
+})
+
+
+savings_actualator.addSignalListener("formula", (a, b) => {
+  /*viewof aa.value = b.ray_angle_in; //scene.signal("ray_angle_in");
+  viewof aa.dispatchEvent(new CustomEvent("input", { bubbles: true }));
+  */
+ //if (b.ray_angle_in[0] !== ray_angle_in) {
+  //console.log(b.ray_angle_in[0], ray_angle_in, b.ray_angle_in[0] !== ray_angle_in)
+ //viewof ray_angle_in.value = b.ray_angle_in[0]; //scene.signal("ray_angle_in");
+ // viewof ray_angle_in.dispatchEvent(
+ //   new CustomEvent("input", { bubbles: true })
+  //);
+  console.log(b)
+  set(viewof formulae_visible, [b.formula[0]])
+  set(viewof year_in, b.year_in[0])
+  document.querySelector('.calculang_f_'+b.formula[0]).scrollIntoView(scrollIntoViewOpts)
+ //}
+})
+
+/*savings_viz.addSignalListener("year_in", (a, b) => {
+  console.log(b);
+  set(viewof year_in, b.year_in[0])
+})*/
+
+
+
+
+{
+  //scene.signal("ray_angle_in", ray_angle_in); causes infinite re-runs
+  savings_viz.data("source", savings_data).resize().run();
+}
+
+
+
+```
+
+
+
+:::
+
+
+
+
+
+::::: {#starfield .modeldept}
+
+
+```{ojs}
+//| output: true
+
+Inputs.bind(Scrubber(_.range(0,60*5), {autoplay: false, delay:50, label:'frame', initial: 2}), viewof frame_in)
+
+//viewof speed_in = Inputs.range([-3,15], {value:3, label: 'speed', step:0.01})
+
+starfield_spec = { return ({
+  background: 'black',//'lightblue',
+  "data": {"name": "data"},
+  "datasets": { "data": starfield_data0},
+    "height": 400, width: 400,
+    layer: [{
+    "mark": {type: "point", tooltip: true, clip: false},
+
+  params: [
+    {
+      name: "star_select",
+      //value: { ray_angle_in: 0 },
+      select: {
+        type: "point",
+        //on: "mousemove{0,50}",
+        on: "mouseup, touchup, [mousedown, mouseup] > mousemove",
+        //on: "[touchdown, touchup] > touchmove, [mousedown, mouseup] > mousemove", //{10, 100}",
+        //        on: "[mousedown, mouseup] > mousemove",
+        nearest: true,
+        toggle: false,
+        clear: false,
+        //encodings: ["x", "y"]
+        fields: ["star_in"]
+      }
+    }
+  ],
+    /*"params": [{
+      "name": "brush",
+       value: { x: [leap_year_start, leap_year_start+50]}, // initial value here fails whenever I switch to this model after loading a different one ... understand
+      //"value": {"year_in": [2000, 2010]},
+      "select": {"type": "interval", "encodings": ["x"]}
+    }],*/
+    "encoding": {
+      "x": {
+        "field": "x",
+        "type": "quantitative",
+        scale: {zero:false, nice: false, domain:[-50,50]},
+        //axis: {format:".0f", grid: false, tickCount:12, ticks:true }
+      },
+      "y": {
+        "field": "y",
+        "type": "quantitative",
+        scale: {zero:false, nice: false, domain:[-50,50]},
+        //"axis": { "grid": false, values: [0,1], format: '.0f'}
+      },
+      "size": {
+        "field": "z",
+        "type": "quantitative",
+        scale: {reverse:true},
+        legend:false
+        //scale: {zero:false, nice: false, domain:[-50,50]},
+        //"axis": { "grid": false, values: [0,1], format: '.0f'}
+      },
+      color: {value:'white'}, //opacity: {value:1}
+    }
+    },
+    {
+      mark: 'rule',
+      encoding: {
+
+      "x": {
+        "field": "x",
+        "type": "quantitative",
+        scale: {zero:false, nice: false, domain:[-50,50]},
+        //axis: {format:".0f", grid: false, tickCount:12, ticks:true }
+      },
+      "y": {
+        "field": "y",
+        "type": "quantitative",
+        scale: {zero:false, nice: false, domain:[-50,50]},
+        //"axis": { "grid": false, values: [0,1], format: '.0f'}
+      },
+      "x2": {
+        "field": "px",
+        "type": "quantitative",
+        scale: {zero:false, nice: false, domain:[-50,50]},
+        //axis: {format:".0f", grid: false, tickCount:12, ticks:true }
+      },
+      "y2": {
+        "field": "py",
+        "type": "quantitative",
+        scale: {zero:false, nice: false, domain:[-50,50]},
+        //"axis": { "grid": false, values: [0,1], format: '.0f'}
+      },
+      color: {value:'white'}
+
+
+      }
+    }]
+})}
+
+starfield_data = calcuvegadata({
+  models: [starfield],//modelname == 'starfield' ? [starfield] : [],
+  spec: starfield_spec,
+  domains: { star_in: _.range(0, 100) },
+  input_cursors: [{speed_in, frame_in, random_seed_in:'hello'}]
+})
+
+
+viewof starfield_viz = embed(starfield_spec, {actions})
+
+{
+  starfield_viz.data("data", starfield_data)/*.resize()*/.run();
+}
+
+{
+  starfield_viz.addSignalListener('star_select', (_, b) => {
+    set(viewof star_in, b.star_in[0])
+    //console.log(b)
+  })
+}
+
+/*
+{
+  leap_year_viz.signal('brush', { x: [2000, 1990+50]}).run();
+}*/
+
+/*
+// no idea why this doesn't work
+htl.html`<button onclick=${() => {leap_year_viz.signal('brush', { x: [2000, 1990+50]}).run()} }>sig</button>`
+htl.html`<button onclick=${() => {leap_year_viz.signal('brush', { year_in: [2000, 1990+50]}).run()} }>sig</button>`*/
+
+mutable starfield_data0 = [] // includes data in spec for when I Open in Vega Editor
+
+htl.html`<button onclick=${() => (mutable starfield_data0 = starfield_data)}>insert data -> vega editor (dev)</button>`
+
+```
+
+:::::
+
+
+::::: {#savings_rec .modeldept}
+
+
+<details open><summary>**inputs ⚙️**</summary>
+
+```{ojs}
+//| panel: input
+
+Inputs.bind(Inputs.range([-1,6], {value:2, label:'actual_interest_rate_co_in', step:1}), viewof actual_interest_rate_co_in)
+```
+
+</details>
+
+👀
+
+*highlight for actual-updates* 🪄
+
+```{ojs}
+//| output: false
+
+{
+  savings_actualator;
+  window.dispatchEvent(new Event('resize'))
+}
+
+
+
+savings_actualator.addSignalListener("y", (_, r) => { // this didn't improve perf a lot vs event listener: nearly every mousemove is a signal change, I suppose
+  //if (observable_world == 0) return;
+  viewof actual_interest_rate_co_in.value = r.year_in[0];
+  viewof actual_interest_rate_co_in.dispatchEvent(new CustomEvent('input'), {bubbles:true});
+}) && 1
+
+
+```
+
+```{ojs}
+//| echo: false
+
+import {calcudata, calcuvizspec} from '@declann/little-calcu-helpers'
+
+
+savings_rec_data = calcudata({
+  models: [savings_rec],
+  input_domains: {year_in:_.range(0,6), actual_interest_rate_co_in: [actual_interest_rate_co_in-1,actual_interest_rate_co_in]},
+  input_cursors: [{annual_payment_in:1000}], 
+  outputs: ['balance','interest','deposits','interest_rate']
+})
+
+{
+  savings_actualator.addEventListener('click', (event, item) => { console.log(item) }) 
+  // difficult for layers?
+}
+
+viewof savings_actualator = embed(
+  {
+  "data": {"name": "data"},
+  width: "container",
+  height: 300,
+  "transform": [
+    {
+      "window": [{"op": "lag", "field": "value", "as": "A_value"}],
+      "groupby": ["formula","year_in"],
+      "sort": [{"field": "actual_interest_rate_co_in"}],
+      "frame": [-1, 0]
+    },
+    {"calculate": "datum.value-datum.A_value", "as": "impact"},
+  ],
+  "encoding": {
+    "y": {"field": "year_in", "type": "nominal", "sort": "ascending"},
+    "color": {"field": "formula", "type": "nominal"},
+    "x": {
+      "field": "formula",
+      "type": "nominal",
+      "axis": {"labelAngle": 0, "orient": "top", "labelLimit": 90}
+    }
+  },
+  layer: [{
+            "params": [{"name": "y", "select": { "type": "point", "on": "mouseover", "nearest": true, "encodings": ["y"], "toggle":false}},
+                 // params for layers not working good !{"name": "formula", "select": { "type": "point", "on": "mouseup, touchup, [mousedown, mouseup] > mousemove", "nearest": true, "encodings": ["x", "y"]}}
+                 ]
+                 ,
+  "mark": {
+    "type": "text",
+    "fontSize": 15,
+    "fontWeight": "bold",
+    "tooltip": false
+  },
+        "transform": [{"filter": `datum.actual_interest_rate_co_in != ${actual_interest_rate_co_in-1}`},
+        //{"calculate": "datum.year_in > datum.actual_interest_rate_co_in", "as": "fut"}
+        ],
+
+  encoding: {
+    "opacity":             {"condition": {"test": "datum.year_in > datum.actual_interest_rate_co_in", "value": 0.5}, "value": 1},
+// {"field": "fut", "type": "nominal", "sort": "descending"},
+        "text": {
+      "field": "value",
+      "type": "quantitative",
+      "format": ",.2f", // I can't do a conditional format here yet
+      "axis": {"format": ",.2f"}
+    },
+
+  }
+  },{
+  "mark": {
+    "type": "text", dx:20, dy: -10,
+    "fontSize": 12,
+    "fontWeight": "bold",//
+    "tooltip": false
+  },
+        "transform": [{"filter": `abs(datum.impact) >= 0.00001 && datum.actual_interest_rate_co_in != ${actual_interest_rate_co_in-1}`}],
+
+  encoding: {
+            "color": {"value": "green", "condition": {"test": "datum.impact < 0", "value": "red"}},
+                "opacity":             {"condition": {"test": "datum.year_in > datum.actual_interest_rate_co_in", "value": 0.5}, "value": 1},
+
+        "text": {
+      "field": "impact",
+      "type": "quantitative",
+      "format": ",.2f",
+      "axis": {"format": ",.2f"}
+    },
+
+  }
+  }],
+  "config": {"legend": {"disable": true}},
+  "datasets": { data: savings_rec_data
+  },
+})
+
+
+
+```
+
+
+
+:::::
+
+
+
+::::: {#fizzbuzz .modeldept}
+
+
+```{ojs}
+//| echo: true
+//| code-summary: "Show the code! (calcuvizspec)"
+
+embed(
+  calcuvizspec({
+    models: [fizzbuzz],
+    input_cursors: [{}],
+    mark: {type: 'text', fontSize:15, fontWeight: 'bold'},
+    encodings: {
+      x: {name: 'formula', type:'nominal', domain: ['fizz','buzz','fizzbuzz'], axis: {labelFontSize: 60}, sort: ['fizzbuzz']},
+      y: {name: 'i_in', type:'nominal', domain: _.range(i_in, i_in+20), grid: true},
+      text: {name: 'value', type: 'nominal'},
+      color: {name: 'value', type: 'nominal', legend:false},
+    },
+    width: 250}))
+
+```
+
+:::::
+
+
+
+::::: {#year_remaining .modeldept}
+
+```{ojs}
+//| echo: false
+//| code-summary: "Show the code! (model calls -> Plot)"
+
+Inputs.bind(Inputs.select(["start of today", "start of tomorrow"], {label:'from'}), viewof timing_in)
+
+md`**${(d3.format('.2%')(year_remaining.fractionLeftInYear({date_in: new Date(), timing_in})))}** of year reamining, or visually:`
+
+Plot.plot({
+  //marginLeft: 90,
+  height:80,
+  //width:5000,
+  color: { legend: true },
+  marks: [    Plot.axisX({anchor: "top"}),
+,Plot.barX(
+    [{sort: 1, status:'remaining',percent:100*year_remaining.fractionLeftInYear({date_in: new Date(), timing_in})},
+    {sort: 0, status:'complete',percent:100*year_remaining.fractionIntoYear({date_in: new Date(), timing_in})
+}]
+,{ x: "percent", fill: "status", sort:'sort' })]
+})
+
+// just to get some width !
+//Inputs.range([0,1], {disabled:true})
+```
+
+Not so sure? Check workings in the calculang model using 'overlay' option!
+
+*Inspired by [@year_remaining](https://twitter.com/year_remaining)*
+
+
+
+
+
+:::::
+
+
+
+<!------------- --->
+
+```{ojs}
+//| output: false
+
+html`
+<style>
+
+.vega-embed {
+  width: 100%;
+  height: 100%;
+}
+  
+  .answer {
+    color: red !important;
+    font-weight: bold;
+    font-size: 1.5em !important;
+    left: 100px !important;
+}
+  .answer .tooltiptext  {
+    border: 2px dashed black;
+  
+  }
+
+  .answer .tooltiptext::after {
+    color: red;
+    border: none;
+  }
+  
+.answer:hover {
+  /*font-size:2em !important;*/
+}
+  
+  body {
+  font-family: system-ui;
+}
+
+pre {
+  line-height: 25px;
+}
+
+.calculang_tooltip {
+  position: relative;
+
+}
+
+.tooltiptext {
+  position: absolute;
+  bottom: calc(100% - 10px);
+  left: anchor(center);
+  transform: translateX(-50%);
+  width: max-content;
+}
+
+.tooltiptext {
+  cursor: zoom-in;
+}
+
+
+.calculang_tooltip.answer .tooltiptext {
+  bottom: 0;
+} 
+
+calculang_tooltip.answer {
+    background-color: lightorange;
+}
+
+
+pre {
+  cursor:default
+}
+  </style>
+`
+
+viewof color = Inputs.text({ label: "color", value: "#0D0" })
+
+import {Tangle} from "@declann/colored-tangle" // todo use https://jsfiddle.net/api/post/library/pure/ ?
+// https://www.redblobgames.com/making-of/draggable/examples.html
+
+```

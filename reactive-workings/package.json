@@ -1,0 +1,24 @@
+{
+  "name": "reactive-workings-gen",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "generate-reactive-workings": "bun run index.ts raycasting2 savings savings-rec starfield fizzbuzz year-remaining > reactive-workings.ojs"
+  },
+  "devDependencies": {
+    "@calculang/calculang-js": "^0.1.0-alpha.6",
+    "@types/bun": "^1.0.3",
+    "@typescript-eslint/eslint-plugin": "^6.19.1",
+    "@typescript-eslint/parser": "^6.19.1",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@babel/standalone": "^7.23.8",
+    "js-yaml": "^4.1.0",
+    "source-map-js": "^1.0.2"
+  }
+}

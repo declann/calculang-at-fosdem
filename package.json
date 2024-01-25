@@ -1,0 +1,20 @@
+{
+  "name": "calculang-at-fosdem",
+  "version": "0.0.1-alpha.0",
+  "description": "",
+  "scripts": {
+    "preview": "quarto preview",
+    "render": "quarto render",
+    "down-gallery-yml": "curl https://calculang.dev/gallery.yml -o ./gallery.yml"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/declann/calculang-at-fosdem.git"
+  },
+  "author": "Declan Naughton",
+  "license": "AGPL-3.0-only",
+  "bugs": {
+    "url": "https://github.com/declann/calculang-at-fosdem/issues"
+  },
+  "homepage": "https://github.com/declann/calculang-at-fosdem#readme"
+}
