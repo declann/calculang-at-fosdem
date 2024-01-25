@@ -3,6 +3,17 @@
 #author: "Declan"
 format:
   dashboard:
+    nav-buttons:
+      - icon: github
+        href: https://github.com/declann/calculang-at-fosdem
+      - text: Slides
+        href: /slides.html
+      - icon: twitter
+        href: https://twitter.com/calculang
+      - icon: mastodon
+        href: https://fosstodon.org/@calculang
+
+    
     code-fold: true
     code-summary: "Show the code"
     orientation: columns

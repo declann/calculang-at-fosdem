@@ -1,5 +1,7 @@
 # calculang-at-fosdem
-prep/pres for fosdem
+prep/pres for fosdem.
+
+This is draft experimental, but feedback is welcome, especially if I linked you to something in particular which should be clearer.
 
 ## to preview
 
