@@ -1,6 +1,3 @@
 /.quarto/
 node_modules
 har.json
-*.html
-*html*
-*files*
