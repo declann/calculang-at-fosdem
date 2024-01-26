@@ -6,3 +6,5 @@ toc: false
 Just a placeholder for slides.
 
 Local overrides ensures the CM renders full DOM for my interactions.
+
+When you are using the overlayed number to navigate, they will run a handler that sets parameters to match the number you clicked. When you click the identifier, it won't change inputs. This is a bug with the overlay - for now, to drill through numbers, click on the numbers.

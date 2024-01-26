@@ -18,6 +18,6 @@
     "href": "slides.html",
     "title": "Slides",
     "section": "",
-    "text": "Just a placeholder for slides.\nLocal overrides ensures the CM renders full DOM for my interactions."
+    "text": "Just a placeholder for slides.\nLocal overrides ensures the CM renders full DOM for my interactions.\nWhen you are using the overlayed number to navigate, they will run a handler that sets parameters to match the number you clicked. When you click the identifier, it won’t change inputs. This is a bug with the overlay - for now, to drill through numbers, click on the numbers."
   }
 ]

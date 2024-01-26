@@ -5,17 +5,17 @@ project:
 
 website:
   title: "calculang-at-fosdem"
-  page-footer:
-    right: "Made with 💓 and [calculang](https://calculang.dev)" # needs updates in other places
-    center: '<a type="button" data-cc="c-settings" class="cc-link">Cookies/analytics preferences</a>'
+  #page-footer:
+  #  right: "Made with 💓 and [calculang](https://calculang.dev)" # needs updates in other places
+  #  center: '<a type="button" data-cc="c-settings" class="cc-link">Cookies/analytics preferences</a>'
   twitter-card: true # creator=@calculang? Update stuff to calculang.dev options?
 
   repo-url: https://github.com/declann/calculang-at-fosdem
-  issue-url: https://github.com/declann/calculang-at-fosdem/issues
-  repo-actions:
-    - edit
-    - source
-    - issue
+  #issue-url: https://github.com/declann/calculang-at-fosdem/issues
+  #repo-actions:
+  #  - edit
+  #  - source
+  #  - issue
 
   
   sidebar:
