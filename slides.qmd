@@ -4,3 +4,5 @@ toc: false
 ---
 
 Just a placeholder for slides.
+
+Local overrides ensures the CM renders full DOM for my interactions.

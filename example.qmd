@@ -289,6 +289,8 @@ formulaDecorations = {
               classList.filter(d => d.includes("calculang_f_")).length
             )
               set(options.formulae_visible, [classList.find(d => d.includes("calculang_f_")).slice("calculang_f_".length)]);
+              /////// causes unnecessary jitter when we already see f document.querySelector('.'+classList.find(d => d.includes("calculang_f_"))).scrollIntoView(scrollIntoViewOpts)
+
 
           }
         }
@@ -367,6 +369,8 @@ calculang_identifier_decorations = {
           mousedown: (e, view) => {
             let classList = [...e.target.classList, ...e.target.parentElement.classList] // very open, be aware of bugs ?!
             if (e.target.classList.contains("calculang_call") || classList.includes("calculang_title")) { // TODO only if the containing formula is visible, I have options.formulae_visible:
+            console.log('HIHIHIEE')
+            //debugger;
               set(options.formulae_visible, [e.target.textContent])
               document.querySelector('.calculang_f_'+e.target.textContent).scrollIntoView(scrollIntoViewOpts)
             }
@@ -375,8 +379,10 @@ calculang_identifier_decorations = {
               //e.target.classList.contains("deposits") ||
               //e.target.parentElement.classList.contains("deposits")
               classList.filter(d => d.includes("calculang_f_")).length
-            )
+            ) {
               set(options.formulae_visible, [classList.find(d => d.includes("calculang_f_")).slice("calculang_f_".length)]);
+              //document.querySelector('.'+classList.find(d => d.includes("calculang_f_"))).scrollIntoView(scrollIntoViewOpts)
+            }
           }
         }
       }
@@ -963,7 +969,7 @@ Inputs.button([
 
 viewof options = Inputs.checkbox(["export consts", "inputs"/*, "lists (todo)"*/], {label: "unhide?", value: ["export consts", "inputs"]})
 
-viewof overlay = Inputs.toggle({ label: "overlay?", value: true })
+viewof overlay = Inputs.toggle({ label: "overlay?", value: false })
 
 //md`---`
 
