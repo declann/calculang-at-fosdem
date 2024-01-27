@@ -1118,16 +1118,17 @@ raycasting222 = aaa[version]
 raycasting_latest = await require(`http://localhost:8080/raycasting/raycasting.js?${refresh}${Date.now()}`);
 raycasting2 = await require(`http://localhost:8080/raycasting/raycasting.js?${refresh}${Date.now()}`);
 
+// hmr versions works but the set for version doesn't work
 
 {
   raycasting_latest;
   mutable aaa = [...mutable aaa, raycasting_latest]
-  set(viewof version, viewof version+1)
+  set(viewof version, viewof version.value+1)
 }
 
 //htl.html`<button onclick=${() => (mutable aaa = [...mutable aaa, raycasting_latest])}>refresh 2</button>`
 
-viewof version = Inputs.range([0,10], {label: 'v', value: 0, step:1})
+viewof version = Inputs.range([-1,10], {label: 'v', value: -1, step:1})
 
 aaa
 
