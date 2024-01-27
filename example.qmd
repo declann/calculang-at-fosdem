@@ -990,7 +990,7 @@ embed = require("vega-embed")
 ```{ojs}
 //| echo: false
 
-scrollIntoViewOpts = ({behaviour:'smooth'})
+scrollIntoViewOpts = { return ({behaviour:'smooth', block:'center'})}
 
 Inputs.button([
   ["expand all", () => set(viewof formulae_visible, formulae_all)],
@@ -1104,7 +1104,7 @@ viewof scene = embed(scene_spec, { renderer: "svg", padding: 0, actions, config:
 
 ```
 
-<details open><summary>🤫</summary>
+<details closed><summary>🤫</summary>
 
 
 ```{ojs}
@@ -1203,10 +1203,10 @@ scene_spec = { return ({
     strokeOpacity: {      condition: { param: "ray_angle_in", value: 1 },
       value: 0.1,
 },
-    strokeWidth: {
+    /*strokeWidth: {
       condition: { param: "ray_angle_in", value: 2 },
       value: 1,
-    },
+    },*/
     color: {
       condition: { param: "ray_angle_in", value: "red" },
       //"datum": {
@@ -1374,6 +1374,8 @@ level.addSignalListener("rvv", (a, b) => {
 
 ```
 
+<details><summary>🗺️</summary>
+
 ```{ojs}
 
 
@@ -1420,6 +1422,7 @@ ray_v_data = _.range(0,raycasting2.rv_hit_step({...c})+0.1).map(step_in => ({
 
 
 ```
+</details>
 
 ```{ojs}
 //| output: false
@@ -1541,7 +1544,7 @@ rays = {return [
           //opacity: {value: 0.4},
           fillOpacity: {value: 0.1},
           stroke: { value: "black" },
-          shape: { value: "square" }
+          shape: { value: "M -0.1 -0.4 L 0.3 -0.7 L 0.2 -0.1 L 0.8 0 L 0.2 0.5 L 0.2 0.9 L -0.1 0.1 L -0.3 0.6 L -0.4 -0.6" }
         },
         update: {
           x: { field: "r_hit_x", scale: "x" },
@@ -1557,7 +1560,7 @@ rays = {return [
   type: 'rule',
   encode: {
     enter: {
-      stroke: { value: "blue" },
+      stroke: { value: "red" },
       strokeWidth: { value: 3 },
       strokeOpacity: { value: 0.5 },
       strokeDash: {value: [8,8]}
@@ -1753,7 +1756,7 @@ ray_h_spec = { return [
           x: { field: "rh_hit_x", scale: "x" },
           y: { field: "rh_hit_y", scale: "y" },
           size: { field: "r_length", scale: "length" },
-          fill: { value: "red" },
+          fill: { value: "orange" },
           //opacity: {value: 0.4},
           fillOpacity: {value: 1},
           stroke: { value: "black" },
@@ -1772,7 +1775,7 @@ ray_h_spec = { return [
   type: 'rule',
   encode: {
     enter: {
-      stroke: { value: "red" },
+      stroke: { value: "orange" },
       strokeWidth: { value: 10 },
       strokeOpacity: { value: 1 },
       //strokeDash: {value: [8,8]}
@@ -1810,7 +1813,7 @@ level_spec = { return ({
   //width: 'container',
   width: 400,
   height: 300,
-  background: '#ddd',
+  background: '#ccc',
   signals: [
     { name: "player_angle_in" },
 
