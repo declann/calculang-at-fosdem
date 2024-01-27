@@ -212,7 +212,6 @@ fizzbuzz = await require(`https://calculang.dev/models/fizzbuzz/fizzbuzz.js`)
 year_remaining = await require(`https://calculang.dev/models/year-remaining/year-remaining.js`)
 starfield = await require(`https://calculang.dev/models/starfield/starfield.js`)
 // UPDATE1 LOAD MODEL USING CORRECT REF
-  raycasting2 = await require(`http://localhost:8080/raycasting/raycasting.js?${refresh}${Date.now()}`);
 
 savings = await require(`https://calculang.dev/models/savings/savings.js`);
 
@@ -1105,7 +1104,7 @@ viewof scene = embed(scene_spec, { renderer: "svg", padding: 0, actions, config:
 
 ```
 
-<details closed><summary>🤫</summary>
+<details open><summary>🤫</summary>
 
 
 ```{ojs}
@@ -1114,7 +1113,20 @@ mutable aaa = [raycasting2]
 
 viewof refresh = Inputs.button("refresh calculang model")
 
-htl.html`<button onclick=${() => (mutable aaa = [...mutable aaa, raycasting2])}>refresh 2</button>`
+raycasting222 = aaa[version]
+
+raycasting_latest = await require(`http://localhost:8080/raycasting/raycasting.js?${refresh}${Date.now()}`);
+raycasting2 = await require(`http://localhost:8080/raycasting/raycasting.js?${refresh}${Date.now()}`);
+
+/*
+{
+  raycasting_latest;
+  mutable aaa = [...mutable aaa, raycasting_latest]
+}*/
+
+htl.html`<button onclick=${() => (mutable aaa = [...mutable aaa, raycasting_latest])}>refresh 2</button>`
+
+viewof version = Inputs.range([0,10], {label: 'v', value: 0, step:1})
 
 aaa
 
