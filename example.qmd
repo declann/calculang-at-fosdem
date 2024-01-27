@@ -1114,7 +1114,7 @@ mutable aaa = [raycasting2]
 
 viewof refresh = Inputs.button("refresh calculang model")
 
-htl.html`<button onclick=${() => (mutable aaa = [...mutable aaa, ({a:2})])}>refresh 2</button>`
+htl.html`<button onclick=${() => (mutable aaa = [...mutable aaa, raycasting2])}>refresh 2</button>`
 
 aaa
 
