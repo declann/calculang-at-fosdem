@@ -46,7 +46,7 @@ viewof keys_stream_version_in = Inputs.input("hi")
 viewof annual_payment_in = Inputs.input(1000)
 viewof duration_in = Inputs.input(5)
 viewof interest_rate_in = Inputs.input(.02)
-viewof year_in = Inputs.input(8)
+viewof year_in = Inputs.input(5)
 viewof i_in = Inputs.input(modelname == 'fizzbuzz' ? 0 : .02) // vs 2 for fizzbuzz!!
 
 viewof date_in = Inputs.input(new Date())
@@ -60,7 +60,7 @@ viewof frame_in = Inputs.input(2)
 viewof random_seed_in = Inputs.input("hello")
 
 // loan bad. i_in problem?
-viewof d_i_in = Inputs.input(99)
+viewof d_i_in = Inputs.input(0.02)
 viewof d_i_year_in = Inputs.input(99)
 viewof missed_repayment_year_in = Inputs.input(-99)
 viewof skip_interest_in = Inputs.input(false)
@@ -78,44 +78,18 @@ viewof width_in = Inputs.input(400)
 // savings-rec
 viewof actual_interest_rate_co_in = Inputs.input(2)
 
-mini_binds_with_tangle = {
-  return ({
-    fisheye_correction_in: Inputs.toggle({label:'🐟👀 correct', value: true}),
-    duration_in: 1 ? Tangle({min: 0, max: 20, label: 'duration_in'}) : 0, //Inputs.range([0,10], {label:'duration', value: 5, step: 1, width:100}),
-    //year_in: Tangle({min: -10, max: 20, label: 'year_in'})
-  year_in: Inputs.range([-1,20], {label:'year', value: 5, step: 1})
-    //year_in: md`year_in: ${year_in}`
-    , annual_payment_in: Tangle({min: 0, max: 20000, label:'annual_payment_in'})
-    , interest_rate_in: Tangle({min: 0, max: 0.1, format: d3.format('.2f'), label:'interest_rate_in'}) // precision how?
-    , actual_interest_rate_co_in: Inputs.range([-1, 20], {label:'actual_interest_rate_co_in'})
-    , f_in: Tangle({min: -1, max: 200, label:'f_in'})
-    //, keys_stream_function_in: md`(keys_stream_function_in)`
-    //, step_in: Tangle({min: -1, max: 20, label:'step_in'})
-    //, x_in: Tangle({min: -1, max: 200, label:'x_in'})
-    //, y_in: Tangle({min: -1, max: 200, label:'y_in'})
-    , player_x_in: Tangle({min: -1, max: 10,format: d3.format('.2f'), label:'player_x_in'})
-    , player_y_in: Tangle({min: -1, max: 10, format: d3.format('.2f'),label:'player_y_in'})
-    , ray_angle_in: Inputs.range([-10,10], {label:'ray_angle_in'})//Tangle({min: -1, max: 10, format: d3.format('.2f'),label:'ray_angle_in'})
-    , i_in: Tangle({min: -10, max: 200, label:'i_in'})
-    , date_in: Inputs.date({label: "date", value: "2024-01-23"})
-    , timing_in: Inputs.select(["start of today", "start of tomorrow"], {label:"timing"})
-    , random_seed_in: Inputs.text({label: 'random seed'})
-    , frame_in: Tangle({min: -1, max: 200, label:'frame_in'})
-    , star_in: Tangle({min: -1, max: 200, label:'star_in'})
-    , speed_in: Tangle({min: -1, max: 20, label:'speed_in'})
-
-  })
-}
 
 mini_binds = {
   return ({
     fisheye_correction_in: Inputs.toggle({label:'🐟👀 correct'}),
     duration_in: Inputs.range([0,20], {label:'duration', step: 1}),
+    term_in: Inputs.select([25, 15, 10, 5, 30, 35, 40, 1, 480], {label: "Term (years)"}),
     year_in: Inputs.range([-1,20], {label:'year', step: 1}),
     annual_payment_in: Inputs.range([0, 20000], {label:'annual_payment_in', step: 100}),
     interest_rate_in: Inputs.range([-0.1, 0.1], {format: d3.format('.2f'), label:'interest_rate_in', step:0.001}) // precision how?
     , actual_interest_rate_co_in: Inputs.range([-1, 20], {label:'actual_interest_rate_co_in', step:1})
     , f_in: Inputs.range([0, 200], {label:'f_in', step:1})
+    , principal_in: Inputs.range([0, 500000], {label:'principal_in', step:1000})
     //, keys_stream_function_in: md`(keys_stream_function_in)`
     //, step_in: Tangle({min: -1, max: 20, label:'step_in'})
     //, x_in: Tangle({min: -1, max: 200, label:'x_in'})
@@ -124,6 +98,8 @@ mini_binds = {
     , player_y_in: Tangle({min: -1, max: 10, format: d3.format('.2f'),label:'player_y_in'})
     , ray_angle_in: Inputs.range([-20,20], {label:'ray_angle_in'})//Tangle({min: -1, max: 10, format: d3.format('.2f'),label:'ray_angle_in'})
     , i_in: modelname == 'fizzbuzz' ? Inputs.range([-10, 200], {label:'i_in', step:1}) : Inputs.range([-0.1, 0.1], {label:'i_in', step:0.001})
+    , d_i_in: Inputs.range([-0.1, 0.1], {label:'Δ i_in', step:0.001})
+    , d_i_year_in: Inputs.range([-1,99], {label:'Δ i_in year', step: 1})
     , step_in: Inputs.range([0, 10], {label:'step_in', step:1})
     , date_in: Inputs.date({label: "date", value: "2024-01-23"})
     , timing_in: Inputs.select(["start of today", "start of tomorrow"])
@@ -156,6 +132,10 @@ Inputs.bind(mini_binds.random_seed_in, viewof random_seed_in)
 Inputs.bind(mini_binds.frame_in, viewof frame_in)
 Inputs.bind(mini_binds.speed_in, viewof speed_in)
 Inputs.bind(mini_binds.star_in, viewof star_in)
+Inputs.bind(mini_binds.principal_in, viewof principal_in)
+Inputs.bind(mini_binds.term_in, viewof term_in)
+Inputs.bind(mini_binds.d_i_in, viewof d_i_in)
+Inputs.bind(mini_binds.d_i_year_in, viewof d_i_year_in)
 
 
 
@@ -821,13 +801,13 @@ viewof editor = CodeMirror(
       //EditorView.decorations.of(Decoration.set(yellow.range(r)))
       /* BUILDING cmCheckboxPluginViewof, // does cul code annotation and navigation, depending on showStripes
       cmOverlayPluginViewof,*/
-      overlay ? overlay_answers : EditorState.readOnly.of(readonly),
-      overlay ? overlay_workings : EditorState.readOnly.of(readonly),
+      overlay ? overlay_answers : EditorState.readOnly.of(true),
+      overlay ? overlay_workings : EditorState.readOnly.of(true),
       formulaDecorations({formulae_visible: viewof formulae_visible}), // https://codemirror.net/examples/zebra/
       /* TODO don't process Import/Exports for now */ calculang_identifier_decorations({formulae_visible: viewof formulae_visible}),
       EditorView.lineWrapping,
-      EditorView.editable.of(readonly),
-      EditorState.readOnly.of(readonly)
+      EditorView.editable.of(true),
+      EditorState.readOnly.of(true)
     ]
   }
 )
@@ -893,6 +873,7 @@ fmt2 = (name, value) => {
   if (name == "v_pow_term_left") return d3.format(",.5f")(value)
   if (name.includes("_hit_object")) return "{..}"//`{x: ${value.x.toFixed(2)}, y: ${value.y.toFixed(2)}, v: ${value.v}, step_in: ${value.step_in}}`
   if (name.includes("_co")) return d3.format(",.0f")(value)
+  if (name.includes("rate") && name.includes("interest")) return d3.format(".3%")(value)
   if (name.includes("rate") || name.includes("percent") || name.includes("fraction")) return d3.format(".2%")(value)
   if ((name.includes("year")) || name.includes("term") || name.includes("duration") || name.includes("frame")) return d3.format(",.0f")(value)
   if (name.includes("object") || typeof value != 'number') return JSON.stringify(value)
@@ -1051,7 +1032,12 @@ overlay_workings = {
 
 fmt = d => (typeof d == 'number') ? (Math.abs(d) < 2 ? d3.format('.2%')(d) : d3.format(fmt_fmt)(d)) : JSON.stringify(d)
 
-embed = require("vega-embed")
+embed_ = require("vega-embed")
+embed = (spec, options) => embed_(spec, {actions, renderer:'svg',...options})
+
+//theme = 'powerbi';
+
+
 
 {
   f_in;
@@ -1068,7 +1054,6 @@ scrollIntoViewOpts = { return ({behaviour:'smooth', block:'center'})}
 Inputs.button([
   ["expand all", () => set(viewof formulae_visible, formulae_all)],
   ["collapse all", () => set(viewof formulae_visible, [])],
-  ["xx", () => {console.log(viewof editor.value)}]
 ])
 
 
@@ -1083,15 +1068,12 @@ viewof cul_js = Inputs.radio(["📝 calculang source 💬", "✨ JS/ESM output �
 
 cul_js_cul = cul_js == "📝 calculang source 💬" ? true : false
 viewof calculang_source_nomemo = Inputs.checkbox(["nomemo"], {value: ["nomemo"], label: 'see memo? 💀', disabled:cul_js=="📝 calculang source 💬"})
-viewof opt = Inputs.toggle({label:'options'})
-viewof readonly = Inputs.toggle({label:'readonly'})
 
 viewof formulae_visible = Inputs.input(["balance", "interest", "deposits"])
 
 viewof fmt_fmt = Inputs.text({value:",.2f", label: 'format'})
 
 viewof actions = Inputs.toggle({label:'vega actions?', value:false})
-
 
 
 
@@ -2602,7 +2584,7 @@ pre {
 
 .tooltiptext {
   position: absolute;
-  bottom: calc(100% - 10px);
+  bottom: calc(100% - 15px);
   left: anchor(center);
   transform: translateX(-50%);
   width: max-content;
