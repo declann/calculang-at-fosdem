@@ -8,7 +8,7 @@ const yaml = require('js-yaml');
 const gallery = await fetch("https://calculang.dev/gallery.yml")
 const babel = require("@babel/standalone") // here I don't need standalone, but why not?
 
-const gallery_text = await gallery.text()
+const gallery_text = await Bun.file("../gallery.yml").text() // await gallery.text()
 
 const gallery_array = yaml.load(gallery_text).flat()
 
@@ -161,7 +161,7 @@ for (const id of positionals.slice(2)) {
 
   const all_functions = Object.values(introspection.cul_functions).filter(d => d.reason == 'definition').map(d => d.name)
 
-  const m = id.replace('-', '_')
+  const m = id.replaceAll('-', '_')
 
   const qualify = (code) => {
     let a = code,
