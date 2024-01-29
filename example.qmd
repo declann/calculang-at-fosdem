@@ -706,7 +706,7 @@ inputs
 inputs.includes("duratiuon_in")
 
 viewof form = Inputs.form(mini_binds, {
-  template: inputs2 => htl.html`${Object.entries(inputs2)/*.filter(([k,v]) => inputs.includes(k))*/.map(([k,v]) => v)}`
+  template: inputs2 => htl.html`${Object.entries(inputs2)/*.filter(([k,v]) => inputs.includes(k))*/.map(([k,v]) => htl.html`<div id="mini-bind-${k}" class="mini-bind">${v}</div>`)}`
 })
 
 {
