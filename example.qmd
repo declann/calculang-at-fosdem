@@ -2532,6 +2532,15 @@ Not so sure? Check workings in the calculang model using 'overlay' option!
 
 ::::: {#simple_loan .modeldept}
 
+⚠️ *The assumptions, methodology and limitations of a model should be carefully considered for any purpose you apply it to. I haven't even listed these here, nor otherwise documented the model fully/clearly.* **Proceed with caution** 🙏
+
+⚠️ *This is not a complete model/narrative and you should not rely on it.*
+
+⚠️ *Not recommended to enter real personal or sensitive details. **Contact me with real-world calculation or model requirements instead.*** 🗣✅
+
+⚠️ *This validator/scenario tool isn't/won't be financial advice etc.*
+
+
 ```{ojs}
 //| echo: false
 //| output: false
@@ -2583,11 +2592,11 @@ loan_spec = { return ({
     },
     {
       "transform": [{"filter": "datum.formula == 'balance'"}],
-      "mark": {"type": "point", "tooltip": true, filled:true, opacity: 1},
+      "mark": {"type": "point", "tooltip": true, filled:true, opacity: 0.7},
       "encoding": {
-        "color": {"value": "red"},
+        "color": {"value": "red", legend: true},
         size: {value: 200},
-        "y": {"field": "value", "type": "quantitative", "title": "balance"}
+        "y": {"field": "value", "type": "quantitative", "title": "balance", zero: true}
       }
     }
   ],
