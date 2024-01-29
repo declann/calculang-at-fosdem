@@ -84,7 +84,7 @@ mini_binds = {
     fisheye_correction_in: Inputs.toggle({label:'🐟👀 correct'}),
     duration_in: Inputs.range([0,20], {label:'duration', step: 1}),
     term_in: Inputs.select([25, 15, 10, 5, 30, 35, 40, 1, 480], {label: "Term (years)"}),
-    year_in: Inputs.range([-1,20], {label:'year', step: 1}),
+    year_in: Inputs.range([-1,40], {label:'year', step: 1}),
     annual_payment_in: Inputs.range([0, 20000], {label:'annual_payment_in', step: 100}),
     interest_rate_in: Inputs.range([-0.1, 0.1], {format: d3.format('.2f'), label:'interest_rate_in', step:0.001}) // precision how?
     , actual_interest_rate_co_in: Inputs.range([-1, 20], {label:'actual_interest_rate_co_in', step:1})
@@ -2495,10 +2495,8 @@ embed(
 ::::: {#year_remaining .modeldept}
 
 ```{ojs}
-//| echo: false
-//| code-summary: "Show the code! (model calls -> Plot)"
-
-Inputs.bind(Inputs.select(["start of today", "start of tomorrow"], {label:'from'}), viewof timing_in)
+//| echo: true
+//| code-summary: "👀"
 
 md`**${(d3.format('.2%')(year_remaining.fractionLeftInYear({date_in: new Date(), timing_in})))}** of year reamining, or visually:`
 
@@ -2528,6 +2526,73 @@ Not so sure? Check workings in the calculang model using 'overlay' option!
 
 
 :::::
+
+
+
+
+::::: {#simple_loan .modeldept}
+
+
+```{ojs}
+//| echo: true
+//| code-summary: "👀"
+
+loan_data = calcudata({
+  models: [simple_loan],
+  input_domains: {year_in:_.range(-1,term_in+0.1)},
+  input_cursors: [{principal_in, i_in, d_i_in, d_i_year_in, term_in}],
+  outputs: ["capital_repayment", "interest_repayment", "balance"],
+  pivot: false
+})
+
+
+loan_spec = { return ({
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  datasets: {'source': [] },
+  //"transform": [{"fold": ["capital_repayment", "interest_repayment", "balance"], "as": ["key", "amount"]} // update
+                //{"calculate": "abs(datum.value)", "as": "abs_value"}
+               // ],
+  "encoding": {
+        "x": {"field": "year_in"},
+        "y": {"field": "value", "type": "quantitative"},
+  },
+  "layer": [
+    {
+      "transform": [{"filter": "datum.formula != 'balance'"}],
+      "mark": {"type": "bar", "tooltip": true},
+      "encoding": {
+        "color": {"field": "formula", "type": "nominal"}
+      }
+    },
+    {
+      "transform": [{"filter": "datum.formula == 'balance'"}],
+      "mark": {"type": "line", "tooltip": true, "point": true},
+      "encoding": {
+        "color": {"value": "red"},
+        "y": {"field": "value", "type": "quantitative", "title": "balance"}
+      }
+    }
+  ],
+  "resolve": {"scale": {"y": "independent"}}
+})}
+
+viewof loan_viz = embed(loan_spec)
+
+{
+  loan_viz.data("source", loan_data).resize().run();
+}
+
+//md`**${(d3.format('.2%')(year_remaining.fractionLeftInYear({date_in: new Date(), timing_in})))}** of year reamining, or visually:`
+
+```
+
+
+
+
+:::::
+
+
 
 
 
