@@ -79,10 +79,10 @@ viewof actual_interest_rate_co_in = Inputs.input(2)
 
 mini_binds = {
   return ({
-    fisheye_correction_in: Inputs.toggle({label:'🐟👀✔ ?', value: true}),
+    fisheye_correction_in: Inputs.toggle({label:'🐟👀 correct', value: true}),
     duration_in: 1 ? Tangle({min: 0, max: 20, label: 'duration_in'}) : 0, //Inputs.range([0,10], {label:'duration', value: 5, step: 1, width:100}),
-    year_in: Tangle({min: -10, max: 20, label: 'year_in'})
-    //year_in: Inputs.range([0,10], {label:'year', value: 5, step: 1, width:100})
+    //year_in: Tangle({min: -10, max: 20, label: 'year_in'})
+  year_in: Inputs.range([-1,20], {label:'year', value: 5, step: 1})
     //year_in: md`year_in: ${year_in}`
     , annual_payment_in: Tangle({min: 0, max: 20000, label:'annual_payment_in'})
     , interest_rate_in: Tangle({min: 0, max: 0.1, format: d3.format('.2f'), label:'interest_rate_in'}) // precision how?
@@ -94,7 +94,7 @@ mini_binds = {
     //, y_in: Tangle({min: -1, max: 200, label:'y_in'})
     , player_x_in: Tangle({min: -1, max: 10,format: d3.format('.2f'), label:'player_x_in'})
     , player_y_in: Tangle({min: -1, max: 10, format: d3.format('.2f'),label:'player_y_in'})
-    //, ray_angle_in: /*Inputs.range([-10,10], {label:'ray_angle_in'})*/Tangle({min: -1, max: 10, format: d3.format('.2f'),label:'ray_angle_in'})
+    , ray_angle_in: Inputs.range([-10,10], {label:'ray_angle_in'})//Tangle({min: -1, max: 10, format: d3.format('.2f'),label:'ray_angle_in'})
     , i_in: Tangle({min: -10, max: 200, label:'i_in'})
     , date_in: Inputs.date({label: "date", value: "2024-01-23"})
     , timing_in: Inputs.select(["start of today", "start of tomorrow"])
@@ -705,15 +705,45 @@ inputs
 
 inputs.includes("duratiuon_in")
 
+
 viewof form = Inputs.form(mini_binds, {
-  template: inputs2 => htl.html`${Object.entries(inputs2)/*.filter(([k,v]) => inputs.includes(k))*/.map(([k,v]) => htl.html`<div id="mini-bind-${k}" class="mini-bind">${v}</div>`)}`
+  template: inputs2 => htl.html`<details id="inputs_details" open><summary>🥛</summary><div class="styled">${Object.entries(inputs2)/*.filter(([k,v]) => inputs.includes(k))*/.map(([k,v]) => htl.html`<div id="mini-bind-${k}" class="mini-bind">${v}`)}`
+  //template: inputs2 => htl.html`${Object.entries(inputs2)/*.filter(([k,v]) => inputs.includes(k))*/.map(([k,v]) => htl.html`<div id="mini-bind-${k}" class="mini-bind styled">${v}`)}`
 })
 
-{
+html`
+<style>
+  #inputs_details {
+      background: #ddd;
+      margin-bottom:0
+      }
+
+  div.styled {
+    text-align: right;
+    column-count: 2;
+  }
+  div.styled label {
+    font-weight: bold;
+  }
+  div.styled label:not(div>label):after {
+    content: ":";
+  }
+  div.mini-bind {
+    display:none;
+  }
+  ${inputs.map(d => `div#mini-bind-${d} {
+    display: block;
+  }`).join('\n\n')}
+</style>
+`
+
+
+
+/*{
   year_in;
   viewof form.value.year_in = year_in;
 viewof     form.dispatchEvent(new Event("input", {bubbles: true}));
-}
+}*/
 
 
 
