@@ -47,7 +47,7 @@ viewof annual_payment_in = Inputs.input(1000)
 viewof duration_in = Inputs.input(5)
 viewof interest_rate_in = Inputs.input(.02)
 viewof year_in = Inputs.input(5)
-viewof i_in = Inputs.input(modelname == 'fizzbuzz' ? 0 : .02) // vs 2 for fizzbuzz!!
+viewof i_in = Inputs.input(modelname == 'fizzbuzz' ? 0 : .04) // vs 2 for fizzbuzz!!
 
 viewof date_in = Inputs.input(new Date())
 viewof timing_in = Inputs.input("start of today")
@@ -65,7 +65,7 @@ viewof d_i_year_in = Inputs.input(99)
 viewof missed_repayment_year_in = Inputs.input(-99)
 viewof skip_interest_in = Inputs.input(false)
 viewof principal_in = Inputs.input(100000)
-viewof term_in = Inputs.input(10)
+viewof term_in = Inputs.input(25)
 
 // snowflakes
 viewof height_in = Inputs.input(200)
@@ -2532,6 +2532,17 @@ Not so sure? Check workings in the calculang model using 'overlay' option!
 
 ::::: {#simple_loan .modeldept}
 
+```{ojs}
+//| echo: false
+//| output: false
+
+
+
+{
+  loan_viz.data("source", loan_data).resize().run();
+}
+
+```
 
 ```{ojs}
 //| echo: true
@@ -2550,9 +2561,6 @@ loan_spec = { return ({
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": "container",
   datasets: {'source': [] },
-  //"transform": [{"fold": ["capital_repayment", "interest_repayment", "balance"], "as": ["key", "amount"]} // update
-                //{"calculate": "abs(datum.value)", "as": "abs_value"}
-               // ],
   "encoding": {
         "x": {"field": "year_in"},
         "y": {"field": "value", "type": "quantitative"},
@@ -2562,14 +2570,23 @@ loan_spec = { return ({
       "transform": [{"filter": "datum.formula != 'balance'"}],
       "mark": {"type": "bar", "tooltip": true},
       "encoding": {
-        "color": {"field": "formula", "type": "nominal"}
+        "color": {"field": "formula", "type": "nominal", legend: {orient: 'top'}}
       }
     },
     {
       "transform": [{"filter": "datum.formula == 'balance'"}],
-      "mark": {"type": "line", "tooltip": true, "point": true},
+      "mark": {"type": "line", "tooltip": true, "point": false},
       "encoding": {
         "color": {"value": "red"},
+        "y": {"field": "value", "type": "quantitative", "title": "balance"}
+      }
+    },
+    {
+      "transform": [{"filter": "datum.formula == 'balance'"}],
+      "mark": {"type": "point", "tooltip": true, filled:true, opacity: 1},
+      "encoding": {
+        "color": {"value": "red"},
+        size: {value: 200},
         "y": {"field": "value", "type": "quantitative", "title": "balance"}
       }
     }
@@ -2578,11 +2595,6 @@ loan_spec = { return ({
 })}
 
 viewof loan_viz = embed(loan_spec)
-
-{
-  loan_viz.data("source", loan_data).resize().run();
-}
-
 //md`**${(d3.format('.2%')(year_remaining.fractionLeftInYear({date_in: new Date(), timing_in})))}** of year reamining, or visually:`
 
 ```
