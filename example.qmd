@@ -204,6 +204,10 @@ span.calculang_call {
   background-color: pink;
 }
 
+.calculang_call.calculang_call_input .tooltiptext {
+  color: #f53 !important;;
+}
+
 .calculang .calculang_title span {
   padding: 3px;
   background: #af54;
@@ -885,7 +889,7 @@ function workings(view) {
         }).range(
           d.loc.start.index +
             d.from.length -
-            2 - Math.floor(d.from.length/2) // this split is wrong for interest_rate for example!
+            0 - Math.floor(d.from.length/2) // this split is wrong for interest_rate for example!
         )
       )
     ]
@@ -1005,7 +1009,7 @@ Inputs.button([
 
 viewof options = Inputs.checkbox(["export consts", "inputs"/*, "lists (todo)"*/], {label: "unhide?", value: ["export consts", "inputs"]})
 
-viewof overlay = Inputs.toggle({ label: "overlay?", value: false })
+viewof overlay = Inputs.toggle({ label: "overlay?", value: true })
 
 //md`---`
 
@@ -2536,7 +2540,7 @@ pre {
 }
 
 .calculang_tooltip {
-  color: red;
+  color: #19f;
   position: relative;
 
 }
