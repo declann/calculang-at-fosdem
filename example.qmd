@@ -1031,6 +1031,8 @@ viewof fmt_fmt = Inputs.text({value:",.2f", label: 'format'})
 viewof actions = Inputs.toggle({label:'vega actions?', value:false})
 
 
+
+
 ```
 </details>
 
@@ -1111,11 +1113,29 @@ viewof scene = embed(scene_spec, { renderer: "svg", padding: 0, actions, config:
 
 
 
-
-
 ```
 
-<details open><summary>🤫</summary>
+```{ojs}
+//| output: false
+
+
+viewof scene_size = Inputs.range([0.1,1], {value:0.5, label: 'size'})
+
+viewof show_ray_steps = Inputs.toggle({label: 'show ray steps?', value: false})
+
+viewof show_ray_h = Inputs.toggle({label: 'show h ray?', value: false})
+viewof show_ray_v = Inputs.toggle({label: 'show v ray?', value: false})
+
+// hmr versions works but the set for version doesn't work
+
+{
+  raycasting_latest;
+  mutable aaa = [...mutable aaa, raycasting_latest]
+  set(viewof version, viewof version.value+1)
+}
+```
+
+<details><summary>🤫</summary>
 
 
 ```{ojs}
@@ -1130,33 +1150,18 @@ raycasting_latest = await require(`http://localhost:8080/raycasting/raycasting.j
 raycasting2 = await require(`http://localhost:8080/raycasting/raycasting.js?${refresh}${Date.now()}`);
 simple_loan = await require(`https://calculang.dev/models/simple-loan/simple-loan.js`);
 
-// hmr versions works but the set for version doesn't work
 
-{
-  raycasting_latest;
-  mutable aaa = [...mutable aaa, raycasting_latest]
-  set(viewof version, viewof version.value+1)
-}
 
 //htl.html`<button onclick=${() => (mutable aaa = [...mutable aaa, raycasting_latest])}>refresh 2</button>`
 
 viewof version = Inputs.range([-1,10], {label: 'v', value: -1, step:1})
 
-aaa
 
-
-htl.html`<button onclick=${() => (mutable scene_data0 = scene_data)}>insert data -> vega editor (dev)</button>`
+//htl.html`<button onclick=${() => (mutable scene_data0 = scene_data)}>insert data -> vega editor (dev)</button>`
 
 viewof guides = Inputs.toggle({ label: "guides", value: false })
 
 //viewof model_x = Inputs.range([0,10], {step:1, label: 'model version'})
-
-viewof scene_size = Inputs.range([0.1,1], {value:0.5, label: 'size'})
-
-viewof show_ray_steps = Inputs.toggle({label: 'show ray steps?', value: false})
-
-viewof show_ray_h = Inputs.toggle({label: 'show h ray?', value: false})
-viewof show_ray_v = Inputs.toggle({label: 'show v ray?', value: false})
 
 
 
@@ -1316,7 +1321,7 @@ scene_data = calcuvegadata({
   spec: ({...scene_spec, a: {field: 'r_hit_v', b: {field:'r_hit_h_or_v'}}}),
   domains: {
     //step_in: _.range(0, 8.1, 1),
-    ray_angle_in: _.range(-1 / 2, 1.01 / 2, 0.01).map((d) => d + player_angle_in) //[ray_angle_in, ray_angle_in + 0.4, ray_angle_in - 0.4]
+    ray_angle_in: _.range(-1 / 2, 1.01 / 2, 0.01/2).map((d) => d + player_angle_in) //[ray_angle_in, ray_angle_in + 0.4, ray_angle_in - 0.4]
   },
   input_cursors: [
     {
@@ -1900,6 +1905,7 @@ level_spec = { return ({
           y: { signal: "datum.rhy-0.05*0", scale: "y" },
           size: { value: 600 },
           //fill: { value: "red" },
+          angle: {value: 45},
           shape: { value: "cross" },
           stroke: { value: "black"},
           strokeWidth: {value: 2},
