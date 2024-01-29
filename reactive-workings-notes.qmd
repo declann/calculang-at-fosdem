@@ -1,0 +1,37 @@
+---
+title: "Reactive workings"
+toc: false
+---
+
+## calculang compilation & introspection
+
+The calculang compiler does 2 jobs to convert calculang code into valid Javascript:
+
+- determine and populate inputs in calls and in function definitions (input inference)
+- import appropriate function definitions to implement calculangs function precedence (parent-defined functions take precedence)
+
+These language features are intended to make functions that are flexible.
+
+### introspection info and source maps
+
+As the compiler manipulates calculang functions and calls, it also outputs a JSON file (`.introspection.json`) which provides information about calculang scopes, calculang functions and their determined inputs, and calls - including source code references.
+
+Combined with source maps - also output by the compiler - and given purity and separation then we can develop tools to interact with numbers and their workings including calculating them in real time or "reactively".
+
+### reactive workings
+
+In [reactive workings folder](https://github.com/declann/calculang-at-fosdem/tree/main/reactive-workings) I output OJS to determine values used by reactive workings overlay.
+
+Through CodeMirror plugins and introspection info, I display these values beside calls.
+
+Through OJS reactive runtime, they update and coordinate on numerous interactions in the page.
+
+This is a bit like instrumentation, except without manipulation of the original code as they are a new execution which is ok due to purity (note that if using memoization it will be an extremely cheap "new execution" to look at workings).
+
+Everything here is a little hurried, hacky and draft - developed as a demo of bringing the above together to make a tool - but OJS reactivity does hold together and will probably land for all examples on calculang.dev - feedback and improvements welcome!
+
+To facilitate developing **different tools** it may help if I cleanup different pieces in `reactive-workings` or consider a more convenient API. Interested in suggestions and definitely reach out with usecases.
+
+### coordination
+
+A lot of the coordination between visuals and formulas is defined in cells that you can find by searching `set(viewof formulae_visible` to select formulae, though I also manipulate inputs from the visual size. Although manual coded, through formulas mapped directly to visual channels I think there may be a more uniform approach for certain cases.
