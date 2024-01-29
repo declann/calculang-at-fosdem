@@ -47,7 +47,8 @@ viewof annual_payment_in = Inputs.input(1000)
 viewof duration_in = Inputs.input(5)
 viewof interest_rate_in = Inputs.input(.02)
 viewof year_in = Inputs.input(8)
-viewof i_in = Inputs.input(.02) // vs 2 for fizzbuzz!!
+viewof i_in = Inputs.input(modelname == 'fizzbuzz' ? 0 : .02) // vs 2 for fizzbuzz!!
+
 viewof date_in = Inputs.input(new Date())
 viewof timing_in = Inputs.input("start of today")
 
@@ -97,7 +98,7 @@ mini_binds_with_tangle = {
     , ray_angle_in: Inputs.range([-10,10], {label:'ray_angle_in'})//Tangle({min: -1, max: 10, format: d3.format('.2f'),label:'ray_angle_in'})
     , i_in: Tangle({min: -10, max: 200, label:'i_in'})
     , date_in: Inputs.date({label: "date", value: "2024-01-23"})
-    , timing_in: Inputs.select(["start of today", "start of tomorrow"])
+    , timing_in: Inputs.select(["start of today", "start of tomorrow"], {label:"timing"})
     , random_seed_in: Inputs.text({label: 'random seed'})
     , frame_in: Tangle({min: -1, max: 200, label:'frame_in'})
     , star_in: Tangle({min: -1, max: 200, label:'star_in'})
@@ -122,7 +123,8 @@ mini_binds = {
     , player_x_in: Tangle({min: -1, max: 10,format: d3.format('.2f'), label:'player_x_in'})
     , player_y_in: Tangle({min: -1, max: 10, format: d3.format('.2f'),label:'player_y_in'})
     , ray_angle_in: Inputs.range([-20,20], {label:'ray_angle_in'})//Tangle({min: -1, max: 10, format: d3.format('.2f'),label:'ray_angle_in'})
-    , i_in: Inputs.range([-10, 200], {label:'i_in', step:1})
+    , i_in: modelname == 'fizzbuzz' ? Inputs.range([-10, 200], {label:'i_in', step:1}) : Inputs.range([-0.1, 0.1], {label:'i_in', step:0.001})
+    , step_in: Inputs.range([0, 10], {label:'step_in', step:1})
     , date_in: Inputs.date({label: "date", value: "2024-01-23"})
     , timing_in: Inputs.select(["start of today", "start of tomorrow"])
     , random_seed_in: Inputs.text({label: 'random seed'})
@@ -2355,17 +2357,6 @@ htl.html`<button onclick=${() => (mutable starfield_data0 = starfield_data)}>ins
 
 ::::: {#savings_rec .modeldept}
 
-
-<details open><summary>**inputs ⚙️**</summary>
-
-```{ojs}
-//| panel: input
-
-Inputs.bind(Inputs.range([-1,6], {value:2, label:'actual_interest_rate_co_in', step:1}), viewof actual_interest_rate_co_in)
-```
-
-</details>
-
 👀
 
 *highlight for actual-updates* 🪄
@@ -2398,7 +2389,7 @@ import {calcudata, calcuvizspec} from '@declann/little-calcu-helpers'
 savings_rec_data = calcudata({
   models: [savings_rec],
   input_domains: {year_in:_.range(0,6), actual_interest_rate_co_in: [actual_interest_rate_co_in-1,actual_interest_rate_co_in]},
-  input_cursors: [{annual_payment_in:1000}], 
+  input_cursors: [{annual_payment_in}], 
   outputs: ['balance','interest','deposits','interest_rate']
 })
 
