@@ -428,7 +428,7 @@ calculang_identifier_decorations = {
           },
           mousedown: (e, view) => {
             let classList = [...e.target.classList, ...e.target.parentElement.classList] // very open, be aware of bugs ?!
-                        let c = classList.filter(d => d.includes("calculang_call_"))
+                        let c = classList.filter(d => d.includes("calculang_call_") && d != "calculang_call_input")
             let cc= 'badvalue';
             if (c.length) cc = c[0].slice("calculang_call_".length)
 
@@ -962,24 +962,7 @@ overlay_workings = {
       }
     },
     {
-      decorations: (v) => v.decorations,
-
-      eventHandlers: {
-        mousedown: (e, view) => {
-          console.log("HELLO222");
-
-          let target = e.target;
-
-          console.log("FDSAFSAD", e.target.classList);
-          if (
-            1 || // DN
-            (target.nodeName == "INPUT" &&
-              target.parentElement /*! I removed this bang*/.classList
-                .contains("cm-boolean-toggle"))
-          )
-            1;//return toggleBoolean(view, view.posAtDOM(target));
-        }
-      }
+      decorations: (v) => v.decorations
     }
   );
 
