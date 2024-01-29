@@ -1,0 +1,307 @@
+- category: Finance 💵🔍
+  description: calculang aims have applications in finance, where transparency and understanding about numbers is essential for decision-making. # nice to be able to emphasize "transparency and understanding"
+  tiles:
+
+    - title: Savings Calculator 🪙🪙
+      subtitle: makes estimates for a savings balance
+      entrypoint: /models/savings/savings.cul.js
+      id: savings # used in URL, must be unique across tiles under all categories
+      modular: false
+      thumbnail: thumbnails/savings-calculator.png
+
+    - title: Savings Actual-ator 🔃
+      subtitle: tracks updates to actual balances and future estimates
+      entrypoint: /models/savings/savings-rec.cul.js
+      id: savings-rec
+      modular: true
+      thumbnail: thumbnails/savings-actualator.png
+
+    - title: SaaS Cashflows 💵🌊
+      subtitle: Modelling a SaaS business cashflows
+      entrypoint: https://cdn.jsdelivr.net/gh/declann/calculang-miscellaneous-models@main/models/cashflows/simple-cfs.cul.js
+      id: saas-cashflows # used in URL, must be unique across tiles under all categories
+      modular: false
+      thumbnail: thumbnails/saas-cashflows.png
+
+
+    - title: Loan Checker 🕵️
+      disabled: false
+      subtitle: to scenario-out and validate loans and mortgages 🏡
+      entrypoint: /models/simple-loan/simple-loan.cul.js
+      id: simple-loan
+      modular: false
+      thumbnail: thumbnails/loan-validator.png
+
+    - title: Pension Calculator 🚧🧓
+      disabled: false
+      subtitle: "🚧 & ⚠️ Not checked and Not financial advice"
+      entrypoint: /models/taxes-pensions/pension-calculator.cul.js
+      id: pension-calculator
+      modular: true 
+      wip: true
+      thumbnail: thumbnails/pension-calculator.png
+
+    - title: Monte Carlo Pension Calculator 🚧🧓
+      disabled: true
+      subtitle: "🚧 & ⚠️ Not checked and Not financial advice"
+      entrypoint: /models/taxes-pensions/monte-carlo-pension-calculator.cul.js
+      id: monte-carlo-pension-calculator
+      modular: true 
+      wip: true
+      thumbnail: thumbnails/pension-calculator.png
+
+- category: Interactive Simulations 🕹️ # why label these interactive if other things also interactive ? split into diff. categories?
+  description: Simulations help us to understand and solve real-world problems. (or just play games!)
+  tiles:
+
+  - title: Sunsets 🌞
+    subtitle: with maths, for any time and place 🌞🌎
+    entrypoint: https://calcy-quarty-vizys-online.pages.dev/models/heavens/sunsets.cul.js
+    id: sunsets
+    modular: false
+    thumbnail: thumbnails/sunsets.gif
+
+  - title: Raycasting 3d worlds 🔫
+    subtitle: Rendering a 3d world, to a bar chart! 📊
+    entrypoint: /models/raycasting/raycasting.cul.js
+    id: raycasting
+    modular: false
+    thumbnail: thumbnails/raycasting.gif
+
+  - title: Raycasting 3d worlds 🔫 v2
+    disabled: true
+    subtitle: Rendering a 3d world, to a bar chart! 📊
+    entrypoint: http://localhost:8080/raycasting/raycasting.cul.js
+    id: raycasting2
+    modular: false
+    thumbnail: thumbnails/raycasting.gif
+
+  - title: Raycasting 3d worlds 🔫 Playable!
+    disabled: true
+    subtitle: Rendering a 3d world, to a bar chart! 📊
+    entrypoint: /models/raycasting/raycasting-playable.cul.js
+    id: raycasting-playable
+    modular: true
+    thumbnail: thumbnails/raycasting.gif
+
+  - title: Projectiles 🪨
+    subtitle: interaction, with relativity
+    entrypoint: /models/projectile/projectile.cul.js
+    id: projectile
+    modular: false
+    thumbnail: thumbnails/projectile.gif
+
+  #- title: 🚧 Space Lander
+  #  subtitle: 
+  #  entrypoint: http://localhost:8080/space-lander/lander.cul.js
+  #  id: space-lander
+  #  modular: false 
+  #  wip: true
+  #  thumbnail: /logo4-opacity.svg
+    
+  - title: Simple Climate 🌍🌡️
+    disabled: false
+    subtitle: Over-simplified 🚧 climate model, with you-draw-it emissions pathways
+    entrypoint: /models/climate/simple-climate.cul.js
+    id: simple-climate
+    modular: false
+    thumbnail: thumbnails/simple-climate.gif
+    
+  - title: 🚧 Spinning Donuts 🍩💫
+    disabled: true
+    subtitle: Transforming circles into spinning donuts 💫
+    entrypoint: https://calcy-quarty-vizys-online.pages.dev/models/donut/donut.cul.js
+    id: donut
+    modular: false
+    thumbnail: /logo4-opacity.svg
+
+    
+  - title: Raymarching
+    disabled: true
+    subtitle: Raymarching 3d engine in collab. Yaroslav Sergienko
+    entrypoint: /models/raymarching/raymarching.cul.js
+    id: raymarching
+    modular: true
+    thumbnail: thumbnails/raymarching.png
+
+  #- title: 🚧 Spinning Donuts II 🍩💫
+    #subtitle: Transforming circles into spinning donuts 💫 ASCII/heatmap version ⌨🔥
+    #entrypoint: https://calcy-quarty-vizys-online.pages.dev/models/donut/donut.cul.js 
+    #id: donut
+    #modular: true
+    #thumbnail: /logo4-opacity.svg
+
+
+- category: Maths Art 🖌️
+  description: 🎨
+  tiles:
+
+  - title: Starfield 🌠🌌
+    subtitle: 
+    entrypoint: /models/starfield/starfield.cul.js
+    id: starfield
+    modular: false
+    disabled: true
+    thumbnail: thumbnails/starfield.png
+
+  - title: Heart Contours 💗
+    subtitle: plot of a 3d heart surface mathematical formula!
+    entrypoint: https://calcy-quarty-vizys-online.pages.dev/models/heart/heart-contour.cul.js
+    id: heart-contour
+    modular: false
+    thumbnail: thumbnails/heart-contour.png
+
+  - title: Ferny Maths 🌿
+    subtitle: Ferns with maths and calculang 🌿
+    entrypoint: https://cdn.jsdelivr.net/gh/declann/calculang-miscellaneous-models@main/models/fern/fern.cul.js
+    id: fern
+    modular: false
+    thumbnail: thumbnails/fern.png
+
+  - title: Function from Copacabana 🎶🏖🌊
+    disabled: true
+    subtitle: ..Ah!
+    entrypoint: /models/maths-art/copacabana/copacabana.cul.js
+    id: copacabana
+    modular: false
+    thumbnail: thumbnails/copacabana.png
+
+  - title: Function from São Paulo 🌇🎨
+    subtitle: São Paulos "padrão", or favorite pavement pattern!
+    entrypoint: /models/maths-art/sao-paulo-padrao/skew-transform.cul.js
+    id: sp-padrao
+    modular: true
+    thumbnail: thumbnails/sp-padrao.png
+
+  - title: Flower 🌸
+    subtitle: based on 🖼️ by Inigo Quilez
+    entrypoint: /models/maths-art/flower/flower.cul.js
+    id: flower
+    modular: false
+    thumbnail: thumbnails/flower.png
+
+  - title: Falling Snowflakes ❄️
+    subtitle: "☃️"
+    entrypoint: /models/snowflakes/snowflakes.cul.js
+    id: snowflakes
+    modular: true
+    thumbnail: thumbnails/snowflakes.gif
+
+    # add SP padrao when it's modular https://observablehq.com/@declann/function-from-sao-paulo?collection=@declann/calculang
+
+- category: Shop Modelling 🛒
+  description: Simplified buy/sell models just to show some things about calculang.
+  tiles:
+
+  - title: Shop Modelling
+    subtitle: buy low sell high = 📈
+    entrypoint: /models/shop.cul.js
+    id: shop
+    modular: false
+    thumbnail: thumbnails/shop.png
+    
+  - title: Shop Model Demand Curve I
+    subtitle: allowing for a demand curve 📈📉
+    entrypoint: /models/shop-demand-curve.cul.js
+    id: shop-demand-curve
+    modular: false
+    thumbnail: thumbnails/shop-demand-curve.png
+    
+  - title: Shop Model Demand Curve II
+    subtitle: a modular/flexible approach ♻️
+    entrypoint: /models/shop-demand-curve-modular.cul.js
+    id: shop-demand-curve-modular
+    modular: true
+    thumbnail: thumbnails/shop-demand-curve-modular.png
+
+    
+  - title: Shop Stressed Sales
+    disabled: false
+    subtitle: Redefining a formula in terms of itself; but separate. ♻️
+    entrypoint: /models/shop-stressed-sales.cul.js
+    id: shop-stressed-sales
+    modular: true
+    thumbnail: thumbnails/shop-stressed-sales.png
+
+- category: Other
+  tiles:
+
+  - title: Fizz Buzz
+    subtitle: Look ma, no loops!
+    entrypoint: /models/fizzbuzz/fizzbuzz.cul.js
+    id: fizzbuzz
+    modular: false
+    thumbnail: thumbnails/fizzbuzz.png
+
+  - title: Maze Money 🕸💰
+    subtitle: A dynamic programming puzzle
+    entrypoint: /models/dynamic-programming/maze/maze.cul.js
+    id: maze
+    modular: false
+    thumbnail: thumbnails/maze.png
+
+  - title: Leap Year Calculator ⌚
+    disabled: false
+    subtitle: Is it a leap year?
+    entrypoint: /models/leap-year/is-leap-year.cul.js
+    id: leap-year
+    modular: false
+    thumbnail: thumbnails/leap-year.png
+
+  - title: Year Remaining 🕒
+    subtitle: How much year is remaining?
+    entrypoint: /models/year-remaining/year-remaining.cul.js
+    id: year-remaining
+    modular: false 
+    wip: true
+    thumbnail: thumbnails/year-remaining.png
+
+  - title: 🚧 Cash for Clunkers
+    disabled: true
+    subtitle: ""# https://gist.github.com/aled1027/8f5d7e188394d15962fc70009e5b9f44
+    entrypoint: 
+    id: cash-for-clunkers
+    modular: false 
+    wip: true
+    thumbnail: /logo4-opacity.svg
+
+    # Zapis?
+
+#- category: Taxes & Pensions
+ # tiles:
+
+  - title: 🚧 payroll
+    disabled: true
+    subtitle: ""
+    #entrypoint: /models/taxes-pensions/impact-simple.cul.js
+    id: payroll
+    modular: false
+    thumbnail: /logo4-opacity.svg
+
+  - title: 🚧 tax-revenues-impact-simple
+    disabled: true
+    subtitle: ""
+    entrypoint: /models/taxes-pensions/impact-simple.cul.js
+    id: tax-revenues-impact-simple
+    modular: true
+    thumbnail: /logo4-opacity.svg
+
+    # override with link to GH and devtools link?
+  - title: You 👉 be the finance minister 🎩
+    subtitle: Tweak income tax policy and revenues in ROI ☘💰
+    entrypoint: /models/taxes-pensions/impact.cul.js
+    id: tax-revenues-impact
+    modular: true
+    thumbnail: thumbnails/finance-minister.jpg
+
+
+# - category: Other
+#   description: these applications are hosted elsewhere for now - maybe they are slightly more elaborate or I haven't integrated them here yet. But you can still check the calculang structure/formulae in dev tools links
+#   tiles:
+
+#     - title: Hearty maths ❤️
+#       subtitle: my first blog post on [CalcWithDec.dev](https://calcwithdec.dev)
+#       href: https://calcwithdec.dev/posts/hearty-maths/
+#       #code: https://github.com/quarto-dev/quarto-gallery/blob/main/page-layout/tufte.qmd
+#       thumbnail: thumbnails/heart-contoufffr.png
+
