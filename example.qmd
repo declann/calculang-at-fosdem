@@ -1165,21 +1165,23 @@ viewof keys_stream = { // https://observablehq.com/d/867e1424e1d093ab
   return e;
 }
 
-viewof scene = embed(scene_spec, { renderer: "svg", padding: 0, actions, config: { autosize: 'fit-y' }})
-/*viewof scene2 = embed({...scene_spec, encoding: {...scene_spec.encoding, color: {
-      //condition: { param: "ray_angle_in", value: "blue" },
-      field: "r_hit_h_or_v",
-      type: "ordinal",
-      legend: guides
-    }}}, { renderer: "svg", padding: 0, actions, config: { autosize: 'fit-y' }})*/
-
-/*Inputs.bind(Inputs.text({
-  label: "keys_stream_version_in",
-  value: "abc",
-  length: 200
-}), viewof keys_stream_version_in)*/
+viewof scene = embed(scene_spec, { renderer: "svg", padding: 0, actions, config: { autosize: 'fit-y' },
+patch: s => {s.signals.push({
+  
+    name: "doubleclick",
+    value: 0,
+      "on": [{"events": "dblclick", "update": "datum"}]
+  
+});
+ return s}
+})
 
 
+  {
+    scene.addSignalListener('doubleclick', _ => {
+      set(viewof overlay, true)
+    })
+  }
 
 
 ```
@@ -2425,12 +2427,12 @@ viewof savings_actualator = embed(
     {"calculate": "datum.value-datum.A_value", "as": "impact"},
   ],
   "encoding": {
-    "y": {"field": "year_in", "type": "nominal", "sort": "ascending"},
+    "y": {"field": "year_in", "type": "nominal", "sort": "ascending", axis: {labelFontSize: 30}},
     "color": {"field": "formula", "type": "nominal"},
     "x": {
       "field": "formula",
       "type": "nominal",
-      "axis": {"labelAngle": 0, "orient": "top", "labelLimit": 90}
+      "axis": {"labelAngle": 0, "orient": "top", "labelLimit": 90, title:null, "labelLimit": 300, labelFontSize: 30}
     }
   },
   layer: [{
@@ -2440,7 +2442,7 @@ viewof savings_actualator = embed(
                  ,
   "mark": {
     "type": "text",
-    "fontSize": 15,
+    "fontSize": 30,
     "fontWeight": "bold",
     "tooltip": false
   },

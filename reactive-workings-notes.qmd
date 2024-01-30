@@ -3,6 +3,8 @@ title: "Reactive workings"
 toc: false
 ---
 
+*Note: Interactivity between visuals and formulas is pretty selective - currently it's a manual (though quick) thing that I implemented for specific needs for presentation.*
+
 ## calculang compilation & introspection
 
 The calculang compiler does 2 jobs to convert calculang code into valid Javascript:
