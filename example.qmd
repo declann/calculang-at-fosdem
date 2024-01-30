@@ -35,7 +35,7 @@ format:
 // raycasting
 viewof player_x_in = Inputs.input(1.7)
 viewof player_y_in = Inputs.input(5.5)
-viewof ray_angle_in = Inputs.input(null)
+viewof ray_angle_in = Inputs.input(999)
 viewof fisheye_correction_in = Inputs.input(true)
 viewof step_in = Inputs.input(3)
 viewof x_in = Inputs.input(3.5)
@@ -107,7 +107,7 @@ mini_binds = {
     //, y_in: Tangle({min: -1, max: 200, label:'y_in'})
     , player_x_in: Tangle({min: -1, max: 10,format: d3.format('.2f'), label:'player_x_in'})
     , player_y_in: Tangle({min: -1, max: 10, format: d3.format('.2f'),label:'player_y_in'})
-    , ray_angle_in: Inputs.range([-20,20], {label:'ray_angle_in'})//Tangle({min: -1, max: 10, format: d3.format('.2f'),label:'ray_angle_in'})
+    // off to check perf impact, ray_angle_in: Inputs.range([-20,20], {label:'ray_angle_in'})//Tangle({min: -1, max: 10, format: d3.format('.2f'),label:'ray_angle_in'})
     , i_in: modelname == 'fizzbuzz' ? Inputs.range([-10, 200], {label:'i_in', step:1}) : Inputs.range([-0.1, 0.1], {label:'i_in', step:0.001})
     , d_i_in: Inputs.range([-0.1, 0.1], {label:'Δ i_in', step:0.001})
     , d_i_year_in: Inputs.range([-1,99], {label:'Δ i_in year', step: 1})
@@ -727,7 +727,7 @@ md`${example_details.modular ? '♻️' : ''} *${example_details.subtitle}*`
 viewof cul_scope_id = Inputs.range([0,15], {label: 'cul scope id', value:0, step:1})
 
 viewof form = Inputs.form(mini_binds, {
-  template: inputs2 => htl.html`<details id="inputs_details" open><summary>🥛</summary><div class="styled">${Object.entries(inputs2)/*.filter(([k,v]) => inputs.includes(k))*/.map(([k,v]) => htl.html`<div id="mini-bind-${k}" class="mini-bind">${v}`)}`
+  template: inputs2 => htl.html`<details id="inputs_details" open><summary>inputs ⚙️</summary><div class="styled">${Object.entries(inputs2)/*.filter(([k,v]) => inputs.includes(k))*/.map(([k,v]) => htl.html`<div id="mini-bind-${k}" class="mini-bind">${v}`)}`
   //template: inputs2 => htl.html`${Object.entries(inputs2)/*.filter(([k,v]) => inputs.includes(k))*/.map(([k,v]) => htl.html`<div id="mini-bind-${k}" class="mini-bind styled">${v}`)}`
 })
 
@@ -1084,7 +1084,7 @@ Inputs.button([
 
 viewof options = Inputs.checkbox(["export consts", "inputs"/*, "lists (todo)"*/], {label: "unhide?", value: ["export consts", "inputs"]})
 
-viewof overlay = Inputs.toggle({ label: "overlay?", value: true })
+viewof overlay = Inputs.toggle({ label: "overlay?", value: false })
 
 //md`---`
 
@@ -1094,7 +1094,7 @@ viewof cul_js = Inputs.radio(["📝 calculang source 💬", "✨ JS/ESM output �
 cul_js_cul = cul_js == "📝 calculang source 💬" ? true : false
 viewof calculang_source_nomemo = Inputs.checkbox(["nomemo"], {value: ["nomemo"], label: 'see memo? 💀', disabled:cul_js=="📝 calculang source 💬"})
 
-viewof formulae_visible = Inputs.input(modelname == 'savings' ? ["balance", "interest", "deposits"] : modelname == 'fizzbuzz' ? formulae_all : [])
+viewof formulae_visible = Inputs.input(formulae_all)// modelname == 'savings' ? ["balance", "interest", "deposits"] : modelname == 'fizzbuzz' ? formulae_all : [])
 
 viewof fmt_fmt = Inputs.text({value:",.2f", label: 'format'})
 
@@ -1232,7 +1232,7 @@ viewof guides = Inputs.toggle({ label: "guides", value: false })
 
 //viewof model_x = Inputs.range([0,10], {step:1, label: 'model version'})
 
-
+viewof ray_angle_step_size = Inputs.select([0.02,0.01,0.005], {label: 'ray angle step size'})
 
 ```
 </details>
@@ -1390,7 +1390,7 @@ scene_data = calcuvegadata({
   spec: ({...scene_spec, a: {field: 'r_hit_v', b: {field:'r_hit_h_or_v'}}}),
   domains: {
     //step_in: _.range(0, 8.1, 1),
-    ray_angle_in: _.range(-1 / 2, 1.01 / 2, 0.01/2).map((d) => d + player_angle_in) //[ray_angle_in, ray_angle_in + 0.4, ray_angle_in - 0.4]
+    ray_angle_in: _.range(-1 / 2, 1.01 / 2, ray_angle_step_size).map((d) => d + player_angle_in) //[ray_angle_in, ray_angle_in + 0.4, ray_angle_in - 0.4]
   },
   input_cursors: [
     {
@@ -2060,11 +2060,16 @@ savings_spec = { return ({
   width: 'container', height: 350,
   "data": {"name": "source"},
   datasets: {'source': savings_data0 },
-  mark: { type: 'text', fontSize: 20, tooltip: true},
+  mark: { type: 'text', fontSize: 20, tooltip: true, "fontWeight": "bold"},
+
   encoding: {
-    x: {field: 'formula'},
-    color: {field: 'formula', legend: false},
-    y: {field: 'year_in'},
+    "x": {
+      "field": "formula",
+      "type": "nominal",
+      "axis": {"labelAngle": 0, "orient": "top", title:null, "labelLimit": 300, labelFontSize: 30}
+    },
+        color: {field: 'formula', legend: false},
+    y: {field: 'year_in', axis: {titleFontSize:20, labelFontSize: 30, }},
     text: {field: 'value'/*, format:',.2f'*/}
   },
 
