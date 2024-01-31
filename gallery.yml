@@ -68,9 +68,9 @@
     modular: false
     thumbnail: thumbnails/raycasting.gif
 
-  - title: Raycasting 3d worlds 🔫 v2
-    disabled: true
-    subtitle: Rendering a 3d world, to a bar chart! 📊
+  - title: Bars 📊
+    disabled: false
+    subtitle: Bar chart of a formula
     entrypoint: http://localhost:8080/raycasting/raycasting.cul.js
     id: raycasting2
     modular: false

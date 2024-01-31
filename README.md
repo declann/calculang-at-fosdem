@@ -7,6 +7,14 @@ This is draft experimental, but feedback is welcome, especially if I linked you 
 
 Clone then run `quarto preview`.
 
+## to compile/hot reload raycasting model
+
+`npm install`
+
+`npm link` **dev branch of calculang `@calculang/calculang-js`**. (I need to make a new release to npm)
+
+Then `npm run raycasting:compile` to compile and use refresh button.
+
 ## reactive workings
 
 This site uses 'reactive workings' or an optional overlay of workings on top of calculang code.
