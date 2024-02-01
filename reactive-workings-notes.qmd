@@ -1,6 +1,7 @@
 ---
 title: "Reactive workings"
 toc: false
+format: html
 ---
 
 *Note: Interactivity between visuals and formulas is pretty selective - currently it's a manual (though quick) thing that I implemented for specific needs for presentation.*

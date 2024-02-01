@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>calculang-at-fosdem - Reactive workings</title>
+<title>calculang-at-fosdem - Privacy Policy</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -103,7 +103,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href="./resources/cookieconsent-2.9.1/dist/cookieconsent.css" media="print" onload="this.media='all'">
 
 
-<meta name="twitter:title" content="calculang-at-fosdem - Reactive workings">
+<meta name="twitter:title" content="calculang-at-fosdem - Privacy Policy">
 <meta name="twitter:description" content="">
 <meta name="twitter:card" content="summary">
 </head>
@@ -121,7 +121,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Reactive workings</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title">Privacy Policy</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 </div>
 
 
@@ -138,44 +138,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p><em>Note: Interactivity between visuals and formulas is pretty selective - currently it’s a manual (though quick) thing that I implemented for specific needs for presentation.</em></p>
-<section id="calculang-compilation-introspection" class="level2">
-<h2 class="anchored" data-anchor-id="calculang-compilation-introspection">calculang compilation &amp; introspection</h2>
-<p>The calculang compiler does 2 jobs to convert calculang code into valid Javascript:</p>
-<ul>
-<li>determine and populate inputs in calls and in function definitions (input inference)</li>
-<li>import appropriate function definitions to implement calculangs function precedence (parent-defined functions take precedence)</li>
-</ul>
-<p>These language features are intended to make functions that are flexible.</p>
-<section id="introspection-info-and-source-maps" class="level3">
-<h3 class="anchored" data-anchor-id="introspection-info-and-source-maps">introspection info and source maps</h3>
-<p>As the compiler manipulates calculang functions and calls, it also outputs a JSON file (<code>.introspection.json</code>) which provides information about calculang scopes, calculang functions and their determined inputs, and calls - including source code references.</p>
-<p>Combined with source maps - also output by the compiler - and given purity and separation then we can develop tools to interact with numbers and their workings including calculating them in real time or “reactively”.</p>
-</section>
-<section id="reactive-workings" class="level3">
-<h3 class="anchored" data-anchor-id="reactive-workings">reactive workings</h3>
-<p>In <a href="https://github.com/declann/calculang-at-fosdem/tree/main/reactive-workings">reactive workings folder</a> I output OJS to determine values used by reactive workings overlay.</p>
-<p>Through CodeMirror plugins and introspection info, I display these values beside calls.</p>
-<p>Through OJS reactive runtime, they update and coordinate on numerous interactions in the page.</p>
-<p>This is a bit like instrumentation, except without manipulation of the original code as they are a new execution which is ok due to purity (note that if using memoization it will be an extremely cheap “new execution” to look at workings).</p>
-<p>Everything here is a little hurried, hacky and draft - developed as a demo of bringing the above together to make a tool - but OJS reactivity does hold together and will probably land for all examples on calculang.dev - feedback and improvements welcome!</p>
-<p>To facilitate developing <strong>different tools</strong> it may help if I cleanup different pieces in <code>reactive-workings</code> or consider a more convenient API. Interested in suggestions and definitely reach out with usecases.</p>
-</section>
-<section id="coordination" class="level3">
-<h3 class="anchored" data-anchor-id="coordination">coordination</h3>
-<p>A lot of the coordination between visuals and formulas is defined in cells that you can find by searching <code>set(viewof formulae_visible</code> to select formulae, though I also manipulate inputs from the visual size. Although manual coded, through formulas mapped directly to visual channels I think there may be a more uniform approach for certain cases.</p>
-</section>
-<section id="known-issues" class="level3">
-<h3 class="anchored" data-anchor-id="known-issues">known issues</h3>
-<ul>
-<li><p>Loan checker and savings calculator both share <code>year_in</code> so 2x sets of calcs are triggered by changes; this might explain why going into loan checker and increasing the year destroys performance?</p></li>
-<li><p>When you are using the overlayed number to navigate, they will run a handler that sets parameters to match the number you clicked. When you click the identifier, it won’t change inputs. This is a bug with the overlay - for now, to drill through numbers, click on the numbers</p></li>
-</ul>
+<p>This website includes resources from Content Delivery Network services such as JsDelivr and other remote sources notably ObservableHQ; these third parties recieve your IP address whenever you use the site.</p>
+<p>This website uses a <strong>cookie banner</strong> to present you with privacy-related preferences. You can re-open these preferences via “Cookies/analytics preferences” at the bottom of each page on the website.</p>
+<p>Regardless of your chosen preferences, “essential” cookies are used to store those preferences.</p>
+<section id="analytics-are-opt-in" class="level2">
+<h2 class="anchored" data-anchor-id="analytics-are-opt-in">Analytics are opt-in</h2>
+<p>Analytics provide <a href="https://calcwithdec.dev/about.html">me</a> with useful statistical information to improve the website and consider it for effectiveness. <strong>On this website analytics are opt-in</strong>.</p>
+<p><strong>If you opt-in</strong>, information will be gathered via <a href="https://plausible.io">Plausible</a>, a “<a href="https://plausible.io/privacy-focused-web-analytics">Privacy focused Google Analytics alternative</a>”. You can read their <a href="https://plausible.io/data-policy">Data Policy</a>. Your IP address and other information may be made available to them; they will then aggregate information I can use to understand website audience, improve the website/content, and to consider reach and effectiveness of the website/content. I do not get or store raw data such as IP address.</p>
+<p>If you “reject non-essential” the cookie banner, or if you disable analytics scripts, or if you make no action at all, then analytics functionality is not used. <strong>No information is made available to Plausible</strong>, including your IP address. <strong>You can still use the website in the normal way</strong>.</p>
+<p>If you use an <strong>ad-blocker</strong>, then analytics <strong>may</strong> be disabled <strong>regardless of your preferences</strong> here. In this case also, <strong>you can still use the website in the normal way</strong>.</p>
+<!--
+## Changes to this privacy policy
+
+This privacy policy and details about website features described are subject to change. You can find a history of changes [on GitHub](https://github.com/declann/calculang-at-fosdem/blob/main/privacy.qmd).
+-->
 
 
 <!-- -->
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -636,51 +616,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Reactive workings"</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Privacy Policy"</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> false</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> html</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>*Note: Interactivity between visuals and formulas is pretty selective - currently it's a manual (though quick) thing that I implemented for specific needs for presentation.*</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>This website includes resources from Content Delivery Network services such as JsDelivr and other remote sources notably ObservableHQ; these third parties recieve your IP address whenever you use the site.</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## calculang compilation &amp; introspection</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>This website uses a **cookie banner** to present you with privacy-related preferences. You can re-open these preferences via "Cookies/analytics preferences" at the bottom of each page on the website.</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>The calculang compiler does 2 jobs to convert calculang code into valid Javascript:</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>Regardless of your chosen preferences, "essential" cookies are used to store those preferences.</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>determine and populate inputs in calls and in function definitions (input inference)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>import appropriate function definitions to implement calculangs function precedence (parent-defined functions take precedence)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>These language features are intended to make functions that are flexible.</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">### introspection info and source maps</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>As the compiler manipulates calculang functions and calls, it also outputs a JSON file (<span class="in">`.introspection.json`</span>) which provides information about calculang scopes, calculang functions and their determined inputs, and calls - including source code references.</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>Combined with source maps - also output by the compiler - and given purity and separation then we can develop tools to interact with numbers and their workings including calculating them in real time or "reactively".</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">### reactive workings</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">## Analytics are opt-in</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>Analytics provide <span class="co">[</span><span class="ot">me</span><span class="co">](https://calcwithdec.dev/about.html)</span> with useful statistical information to improve the website and consider it for effectiveness. **On this website analytics are opt-in**.</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>**If you opt-in**, information will be gathered via <span class="co">[</span><span class="ot">Plausible</span><span class="co">](https://plausible.io)</span>, a "<span class="co">[</span><span class="ot">Privacy focused Google Analytics alternative</span><span class="co">](https://plausible.io/privacy-focused-web-analytics)</span>". You can read their <span class="co">[</span><span class="ot">Data Policy</span><span class="co">](https://plausible.io/data-policy)</span>. Your IP address and other information may be made available to them; they will then aggregate information I can use to understand website audience, improve the website/content, and to consider reach and effectiveness of the website/content. I do not get or store raw data such as IP address.</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>If you "reject non-essential" the cookie banner, or if you disable analytics scripts, or if you make no action at all, then analytics functionality is not used. **No information is made available to Plausible**, including your IP address. **You can still use the website in the normal way**.</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>If you use an **ad-blocker**, then analytics **may** be disabled **regardless of your preferences** here. In this case also, **you can still use the website in the normal way**.</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!--</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">## Changes to this privacy policy</span></span>
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>In <span class="co">[</span><span class="ot">reactive workings folder</span><span class="co">](https://github.com/declann/calculang-at-fosdem/tree/main/reactive-workings)</span> I output OJS to determine values used by reactive workings overlay.</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>Through CodeMirror plugins and introspection info, I display these values beside calls.</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>Through OJS reactive runtime, they update and coordinate on numerous interactions in the page.</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>This is a bit like instrumentation, except without manipulation of the original code as they are a new execution which is ok due to purity (note that if using memoization it will be an extremely cheap "new execution" to look at workings).</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>Everything here is a little hurried, hacky and draft - developed as a demo of bringing the above together to make a tool - but OJS reactivity does hold together and will probably land for all examples on calculang.dev - feedback and improvements welcome!</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>To facilitate developing **different tools** it may help if I cleanup different pieces in <span class="in">`reactive-workings`</span> or consider a more convenient API. Interested in suggestions and definitely reach out with usecases.</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="fu">### coordination</span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>A lot of the coordination between visuals and formulas is defined in cells that you can find by searching <span class="in">`set(viewof formulae_visible`</span> to select formulae, though I also manipulate inputs from the visual size. Although manual coded, through formulas mapped directly to visual channels I think there may be a more uniform approach for certain cases.</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="fu">### known issues</span></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Loan checker and savings calculator both share <span class="in">`year_in`</span> so 2x sets of calcs are triggered by changes; this might explain why going into loan checker and increasing the year destroys performance?</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>When you are using the overlayed number to navigate, they will run a handler that sets parameters to match the number you clicked. When you click the identifier, it won't change inputs. This is a bug with the overlay - for now, to drill through numbers, click on the numbers</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co">This privacy policy and details about website features described are subject to change. You can find a history of changes [on GitHub](https://github.com/declann/calculang-at-fosdem/blob/main/privacy.qmd).</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co">--&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <script defer="" src="./resources/cookieconsent-2.9.1/dist/cookieconsent.js"></script> <script defer="" src="./cookieconsent-init.js"></script> <script defer="" type="text/plain" data-cookiecategory="analytics" data-domain="calculang-at-fosdem.pages.dev" src="https://plausible.io/js/script.js"></script>

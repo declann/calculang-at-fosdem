@@ -1,0 +1,27 @@
+---
+title: "Privacy Policy"
+toc: false
+format: html
+---
+
+This website includes resources from Content Delivery Network services such as JsDelivr and other remote sources notably ObservableHQ; these third parties recieve your IP address whenever you use the site.
+
+This website uses a **cookie banner** to present you with privacy-related preferences. You can re-open these preferences via "Cookies/analytics preferences" at the bottom of each page on the website.
+
+Regardless of your chosen preferences, "essential" cookies are used to store those preferences.
+
+## Analytics are opt-in
+
+Analytics provide [me](https://calcwithdec.dev/about.html) with useful statistical information to improve the website and consider it for effectiveness. **On this website analytics are opt-in**.
+
+**If you opt-in**, information will be gathered via [Plausible](https://plausible.io), a "[Privacy focused Google Analytics alternative](https://plausible.io/privacy-focused-web-analytics)". You can read their [Data Policy](https://plausible.io/data-policy). Your IP address and other information may be made available to them; they will then aggregate information I can use to understand website audience, improve the website/content, and to consider reach and effectiveness of the website/content. I do not get or store raw data such as IP address.
+
+If you "reject non-essential" the cookie banner, or if you disable analytics scripts, or if you make no action at all, then analytics functionality is not used. **No information is made available to Plausible**, including your IP address. **You can still use the website in the normal way**.
+
+If you use an **ad-blocker**, then analytics **may** be disabled **regardless of your preferences** here. In this case also, **you can still use the website in the normal way**.
+
+<!--
+## Changes to this privacy policy
+
+This privacy policy and details about website features described are subject to change. You can find a history of changes [on GitHub](https://github.com/declann/calculang-at-fosdem/blob/main/privacy.qmd).
+-->
