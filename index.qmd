@@ -57,7 +57,7 @@ viewof annual_payment_in = Inputs.input(1000)
 viewof duration_in = Inputs.input(5)
 viewof interest_rate_in = Inputs.input(.02)
 viewof year_in = Inputs.input(modelname == 'simple_loan' ? 1 : 5)
-viewof i_in = Inputs.input(modelname == 'fizzbuzz' ? 0 : +(q.get('i_in')??4)/100) // vs 2 for fizzbuzz!!
+viewof i_in = Inputs.input(modelname == 'fizzbuzz' ? 0 : +(q.get('i_in')??0.04)/1) // vs 2 for fizzbuzz!!
 
 viewof date_in = Inputs.input(new Date())
 viewof now_in = Inputs.input(new Date())

@@ -61,8 +61,9 @@ qr = require('https://unpkg.com/qrcode@1.4.4/build/qrcode.min.js')
 
 params = ({principal_in,i_in,term_in})
 qr_params = Object.entries(params).map(e => e[0] + '=' + e[1]).join('&')
-qr_url = `http://calcuvizspec-presentation.pages.dev/calcuvizspec-revealjs.html?${qr_params}#/simple-loan`
+qr_url = `https://calculang-at-fosdem.pages.dev/?id=simple-loan&${qr_params}`
 ```
+
 
 <details><summary>inputs ⚙️</summary>
 

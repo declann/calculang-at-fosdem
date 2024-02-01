@@ -201,7 +201,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> ({principal_in<span class="op">,</span>i_in<span class="op">,</span>term_in})</span>
 <span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>qr_params <span class="op">=</span> <span class="bu">Object</span><span class="op">.</span><span class="fu">entries</span>(params)<span class="op">.</span><span class="fu">map</span>(e <span class="kw">=&gt;</span> e[<span class="dv">0</span>] <span class="op">+</span> <span class="st">'='</span> <span class="op">+</span> e[<span class="dv">1</span>])<span class="op">.</span><span class="fu">join</span>(<span class="st">'&amp;'</span>)</span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>qr_url <span class="op">=</span> <span class="vs">`http://calcuvizspec-presentation.pages.dev/calcuvizspec-revealjs.html?</span><span class="sc">${</span>qr_params<span class="sc">}</span><span class="vs">#/simple-loan`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>qr_url <span class="op">=</span> <span class="vs">`https://calculang-at-fosdem.pages.dev/?id=simple-loan&amp;</span><span class="sc">${</span>qr_params<span class="sc">}</span><span class="vs">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -253,11 +253,11 @@ inputs ⚙️
 <div class="cell panel-input card bg-light p-2">
 <details class="code-fold hidden">
 <summary>Code</summary>
-<div class="sourceCode cell-code hidden" id="cb4" data-startfrom="73" data-source-offset="-61"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 72;"><span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a>viewof principal_in <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">500000</span>]<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Principal 💰 €"</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span><span class="dv">10000</span><span class="op">,</span> <span class="dt">value</span><span class="op">:+</span>(<span class="dv">100000</span>)})<span class="op">;</span></span>
-<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>viewof i_in <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">/</span><span class="dv">100</span><span class="op">,</span> <span class="dv">20</span><span class="op">/</span><span class="dv">100</span>]<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Interest rate"</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">/</span><span class="dv">100</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="op">+</span>(<span class="dv">4</span><span class="op">/</span><span class="dv">100</span>)})<span class="op">;</span> <span class="co">// neg interest is probably contrary and not tested well</span></span>
-<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a>viewof term_in <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">select</span>([<span class="dv">25</span><span class="op">,</span> <span class="dv">10</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">30</span><span class="op">,</span> <span class="dv">35</span><span class="op">,</span> <span class="dv">40</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">480</span>]<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Term (years)"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="op">+</span>(<span class="dv">10</span>)})<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb4" data-startfrom="74" data-source-offset="-61"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 73;"><span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>viewof principal_in <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">500000</span>]<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Principal 💰 €"</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span><span class="dv">10000</span><span class="op">,</span> <span class="dt">value</span><span class="op">:+</span>(<span class="dv">100000</span>)})<span class="op">;</span></span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a>viewof i_in <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">/</span><span class="dv">100</span><span class="op">,</span> <span class="dv">20</span><span class="op">/</span><span class="dv">100</span>]<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Interest rate"</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">/</span><span class="dv">100</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="op">+</span>(<span class="dv">4</span><span class="op">/</span><span class="dv">100</span>)})<span class="op">;</span> <span class="co">// neg interest is probably contrary and not tested well</span></span>
+<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a>viewof term_in <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">select</span>([<span class="dv">25</span><span class="op">,</span> <span class="dv">10</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">30</span><span class="op">,</span> <span class="dv">35</span><span class="op">,</span> <span class="dv">40</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">480</span>]<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Term (years)"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="op">+</span>(<span class="dv">10</span>)})<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -285,7 +285,7 @@ inputs ⚙️
 <div class="cell">
 <details class="code-fold hidden">
 <summary>Code</summary>
-<div class="sourceCode cell-code hidden" id="cb5" data-startfrom="84" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 83;"><span id="cb5-84"><a href="#cb5-84" aria-hidden="true" tabindex="-1"></a><span class="fu">md</span><span class="vs">`Calculated repayment is **€ </span><span class="sc">${</span>d3<span class="op">.</span><span class="fu">format</span>(<span class="st">',.2f'</span>)(simple_loan<span class="op">.</span><span class="fu">repayment</span>({principal_in<span class="op">,</span>i_in<span class="op">,</span>term_in<span class="op">,</span><span class="dt">year_in</span><span class="op">:</span><span class="dv">1</span>}))<span class="sc">}</span><span class="vs"> pa**.`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb5" data-startfrom="85" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 84;"><span id="cb5-85"><a href="#cb5-85" aria-hidden="true" tabindex="-1"></a><span class="fu">md</span><span class="vs">`Calculated repayment is **€ </span><span class="sc">${</span>d3<span class="op">.</span><span class="fu">format</span>(<span class="st">',.2f'</span>)(simple_loan<span class="op">.</span><span class="fu">repayment</span>({principal_in<span class="op">,</span>i_in<span class="op">,</span>term_in<span class="op">,</span><span class="dt">year_in</span><span class="op">:</span><span class="dv">1</span>}))<span class="sc">}</span><span class="vs"> pa**.`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-4" data-nodetype="expression">
@@ -296,7 +296,7 @@ inputs ⚙️
 <div class="cell">
 <details class="code-fold hidden">
 <summary>Code</summary>
-<div class="sourceCode cell-code hidden" id="cb6" data-startfrom="89" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 88;"><span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a>simple_loan <span class="op">=</span> <span class="pp">require</span>(<span class="vs">`https://calcy-quarty-vizys-online.pages.dev/models/loan-validator/simple-loan.js`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb6" data-startfrom="90" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 89;"><span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a>simple_loan <span class="op">=</span> <span class="pp">require</span>(<span class="vs">`https://calcy-quarty-vizys-online.pages.dev/models/loan-validator/simple-loan.js`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-5" data-nodetype="declaration">
@@ -341,9 +341,9 @@ inputs ⚙️
 <div class="cell">
 <details class="code-fold hidden">
 <summary>Code</summary>
-<div class="sourceCode cell-code hidden" id="cb7" data-startfrom="127" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 126;"><span id="cb7-127"><a href="#cb7-127" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { calcuvizspec } <span class="im">from</span> <span class="st">"@declann/little-calcu-helpers"</span></span>
-<span id="cb7-128"><a href="#cb7-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-129"><a href="#cb7-129" aria-hidden="true" tabindex="-1"></a>embed <span class="op">=</span> <span class="pp">require</span>(<span class="st">'vega-embed'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb7" data-startfrom="128" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 127;"><span id="cb7-128"><a href="#cb7-128" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { calcuvizspec } <span class="im">from</span> <span class="st">"@declann/little-calcu-helpers"</span></span>
+<span id="cb7-129"><a href="#cb7-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-130"><a href="#cb7-130" aria-hidden="true" tabindex="-1"></a>embed <span class="op">=</span> <span class="pp">require</span>(<span class="st">'vega-embed'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -368,7 +368,7 @@ inputs ⚙️
 
 </main> <!-- /main -->
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Im1kYFlvdSBib3Jyb3cgKirigqwgJHtkMy5mb3JtYXQoJywuMGYnKShwcmluY2lwYWxfaW4pfSoqIGF0ICoqJHtkMy5mb3JtYXQoJy4xJScpKGlfaW4pfSoqIGZvciAqKiR7dGVybV9pbn0geWVhcnMqKi5gXG5cbm1kYFlvdXIgcmVwYXltZW50IGFtb3VudCBpcyAqKuKCrCAke2QzLmZvcm1hdCgnLC4yZicpKHNpbXBsZV9sb2FuLnJlcGF5bWVudCh7cHJpbmNpcGFsX2luLGlfaW4sdGVybV9pbix5ZWFyX2luOjF9KSl9IHBhKiouYFxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0yIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoidmlld29mIHNob3dfcXJfY29kZSA9IElucHV0cy5jaGVja2JveChbXCJcIl0sIHt2YWx1ZTogW119KSAvL1xuXG5xcmNvZGUgPSBodG1sYDxkaXYgc3R5bGU9XCJtYXgtd2lkdGg6IDMwMHB4OyR7c2hvd19xcl9jb2RlLmxlbmd0aCA9PSAwID8gJ29wYWNpdHk6MC4wMScgOiAnJ31cIj4ke2F3YWl0IHFyLnRvU3RyaW5nKHFyX3VybCwge1xuICBtYXJnaW46IDEwXG59KX08L2Rpdj5gXG5cbnFyID0gcmVxdWlyZSgnaHR0cHM6Ly91bnBrZy5jb20vcXJjb2RlQDEuNC40L2J1aWxkL3FyY29kZS5taW4uanMnKVxuXG5wYXJhbXMgPSAoe3ByaW5jaXBhbF9pbixpX2luLHRlcm1faW59KVxucXJfcGFyYW1zID0gT2JqZWN0LmVudHJpZXMocGFyYW1zKS5tYXAoZSA9PiBlWzBdICsgJz0nICsgZVsxXSkuam9pbignJicpXG5xcl91cmwgPSBgaHR0cDovL2NhbGN1dml6c3BlYy1wcmVzZW50YXRpb24ucGFnZXMuZGV2L2NhbGN1dml6c3BlYy1yZXZlYWxqcy5odG1sPyR7cXJfcGFyYW1zfSMvc2ltcGxlLWxvYW5gXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTMiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiIvLy8gbGF5b3V0LW5jb2w6IDIgUmVxdWlyZXMgRXZlbiAjIGNvbXBvbmVudHMhIG9yIG9kZCBlcnJvclxuXG52aWV3b2YgcHJpbmNpcGFsX2luID0gSW5wdXRzLnJhbmdlKFswLCA1MDAwMDBdLCB7bGFiZWw6IFwiUHJpbmNpcGFsIPCfkrAg4oKsXCIsIHN0ZXA6MTAwMDAsIHZhbHVlOisoMTAwMDAwKX0pO1xuXG52aWV3b2YgaV9pbiA9IElucHV0cy5yYW5nZShbLTUvMTAwLCAyMC8xMDBdLCB7bGFiZWw6IFwiSW50ZXJlc3QgcmF0ZVwiLCBzdGVwOiAwLjEvMTAwLCB2YWx1ZTogKyg0LzEwMCl9KTsgLy8gbmVnIGludGVyZXN0IGlzIHByb2JhYmx5IGNvbnRyYXJ5IGFuZCBub3QgdGVzdGVkIHdlbGxcblxudmlld29mIHRlcm1faW4gPSBJbnB1dHMuc2VsZWN0KFsyNSwgMTAsIDUsIDMwLCAzNSwgNDAsIDEsIDQ4MF0sIHtsYWJlbDogXCJUZXJtICh5ZWFycylcIiwgdmFsdWU6ICsoMTApfSk7XG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTQiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJtZGBDYWxjdWxhdGVkIHJlcGF5bWVudCBpcyAqKuKCrCAke2QzLmZvcm1hdCgnLC4yZicpKHNpbXBsZV9sb2FuLnJlcGF5bWVudCh7cHJpbmNpcGFsX2luLGlfaW4sdGVybV9pbix5ZWFyX2luOjF9KSl9IHBhKiouYFxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC01IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoic2ltcGxlX2xvYW4gPSByZXF1aXJlKGBodHRwczovL2NhbGN5LXF1YXJ0eS12aXp5cy1vbmxpbmUucGFnZXMuZGV2L21vZGVscy9sb2FuLXZhbGlkYXRvci9zaW1wbGUtbG9hbi5qc2ApXG5cbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNiIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImltcG9ydCB7IGNhbGN1dml6c3BlYyB9IGZyb20gXCJAZGVjbGFubi9saXR0bGUtY2FsY3UtaGVscGVyc1wiXG5cbmVtYmVkID0gcmVxdWlyZSgndmVnYS1lbWJlZCcpO1xuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdzaG93X3FyX2NvZGUnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgncHJpbmNpcGFsX2luJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2lfaW4nKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgndGVybV9pbicpIn1dfQ==
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Im1kYFlvdSBib3Jyb3cgKirigqwgJHtkMy5mb3JtYXQoJywuMGYnKShwcmluY2lwYWxfaW4pfSoqIGF0ICoqJHtkMy5mb3JtYXQoJy4xJScpKGlfaW4pfSoqIGZvciAqKiR7dGVybV9pbn0geWVhcnMqKi5gXG5cbm1kYFlvdXIgcmVwYXltZW50IGFtb3VudCBpcyAqKuKCrCAke2QzLmZvcm1hdCgnLC4yZicpKHNpbXBsZV9sb2FuLnJlcGF5bWVudCh7cHJpbmNpcGFsX2luLGlfaW4sdGVybV9pbix5ZWFyX2luOjF9KSl9IHBhKiouYFxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0yIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoidmlld29mIHNob3dfcXJfY29kZSA9IElucHV0cy5jaGVja2JveChbXCJcIl0sIHt2YWx1ZTogW119KSAvL1xuXG5xcmNvZGUgPSBodG1sYDxkaXYgc3R5bGU9XCJtYXgtd2lkdGg6IDMwMHB4OyR7c2hvd19xcl9jb2RlLmxlbmd0aCA9PSAwID8gJ29wYWNpdHk6MC4wMScgOiAnJ31cIj4ke2F3YWl0IHFyLnRvU3RyaW5nKHFyX3VybCwge1xuICBtYXJnaW46IDEwXG59KX08L2Rpdj5gXG5cbnFyID0gcmVxdWlyZSgnaHR0cHM6Ly91bnBrZy5jb20vcXJjb2RlQDEuNC40L2J1aWxkL3FyY29kZS5taW4uanMnKVxuXG5wYXJhbXMgPSAoe3ByaW5jaXBhbF9pbixpX2luLHRlcm1faW59KVxucXJfcGFyYW1zID0gT2JqZWN0LmVudHJpZXMocGFyYW1zKS5tYXAoZSA9PiBlWzBdICsgJz0nICsgZVsxXSkuam9pbignJicpXG5xcl91cmwgPSBgaHR0cHM6Ly9jYWxjdWxhbmctYXQtZm9zZGVtLnBhZ2VzLmRldi8/aWQ9c2ltcGxlLWxvYW4mJHtxcl9wYXJhbXN9YFxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0zIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiLy8vIGxheW91dC1uY29sOiAyIFJlcXVpcmVzIEV2ZW4gIyBjb21wb25lbnRzISBvciBvZGQgZXJyb3Jcblxudmlld29mIHByaW5jaXBhbF9pbiA9IElucHV0cy5yYW5nZShbMCwgNTAwMDAwXSwge2xhYmVsOiBcIlByaW5jaXBhbCDwn5KwIOKCrFwiLCBzdGVwOjEwMDAwLCB2YWx1ZTorKDEwMDAwMCl9KTtcblxudmlld29mIGlfaW4gPSBJbnB1dHMucmFuZ2UoWy01LzEwMCwgMjAvMTAwXSwge2xhYmVsOiBcIkludGVyZXN0IHJhdGVcIiwgc3RlcDogMC4xLzEwMCwgdmFsdWU6ICsoNC8xMDApfSk7IC8vIG5lZyBpbnRlcmVzdCBpcyBwcm9iYWJseSBjb250cmFyeSBhbmQgbm90IHRlc3RlZCB3ZWxsXG5cbnZpZXdvZiB0ZXJtX2luID0gSW5wdXRzLnNlbGVjdChbMjUsIDEwLCA1LCAzMCwgMzUsIDQwLCAxLCA0ODBdLCB7bGFiZWw6IFwiVGVybSAoeWVhcnMpXCIsIHZhbHVlOiArKDEwKX0pO1xuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC00IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoibWRgQ2FsY3VsYXRlZCByZXBheW1lbnQgaXMgKirigqwgJHtkMy5mb3JtYXQoJywuMmYnKShzaW1wbGVfbG9hbi5yZXBheW1lbnQoe3ByaW5jaXBhbF9pbixpX2luLHRlcm1faW4seWVhcl9pbjoxfSkpfSBwYSoqLmBcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InNpbXBsZV9sb2FuID0gcmVxdWlyZShgaHR0cHM6Ly9jYWxjeS1xdWFydHktdml6eXMtb25saW5lLnBhZ2VzLmRldi9tb2RlbHMvbG9hbi12YWxpZGF0b3Ivc2ltcGxlLWxvYW4uanNgKVxuXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTYiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJpbXBvcnQgeyBjYWxjdXZpenNwZWMgfSBmcm9tIFwiQGRlY2xhbm4vbGl0dGxlLWNhbGN1LWhlbHBlcnNcIlxuXG5lbWJlZCA9IHJlcXVpcmUoJ3ZlZ2EtZW1iZWQnKTtcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnc2hvd19xcl9jb2RlJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3ByaW5jaXBhbF9pbicpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdpX2luJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3Rlcm1faW4nKSJ9XX0=
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
@@ -897,73 +897,74 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a><span class="in">params = ({principal_in,i_in,term_in})</span></span>
 <span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a><span class="in">qr_params = Object.entries(params).map(e =&gt; e[0] + '=' + e[1]).join('&amp;')</span></span>
-<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a><span class="in">qr_url = `http://calcuvizspec-presentation.pages.dev/calcuvizspec-revealjs.html?${qr_params}#/simple-loan`</span></span>
+<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a><span class="in">qr_url = `https://calculang-at-fosdem.pages.dev/?id=simple-loan&amp;${qr_params}`</span></span>
 <span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a>&lt;details&gt;&lt;summary&gt;inputs ⚙️&lt;/summary&gt;</span>
-<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-75"><a href="#cb8-75" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
-<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a><span class="in">//| panel: input</span></span>
-<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a><span class="in">/// layout-ncol: 2 Requires Even # components! or odd error</span></span>
-<span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a><span class="in">viewof principal_in = Inputs.range([0, 500000], {label: "Principal 💰 €", step:10000, value:+(100000)});</span></span>
-<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a><span class="in">viewof i_in = Inputs.range([-5/100, 20/100], {label: "Interest rate", step: 0.1/100, value: +(4/100)}); // neg interest is probably contrary and not tested well</span></span>
-<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a><span class="in">viewof term_in = Inputs.select([25, 10, 5, 30, 35, 40, 1, 480], {label: "Term (years)", value: +(10)});</span></span>
-<span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a>&lt;/details&gt;</span>
-<span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a>&lt;details&gt;&lt;summary&gt;inputs ⚙️&lt;/summary&gt;</span>
+<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
+<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a><span class="in">//| panel: input</span></span>
+<span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a><span class="in">/// layout-ncol: 2 Requires Even # components! or odd error</span></span>
+<span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a><span class="in">viewof principal_in = Inputs.range([0, 500000], {label: "Principal 💰 €", step:10000, value:+(100000)});</span></span>
+<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a><span class="in">viewof i_in = Inputs.range([-5/100, 20/100], {label: "Interest rate", step: 0.1/100, value: +(4/100)}); // neg interest is probably contrary and not tested well</span></span>
+<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a><span class="in">viewof term_in = Inputs.select([25, 10, 5, 30, 35, 40, 1, 480], {label: "Term (years)", value: +(10)});</span></span>
+<span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a>&lt;/details&gt;</span>
 <span id="cb8-88"><a href="#cb8-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-91"><a href="#cb8-91" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
-<span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a><span class="in">//| echo: false</span></span>
-<span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a><span class="in">md`Calculated repayment is **€ ${d3.format(',.2f')(simple_loan.repayment({principal_in,i_in,term_in,year_in:1}))} pa**.`</span></span>
-<span id="cb8-94"><a href="#cb8-94" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-89"><a href="#cb8-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
+<span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a><span class="in">//| echo: false</span></span>
+<span id="cb8-94"><a href="#cb8-94" aria-hidden="true" tabindex="-1"></a><span class="in">md`Calculated repayment is **€ ${d3.format(',.2f')(simple_loan.repayment({principal_in,i_in,term_in,year_in:1}))} pa**.`</span></span>
+<span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb8-96"><a href="#cb8-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-99"><a href="#cb8-99" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
-<span id="cb8-100"><a href="#cb8-100" aria-hidden="true" tabindex="-1"></a><span class="in">simple_loan = require(`https://calcy-quarty-vizys-online.pages.dev/models/loan-validator/simple-loan.js`)</span></span>
-<span id="cb8-101"><a href="#cb8-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-102"><a href="#cb8-102" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-103"><a href="#cb8-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-104"><a href="#cb8-104" aria-hidden="true" tabindex="-1"></a>##</span>
-<span id="cb8-105"><a href="#cb8-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-97"><a href="#cb8-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-100"><a href="#cb8-100" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
+<span id="cb8-101"><a href="#cb8-101" aria-hidden="true" tabindex="-1"></a><span class="in">simple_loan = require(`https://calcy-quarty-vizys-online.pages.dev/models/loan-validator/simple-loan.js`)</span></span>
+<span id="cb8-102"><a href="#cb8-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-103"><a href="#cb8-103" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-104"><a href="#cb8-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-105"><a href="#cb8-105" aria-hidden="true" tabindex="-1"></a>##</span>
 <span id="cb8-106"><a href="#cb8-106" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-107"><a href="#cb8-107" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-108"><a href="#cb8-108" aria-hidden="true" tabindex="-1"></a><span class="fu"># Limitations</span></span>
-<span id="cb8-109"><a href="#cb8-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-110"><a href="#cb8-110" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>DX</span>
-<span id="cb8-111"><a href="#cb8-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-112"><a href="#cb8-112" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>especially error reporting (generate types?)</span>
-<span id="cb8-113"><a href="#cb8-113" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>and coding recurrances with 0 visual space is hard!</span>
-<span id="cb8-114"><a href="#cb8-114" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>the nice things really come at the end and not the start</span>
-<span id="cb8-115"><a href="#cb8-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-116"><a href="#cb8-116" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Performance</span>
-<span id="cb8-117"><a href="#cb8-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-118"><a href="#cb8-118" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Multiple-recurrances -&gt; JS engine 🤯</span>
-<span id="cb8-119"><a href="#cb8-119" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Only optimisation is memoization, but not tactical</span>
-<span id="cb8-120"><a href="#cb8-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-121"><a href="#cb8-121" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Community/Support</span>
-<span id="cb8-122"><a href="#cb8-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-123"><a href="#cb8-123" aria-hidden="true" tabindex="-1"></a><span class="fu"># calculang.party</span></span>
-<span id="cb8-124"><a href="#cb8-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-125"><a href="#cb8-125" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>community gallery</span>
-<span id="cb8-126"><a href="#cb8-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-127"><a href="#cb8-127" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">join on matrix</span><span class="co">](https://matrix.to/#/#calculang.party:matrix.org)</span> or <span class="co">[</span><span class="ot">contact me</span><span class="co">](https://calcwithdec.dev/about.html)</span></span>
-<span id="cb8-128"><a href="#cb8-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-129"><a href="#cb8-129" aria-hidden="true" tabindex="-1"></a><span class="fu"># Transparency, workings</span></span>
-<span id="cb8-130"><a href="#cb8-130" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-131"><a href="#cb8-131" aria-hidden="true" tabindex="-1"></a><span class="fu"># Questions?</span></span>
-<span id="cb8-132"><a href="#cb8-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-133"><a href="#cb8-133" aria-hidden="true" tabindex="-1"></a><span class="al">![](./logo4.svg)</span> <span class="co">&lt;!--{width=100}--&gt;</span></span>
-<span id="cb8-134"><a href="#cb8-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-137"><a href="#cb8-137" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
-<span id="cb8-138"><a href="#cb8-138" aria-hidden="true" tabindex="-1"></a><span class="in">//| echo: false</span></span>
-<span id="cb8-139"><a href="#cb8-139" aria-hidden="true" tabindex="-1"></a><span class="in">import { calcuvizspec } from "@declann/little-calcu-helpers"</span></span>
-<span id="cb8-140"><a href="#cb8-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-141"><a href="#cb8-141" aria-hidden="true" tabindex="-1"></a><span class="in">embed = require('vega-embed');</span></span>
-<span id="cb8-142"><a href="#cb8-142" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-108"><a href="#cb8-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-109"><a href="#cb8-109" aria-hidden="true" tabindex="-1"></a><span class="fu"># Limitations</span></span>
+<span id="cb8-110"><a href="#cb8-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-111"><a href="#cb8-111" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>DX</span>
+<span id="cb8-112"><a href="#cb8-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-113"><a href="#cb8-113" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>especially error reporting (generate types?)</span>
+<span id="cb8-114"><a href="#cb8-114" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>and coding recurrances with 0 visual space is hard!</span>
+<span id="cb8-115"><a href="#cb8-115" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>the nice things really come at the end and not the start</span>
+<span id="cb8-116"><a href="#cb8-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-117"><a href="#cb8-117" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Performance</span>
+<span id="cb8-118"><a href="#cb8-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-119"><a href="#cb8-119" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Multiple-recurrances -&gt; JS engine 🤯</span>
+<span id="cb8-120"><a href="#cb8-120" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Only optimisation is memoization, but not tactical</span>
+<span id="cb8-121"><a href="#cb8-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-122"><a href="#cb8-122" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Community/Support</span>
+<span id="cb8-123"><a href="#cb8-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-124"><a href="#cb8-124" aria-hidden="true" tabindex="-1"></a><span class="fu"># calculang.party</span></span>
+<span id="cb8-125"><a href="#cb8-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-126"><a href="#cb8-126" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>community gallery</span>
+<span id="cb8-127"><a href="#cb8-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-128"><a href="#cb8-128" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">join on matrix</span><span class="co">](https://matrix.to/#/#calculang.party:matrix.org)</span> or <span class="co">[</span><span class="ot">contact me</span><span class="co">](https://calcwithdec.dev/about.html)</span></span>
+<span id="cb8-129"><a href="#cb8-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-130"><a href="#cb8-130" aria-hidden="true" tabindex="-1"></a><span class="fu"># Transparency, workings</span></span>
+<span id="cb8-131"><a href="#cb8-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-132"><a href="#cb8-132" aria-hidden="true" tabindex="-1"></a><span class="fu"># Questions?</span></span>
+<span id="cb8-133"><a href="#cb8-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-134"><a href="#cb8-134" aria-hidden="true" tabindex="-1"></a><span class="al">![](./logo4.svg)</span> <span class="co">&lt;!--{width=100}--&gt;</span></span>
+<span id="cb8-135"><a href="#cb8-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-138"><a href="#cb8-138" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
+<span id="cb8-139"><a href="#cb8-139" aria-hidden="true" tabindex="-1"></a><span class="in">//| echo: false</span></span>
+<span id="cb8-140"><a href="#cb8-140" aria-hidden="true" tabindex="-1"></a><span class="in">import { calcuvizspec } from "@declann/little-calcu-helpers"</span></span>
+<span id="cb8-141"><a href="#cb8-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-142"><a href="#cb8-142" aria-hidden="true" tabindex="-1"></a><span class="in">embed = require('vega-embed');</span></span>
+<span id="cb8-143"><a href="#cb8-143" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
