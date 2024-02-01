@@ -5,6 +5,7 @@ format:
   dashboard:
     resources:
       - ./gallery.yml
+      - /models/raycasting/raycasting.js
     nav-buttons:
       - icon: github
         href: https://github.com/declann/calculang-at-fosdem
@@ -1534,8 +1535,15 @@ viewof refresh = Inputs.button("hot reload")
 
 raycasting222 = aaa[version]
 
-raycasting_latest = await require(`http://localhost:8080/raycasting/raycasting.js?${refresh}${Date.now()}`);
-raycasting2 = await require(`http://localhost:8080/raycasting/raycasting.js?${refresh}${Date.now()}`);
+/* FOR DEV */
+//raycasting_latest = await require(`http://localhost:8080/raycasting/raycasting.js?${refresh}${Date.now()}`);
+//raycasting2 = await require(`http://localhost:8080/raycasting/raycasting.js?${refresh}${Date.now()}`);
+
+// FOR PUBLISH
+raycasting_latest = await require(`/models/raycasting/raycasting.js?`)
+raycasting2 = await require(`/models/raycasting/raycasting.js`)
+
+
 simple_loan = await require(`https://calculang.dev/models/simple-loan/simple-loan.js`);
 //emissions_my_lifetime = //await require(`http://localhost:8080/emissions-my-lifetime/emissions-my-lifetime.js?${refresh}${Date.now()}`);
 
