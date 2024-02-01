@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "generate-reactive-workings-publish": "bun run index.ts savings savings-rec starfield fizzbuzz year-remaining simple-loan > reactive-workings.ojs",
-    "generate-reactive-workings": "bun run index.ts raycasting2 savings savings-rec starfield fizzbuzz year-remaining simple-loan emissions-my-lifetime > reactive-workings.ojs"
+    "generate-reactive-workings": "bun run index.ts raycasting2 savings savings-rec starfield fizzbuzz year-remaining simple-loan > reactive-workings.ojs"
   },
   "devDependencies": {
     "@calculang/calculang-js": "^0.1.0-alpha.6",

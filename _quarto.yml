@@ -1,8 +1,6 @@
 project:
   type: website
 
-
-
 website:
   title: "calculang-at-fosdem"
   #page-footer:
@@ -54,12 +52,18 @@ format:
     # cookie consent from https://github.com/orestbida/cookieconsent
     # and Plausible analytics
     include-in-header:
-      - text: |
-          <link rel="stylesheet" href="/resources/cookieconsent-2.9.1/dist/cookieconsent.css" media="print" onload="this.media='all'">
+      - text: <link rel="stylesheet" href="/resources/cookieconsent-2.9.1/dist/cookieconsent.css" media="print" onload="this.media='all'">
     include-after-body: # cookieconsent.html
-      - text: |
-          <script defer src="/resources/cookieconsent-2.9.1/dist/cookieconsent.js"></script> |
+      - text: <script defer src="/resources/cookieconsent-2.9.1/dist/cookieconsent.js"></script>
           <script defer src="/cookieconsent-init.js"></script>
           <script defer type="text/plain" data-cookiecategory="analytics" data-domain="calculang-at-fosdem.pages.dev" src="https://plausible.io/js/script.js"></script>
     code-tools: true
     code-fold: true
+
+  dashboard:
+    include-in-header:
+      - text: <link rel="stylesheet" href="/resources/cookieconsent-2.9.1/dist/cookieconsent.css" media="print" onload="this.media='all'">
+    include-after-body: # cookieconsent.html
+      - text: <script defer src="/resources/cookieconsent-2.9.1/dist/cookieconsent.js"></script>
+          <script defer src="/cookieconsent-init.js"></script>
+          <script defer type="text/plain" data-cookiecategory="analytics" data-domain="calculang-at-fosdem.pages.dev" src="https://plausible.io/js/script.js"></script>

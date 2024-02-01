@@ -137,7 +137,7 @@
   tiles:
 
   - title: Starfield 🌠🌌
-    subtitle: 
+    subtitle: Flying through a starfield
     entrypoint: /models/starfield/starfield.cul.js
     id: starfield
     modular: false

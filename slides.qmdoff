@@ -1,0 +1,83 @@
+---
+title: "calcing with calculang"
+author:
+  - name: "Declan 🧮👨‍💻🧉"
+    url: "https://calcwithdec.dev/about.html"
+
+format:
+  html:
+    #page-footer:
+    #  right: "Made with 💓 and [calculang](https://github.com/calculang/calculang)"
+    echo: false
+    code-fold: true
+    #code-summary: "Show the code"
+  revealjs:
+    #min-scale: 0.1
+    #max-scale: 1
+
+    controls: true
+
+    #footer: "Made with 💓 and [calculang](https://github.com/calculang/calculang)"
+    output-file: slides-revealjs.html
+    echo: false
+    code-fold: true
+    smaller: true
+    scrollable: true
+
+---
+
+
+# 📝 Imaginary loan paper
+
+```{ojs}
+//| echo: false
+md`You borrow **€ ${d3.format(',.0f')(principal_in)}** at **${d3.format('.1%')(i_in)}** for **${term_in} years**.`
+
+md`Your repayment amount is **€ ${d3.format(',.2f')(simple_loan.repayment({principal_in,i_in,term_in,year_in:1}))} pa**.`
+```
+
+**Correct?**
+
+<br/>
+
+```{ojs}
+//| echo: false
+viewof show_qr_code = Inputs.checkbox(["show QR code ⚠️"], {value: []}) //
+
+qrcode = html`<div style="max-width: 300px;${show_qr_code.length == 0 ? 'opacity:0.03' : ''}">${await qr.toString(qr_url, {
+  margin: 10
+})}</div>`
+
+qr = require('https://unpkg.com/qrcode@1.4.4/build/qrcode.min.js')
+
+params = ({principal_in,i_in,term_in})
+qr_params = Object.entries(params).map(e => e[0] + '=' + e[1]).join('&')
+qr_url = `http://calcuvizspec-presentation.pages.dev/calcuvizspec-revealjs.html?${qr_params}#/simple-loan`
+```
+
+<details><summary>inputs ⚙️</summary>
+
+```{ojs}
+//| panel: input
+/// layout-ncol: 2 Requires Even # components! or odd error
+
+viewof principal_in = Inputs.range([0, 500000], {label: "Principal 💰 €", step:10000, value:+(100000)});
+
+viewof i_in = Inputs.range([-5/100, 20/100], {label: "Interest rate", step: 0.1/100, value: +(4/100)}); // neg interest is probably contrary and not tested well
+
+viewof term_in = Inputs.select([25, 10, 5, 30, 35, 40, 1, 480], {label: "Term (years)", value: +(10)});
+```
+
+</details>
+
+
+```{ojs}
+//| echo: false
+md`Calculated repayment is **€ ${d3.format(',.2f')(simple_loan.repayment({principal_in,i_in,term_in,year_in:1}))} pa**.`
+```
+
+
+```{ojs}
+simple_loan = require(`https://calcy-quarty-vizys-online.pages.dev/models/loan-validator/simple-loan.js`)
+
+```

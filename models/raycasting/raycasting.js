@@ -906,7 +906,7 @@ const map_lookup_ = ({ y_in, x_in }) => {
 
   // map lookups with necessary fudge:
   return (
-    Object(_raycasting_cul_js__WEBPACK_IMPORTED_MODULE_0__["map"])({})[Math.floor(Object(_raycasting_cul_js__WEBPACK_IMPORTED_MODULE_0__["y"])({ y_in }) - 0.0001)][Math.floor(Object(_raycasting_cul_js__WEBPACK_IMPORTED_MODULE_0__["x"])({ x_in }) - 0.0001)] ||
+    Object(_raycasting_cul_js__WEBPACK_IMPORTED_MODULE_0__["map"])({})[Math.floor(Object(_raycasting_cul_js__WEBPACK_IMPORTED_MODULE_0__["y"])({ y_in }) - 0.01)][Math.floor(Object(_raycasting_cul_js__WEBPACK_IMPORTED_MODULE_0__["x"])({ x_in }) - 0.01)] ||
     Object(_raycasting_cul_js__WEBPACK_IMPORTED_MODULE_0__["map"])({})[Math.floor(Object(_raycasting_cul_js__WEBPACK_IMPORTED_MODULE_0__["y"])({ y_in }) - 0)][Math.floor(Object(_raycasting_cul_js__WEBPACK_IMPORTED_MODULE_0__["x"])({ x_in }) - 0)]);
 
 };

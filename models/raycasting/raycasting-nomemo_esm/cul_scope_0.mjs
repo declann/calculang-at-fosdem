@@ -31,7 +31,7 @@ export const map_lookup = ({ y_in, x_in }) => {
 
   // map lookups with necessary fudge:
   return (
-    map({})[Math.floor(y({ y_in }) - 0.0001)][Math.floor(x({ x_in }) - 0.0001)] ||
+    map({})[Math.floor(y({ y_in }) - 0.01)][Math.floor(x({ x_in }) - 0.01)] ||
     map({})[Math.floor(y({ y_in }) - 0)][Math.floor(x({ x_in }) - 0)]);
 
 };

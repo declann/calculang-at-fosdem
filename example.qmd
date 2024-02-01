@@ -37,7 +37,7 @@ viewof player_x_in = Inputs.input(1.7)
 viewof player_y_in = Inputs.input(5.5)
 viewof ray_angle_in = Inputs.input(999)
 viewof fisheye_correction_in = Inputs.input(true)
-viewof step_in = Inputs.input(3)
+viewof step_in = Inputs.input(0)
 viewof x_in = Inputs.input(3.5)
 viewof y_in = Inputs.input(3.5)
 viewof f_in = Inputs.input(0)
@@ -52,8 +52,8 @@ viewof emissions_year_in = Inputs.input(2024)
 viewof annual_payment_in = Inputs.input(1000)
 viewof duration_in = Inputs.input(5)
 viewof interest_rate_in = Inputs.input(.02)
-viewof year_in = Inputs.input(5)
-viewof i_in = Inputs.input(modelname == 'fizzbuzz' ? 0 : .04) // vs 2 for fizzbuzz!!
+viewof year_in = Inputs.input(modelname == 'simple_loan' ? 1 : 5)
+viewof i_in = Inputs.input(modelname == 'fizzbuzz' ? 0 : +(q.get('i_in')??4)/100) // vs 2 for fizzbuzz!!
 
 viewof date_in = Inputs.input(new Date())
 viewof now_in = Inputs.input(new Date())
@@ -71,8 +71,8 @@ viewof d_i_in = Inputs.input(0.02)
 viewof d_i_year_in = Inputs.input(99)
 viewof missed_repayment_year_in = Inputs.input(-99)
 viewof skip_interest_in = Inputs.input(false)
-viewof principal_in = Inputs.input(100000)
-viewof term_in = Inputs.input(25)
+viewof principal_in = Inputs.input(+(q.get('principal_in') ?? 100000))
+viewof term_in = Inputs.input(+(q.get('term_in')??10))
 
 // snowflakes
 viewof height_in = Inputs.input(200)
@@ -85,28 +85,28 @@ viewof age_in = Inputs.input(25)
 
 
 // savings-rec
-viewof actual_interest_rate_co_in = Inputs.input(2)
+viewof actual_interest_rate_co_in = Inputs.input(0)
 
 
 mini_binds = {
   return ({
     fisheye_correction_in: Inputs.toggle({label:'🐟👀 correct'}),
-    duration_in: Inputs.range([0,20], {label:'duration', step: 1}),
+    duration_in: Inputs.range([0,20], {label:'duration', step: 1, disabled: modelname == 'savings_rec'}),
     term_in: Inputs.select([25, 15, 10, 5, 30, 35, 40, 1, 480], {label: "Term (years)"}),
-    year_in: Inputs.range([-1,40], {label:'year', step: 1}),
+    year_in: Inputs.range([-1,modelname == 'simple_loan' ? term_in : duration_in], {label:'year', step: 1}),
     emissions_year_in: Inputs.range([1750,2024], {label:'emissions year', step: 1}),
     age_in: Inputs.range([18,100], {label:'your age', step: 1}),
-    annual_payment_in: Inputs.range([0, 20000], {label:'annual_payment_in', step: 100}),
-    interest_rate_in: Inputs.range([-0.1, 0.1], {format: d3.format('.2f'), label:'interest_rate_in', step:0.001}) // precision how?
+    annual_payment_in: Inputs.range([0, 20000], {label:'annual_payment_in', step: 100, disabled: modelname == 'savings_rec'}),
+    interest_rate_in: Inputs.range([-0.1, 0.1], {format: d3.format('.3f'), label:'interest_rate_in', step:0.001, disabled: modelname == 'savings_rec'}) // precision how?
     , actual_interest_rate_co_in: Inputs.range([-1, 20], {label:'actual_interest_rate_co_in', step:1})
-    , f_in: Inputs.range([0, 99], {label:'f_in', step:1})
+    , f_in: Inputs.range([0, 200], {label:'f_in', step:1})
     , principal_in: Inputs.range([0, 500000], {label:'principal_in', step:1000})
     //, keys_stream_function_in: md`(keys_stream_function_in)`
     //, step_in: Tangle({min: -1, max: 20, label:'step_in'})
     //, x_in: Tangle({min: -1, max: 200, label:'x_in'})
     //, y_in: Tangle({min: -1, max: 200, label:'y_in'})
-    , player_x_in: Tangle({min: -1, max: 10,format: d3.format('.2f'), label:'player_x_in'})
-    , player_y_in: Tangle({min: -1, max: 10, format: d3.format('.2f'),label:'player_y_in'})
+    //, player_x_in: Tangle({min: -1, max: 10,format: d3.format('.2f'), label:'player_x_in'})
+    //, player_y_in: Tangle({min: -1, max: 10, format: d3.format('.2f'),label:'player_y_in'})
     // off to check perf impact, ray_angle_in: Inputs.range([-20,20], {label:'ray_angle_in'})//Tangle({min: -1, max: 10, format: d3.format('.2f'),label:'ray_angle_in'})
     , i_in: modelname == 'fizzbuzz' ? Inputs.range([-10, 200], {label:'i_in', step:1}) : Inputs.range([-0.1, 0.1], {label:'i_in', step:0.001})
     , d_i_in: Inputs.range([-0.1, 0.1], {label:'Δ i_in', step:0.001})
@@ -116,9 +116,9 @@ mini_binds = {
     , now_in: Inputs.date({label: "now"})
     , timing_in: modelname == 'emissions_my_lifetime' ?  Inputs.select(["start of birthyear", "end of birthyear"]) : Inputs.select(["start of today", "start of tomorrow"])
     , random_seed_in: Inputs.text({label: 'random seed'})
-    , frame_in: Tangle({min: -1, max: 200, label:'frame_in'})
-    , star_in: Tangle({min: -1, max: 200, label:'star_in'})
-    , speed_in: Tangle({min: -1, max: 20, label:'speed_in'})
+    , frame_in: Inputs.range([0,200], {label:'frame_in', step:1})
+    , star_in: Inputs.range([0,200], {label:'star_in', step:1})
+    , speed_in: Inputs.range([-1,10], {label:'speed_in', step:0.1})
 
   })
 }
@@ -348,6 +348,8 @@ formulaDecorations = {
             )
               set(options.formulae_visible, [classList.find(d => d.includes("calculang_f_")).slice("calculang_f_".length)]);
               /////// causes unnecessary jitter when we already see f document.querySelector('.'+classList.find(d => d.includes("calculang_f_"))).scrollIntoView(scrollIntoViewOpts)
+              //trying it 
+              document.querySelector('.'+classList.find(d => d.includes("calculang_f_"))).scrollIntoView(scrollIntoViewOpts)
 
 
           }
@@ -445,9 +447,9 @@ calculang_identifier_decorations = {
             if (c.length) cc = c[0].slice("calculang_call_".length)
 
             if (e.target.classList.contains("calculang_call") || classList.includes("calculang_title")) { // TODO only if the containing formula is visible, I have options.formulae_visible:
-            console.log('HIHIHIEE')
+            //console.log('HIHIHIEE')
             //debugger;
-              set(viewof hover, cc)
+              set(viewof hover, cc) // too many triggers !
               
             }
           },
@@ -458,7 +460,7 @@ calculang_identifier_decorations = {
             if (c.length) cc = c[0].slice("calculang_call_".length)
 
             if (e.target.classList.contains("calculang_call") || classList.includes("calculang_title")) { // TODO only if the containing formula is visible, I have options.formulae_visible:
-            console.log('HIHIHIEE')
+            //console.log('HIHIHIEE')
             //debugger;
               set(options.formulae_visible, [cc])
               document.querySelector('.calculang_f_'+cc).scrollIntoView(scrollIntoViewOpts)
@@ -843,7 +845,7 @@ mjs_q_eval =  { return ({"raycasting2":[[{name: "ray_angle", value:raycasting2.r
 
 
 fns_with_mjs_q_eval ={ return (
-{"raycasting2":[[{name:"tan_ray_angle",value:raycasting2.tan_ray_angle({ray_angle_in})},{name:"inverse_tan_ray_angle",value:raycasting2.inverse_tan_ray_angle({ray_angle_in})},{name:"ray_looking_up",value:raycasting2.ray_looking_up({ray_angle_in})},{name:"ray_looking_right",value:raycasting2.ray_looking_right({ray_angle_in})},{name:"map",value:raycasting2.map({})},{name:"map_lookup",value:raycasting2.map_lookup({y_in,x_in})},{name:"rhx",value:raycasting2.rhx({step_in,f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rhy",value:raycasting2.rhy({ray_angle_in,step_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"rhv",value:raycasting2.rhv({step_in,f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rh_hit_object",value:raycasting2.rh_hit_object({f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rh_hit_x",value:raycasting2.rh_hit_x({f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rh_hit_y",value:raycasting2.rh_hit_y({f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rh_hit_v",value:raycasting2.rh_hit_v({f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rh_hit_step",value:raycasting2.rh_hit_step({f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rh_hit_distance",value:raycasting2.rh_hit_distance({y_in,x_in,f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rvx",value:raycasting2.rvx({ray_angle_in,step_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"rvy",value:raycasting2.rvy({step_in,f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rvv",value:raycasting2.rvv({ray_angle_in,step_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"rv_hit_object",value:raycasting2.rv_hit_object({ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"rv_hit_x",value:raycasting2.rv_hit_x({ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"rv_hit_y",value:raycasting2.rv_hit_y({ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"rv_hit_v",value:raycasting2.rv_hit_v({ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"rv_hit_step",value:raycasting2.rv_hit_step({ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"rv_hit_distance",value:raycasting2.rv_hit_distance({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"r_hit_h_or_v",value:raycasting2.r_hit_h_or_v({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"r_hit_object",value:raycasting2.r_hit_object({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"r_hit_x",value:raycasting2.r_hit_x({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"r_hit_y",value:raycasting2.r_hit_y({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"r_hit_v",value:raycasting2.r_hit_v({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"r_hit_step",value:raycasting2.r_hit_step({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"fisheye_correction",value:raycasting2.fisheye_correction({fisheye_correction_in})},{name:"ray_distance",value:raycasting2.ray_distance({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in,fisheye_correction_in})},{name:"ray_inverse_distance",value:raycasting2.ray_inverse_distance({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in,fisheye_correction_in})},{name:"keys_stream_function",value:raycasting2.keys_stream_function({keys_stream_function_in})},{name:"keys_stream_version",value:raycasting2.keys_stream_version({keys_stream_version_in})},{name:"keys",value:raycasting2.keys({keys_stream_version_in,keys_stream_function_in,f_in})},{name:"key_up",value:raycasting2.key_up({keys_stream_version_in,keys_stream_function_in,f_in})},{name:"key_down",value:raycasting2.key_down({keys_stream_version_in,keys_stream_function_in,f_in})},{name:"key_left",value:raycasting2.key_left({keys_stream_version_in,keys_stream_function_in,f_in})},{name:"key_right",value:raycasting2.key_right({keys_stream_version_in,keys_stream_function_in,f_in})},{name:"forwardness",value:raycasting2.forwardness({keys_stream_version_in,keys_stream_function_in,f_in})},{name:"leftness",value:raycasting2.leftness({keys_stream_version_in,keys_stream_function_in,f_in})},{name:"player_angle",value:raycasting2.player_angle({f_in,keys_stream_version_in,keys_stream_function_in})},{name:"player_x",value:raycasting2.player_x({f_in,keys_stream_version_in,keys_stream_function_in})},{name:"player_y",value:raycasting2.player_y({f_in,keys_stream_version_in,keys_stream_function_in})},{name:"speed",value:raycasting2.speed({})},{name:"f",value:raycasting2.f({f_in})},{name:"ray_angle",value:raycasting2.ray_angle({ray_angle_in})},{name:"step",value:raycasting2.step({step_in})},{name:"x",value:raycasting2.x({x_in})},{name:"y",value:raycasting2.y({y_in})}]],"savings":[[{name:"balance",value:savings.balance({year_in,duration_in,annual_payment_in,interest_rate_in})},{name:"deposits",value:savings.deposits({year_in,duration_in,annual_payment_in})},{name:"interest",value:savings.interest({year_in,duration_in,annual_payment_in,interest_rate_in})},{name:"year",value:savings.year({year_in})},{name:"annual_payment",value:savings.annual_payment({annual_payment_in})},{name:"duration",value:savings.duration({duration_in})},{name:"interest_rate",value:savings.interest_rate({interest_rate_in})}]],"savings_rec":[[{name:"year",value:savings_rec.year({year_in})},{name:"actual_interest_rates",value:savings_rec.actual_interest_rates({})},{name:"actual_interest_rate_co",value:savings_rec.actual_interest_rate_co({actual_interest_rate_co_in})},{name:"interest_rate",value:savings_rec.interest_rate({year_in,actual_interest_rate_co_in})}],[{name:"annual_payment",value:savings_rec.annual_payment({})},{name:"duration",value:savings_rec.duration({})}],[{name:"balance",value:savings_rec.balance({year_in,actual_interest_rate_co_in})},{name:"deposits",value:savings_rec.deposits({year_in})},{name:"interest",value:savings_rec.interest({year_in,actual_interest_rate_co_in})}]],"starfield":[[{name:"random_seed",value:starfield.random_seed({random_seed_in})},{name:"seeded",value:starfield.seeded({random_seed_in})},{name:"random",value:starfield.random({random_seed_in})},{name:"frame",value:starfield.frame({frame_in})},{name:"star",value:starfield.star({star_in})},{name:"star_life",value:starfield.star_life({})},{name:"x0",value:starfield.x0({random_seed_in,star_in})},{name:"y0",value:starfield.y0({random_seed_in,star_in})},{name:"z0",value:starfield.z0({random_seed_in,star_in})},{name:"speed",value:starfield.speed({speed_in})},{name:"z",value:starfield.z({frame_in,random_seed_in,star_in,speed_in})},{name:"visible",value:starfield.visible({frame_in,random_seed_in,star_in,speed_in})},{name:"x",value:starfield.x({frame_in,random_seed_in,star_in,speed_in})},{name:"y",value:starfield.y({frame_in,random_seed_in,star_in,speed_in})},{name:"px",value:starfield.px({frame_in,random_seed_in,star_in,speed_in})},{name:"py",value:starfield.py({frame_in,random_seed_in,star_in,speed_in})}]],"fizzbuzz":[[{name:"fizz",value:fizzbuzz.fizz({i_in})},{name:"buzz",value:fizzbuzz.buzz({i_in})},{name:"fizzbuzz",value:fizzbuzz.fizzbuzz({i_in})},{name:"i",value:fizzbuzz.i({i_in})}]],"year_remaining":[[{name:"date",value:year_remaining.date({date_in})},{name:"year",value:year_remaining.year({date_in})},{name:"isLeap",value:year_remaining.isLeap({date_in})},{name:"daysInYear",value:year_remaining.daysInYear({date_in})},{name:"daysIntoYearStartTomorrow",value:year_remaining.daysIntoYearStartTomorrow({date_in})},{name:"daysIntoYearStartToday",value:year_remaining.daysIntoYearStartToday({date_in})},{name:"daysIntoYear",value:year_remaining.daysIntoYear({timing_in,date_in})},{name:"fractionIntoYear",value:year_remaining.fractionIntoYear({timing_in,date_in})},{name:"fractionLeftInYear",value:year_remaining.fractionLeftInYear({timing_in,date_in})},{name:"timing",value:year_remaining.timing({timing_in})}]],"simple_loan":[[{name:"v",value:simple_loan.v({year_in,d_i_year_in,i_in,d_i_in})},{name:"v_pow_term_left",value:simple_loan.v_pow_term_left({year_in,d_i_year_in,i_in,d_i_in,term_in})},{name:"repayment_amount",value:simple_loan.repayment_amount({year_in,principal_in,d_i_year_in,i_in,d_i_in,missed_repayment_year_in,skip_interest_in,term_in})},{name:"interest",value:simple_loan.interest({year_in,principal_in,missed_repayment_year_in,skip_interest_in,term_in,d_i_year_in,i_in,d_i_in})},{name:"capital_repayment",value:simple_loan.capital_repayment({year_in,missed_repayment_year_in,skip_interest_in,principal_in,d_i_year_in,i_in,d_i_in,term_in})},{name:"interest_repayment",value:simple_loan.interest_repayment({year_in,missed_repayment_year_in,skip_interest_in,principal_in,d_i_year_in,i_in,d_i_in,term_in})},{name:"repayment_due",value:simple_loan.repayment_due({year_in,term_in})},{name:"repayment",value:simple_loan.repayment({year_in,missed_repayment_year_in,skip_interest_in,principal_in,d_i_year_in,i_in,d_i_in,term_in})},{name:"balance",value:simple_loan.balance({year_in,principal_in,d_i_year_in,i_in,d_i_in,missed_repayment_year_in,skip_interest_in,term_in})},{name:"interest_rate",value:simple_loan.interest_rate({year_in,d_i_year_in,i_in,d_i_in})},{name:"principal",value:simple_loan.principal({principal_in})},{name:"i",value:simple_loan.i({i_in})},{name:"term",value:simple_loan.term({term_in})},{name:"year",value:simple_loan.year({year_in})},{name:"missed_repayment_year",value:simple_loan.missed_repayment_year({missed_repayment_year_in})},{name:"skip_interest",value:simple_loan.skip_interest({skip_interest_in})},{name:"d_i_year",value:simple_loan.d_i_year({d_i_year_in})},{name:"d_i",value:simple_loan.d_i({d_i_in})}]]}
+{"raycasting2":[[{name:"tan_ray_angle",value:raycasting2.tan_ray_angle({ray_angle_in})},{name:"inverse_tan_ray_angle",value:raycasting2.inverse_tan_ray_angle({ray_angle_in})},{name:"ray_looking_up",value:raycasting2.ray_looking_up({ray_angle_in})},{name:"ray_looking_right",value:raycasting2.ray_looking_right({ray_angle_in})},{name:"map",value:raycasting2.map({})},{name:"map_lookup",value:raycasting2.map_lookup({y_in,x_in})},{name:"rhx",value:raycasting2.rhx({step_in,f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rhy",value:raycasting2.rhy({ray_angle_in,step_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"rhv",value:raycasting2.rhv({step_in,f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rh_hit_object",value:raycasting2.rh_hit_object({f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rh_hit_x",value:raycasting2.rh_hit_x({f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rh_hit_y",value:raycasting2.rh_hit_y({f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rh_hit_v",value:raycasting2.rh_hit_v({f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rh_hit_step",value:raycasting2.rh_hit_step({f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rh_hit_distance",value:raycasting2.rh_hit_distance({y_in,x_in,f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rvx",value:raycasting2.rvx({ray_angle_in,step_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"rvy",value:raycasting2.rvy({step_in,f_in,keys_stream_version_in,keys_stream_function_in,ray_angle_in})},{name:"rvv",value:raycasting2.rvv({ray_angle_in,step_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"rv_hit_object",value:raycasting2.rv_hit_object({ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"rv_hit_x",value:raycasting2.rv_hit_x({ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"rv_hit_y",value:raycasting2.rv_hit_y({ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"rv_hit_v",value:raycasting2.rv_hit_v({ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"rv_hit_step",value:raycasting2.rv_hit_step({ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"rv_hit_distance",value:raycasting2.rv_hit_distance({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"r_hit_h_or_v",value:raycasting2.r_hit_h_or_v({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"r_hit_object",value:raycasting2.r_hit_object({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"r_hit_x",value:raycasting2.r_hit_x({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"r_hit_y",value:raycasting2.r_hit_y({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"r_hit_v",value:raycasting2.r_hit_v({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"r_hit_step",value:raycasting2.r_hit_step({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in})},{name:"fisheye_correction",value:raycasting2.fisheye_correction({fisheye_correction_in})},{name:"ray_distance",value:raycasting2.ray_distance({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in,fisheye_correction_in})},{name:"ray_inverse_distance",value:raycasting2.ray_inverse_distance({y_in,x_in,ray_angle_in,f_in,keys_stream_version_in,keys_stream_function_in,fisheye_correction_in})},{name:"keys_stream_function",value:raycasting2.keys_stream_function({keys_stream_function_in})},{name:"keys_stream_version",value:raycasting2.keys_stream_version({keys_stream_version_in})},{name:"keys",value:raycasting2.keys({keys_stream_version_in,keys_stream_function_in,f_in})},{name:"key_up",value:raycasting2.key_up({keys_stream_version_in,keys_stream_function_in,f_in})},{name:"key_down",value:raycasting2.key_down({keys_stream_version_in,keys_stream_function_in,f_in})},{name:"key_left",value:raycasting2.key_left({keys_stream_version_in,keys_stream_function_in,f_in})},{name:"key_right",value:raycasting2.key_right({keys_stream_version_in,keys_stream_function_in,f_in})},{name:"forwardness",value:raycasting2.forwardness({keys_stream_version_in,keys_stream_function_in,f_in})},{name:"leftness",value:raycasting2.leftness({keys_stream_version_in,keys_stream_function_in,f_in})},{name:"player_angle",value:raycasting2.player_angle({f_in,keys_stream_version_in,keys_stream_function_in})},{name:"player_x",value:raycasting2.player_x({f_in,keys_stream_version_in,keys_stream_function_in})},{name:"player_y",value:raycasting2.player_y({f_in,keys_stream_version_in,keys_stream_function_in})},{name:"speed",value:raycasting2.speed({})},{name:"f",value:raycasting2.f({f_in})},{name:"ray_angle",value:raycasting2.ray_angle({ray_angle_in})},{name:"step",value:raycasting2.step({step_in})},{name:"x",value:raycasting2.x({x_in})},{name:"y",value:raycasting2.y({y_in})}]],"savings":[[{name:"balance",value:savings.balance({year_in,duration_in,annual_payment_in,interest_rate_in})},{name:"deposits",value:savings.deposits({year_in,duration_in,annual_payment_in})},{name:"interest",value:savings.interest({year_in,duration_in,annual_payment_in,interest_rate_in})},{name:"year",value:savings.year({year_in})},{name:"annual_payment",value:savings.annual_payment({annual_payment_in})},{name:"duration",value:savings.duration({duration_in})},{name:"interest_rate",value:savings.interest_rate({interest_rate_in})}]],"savings_rec":[[{name:"year",value:savings_rec.year({year_in})},{name:"actual_interest_rates",value:savings_rec.actual_interest_rates({})},{name:"actual_interest_rate_co",value:savings_rec.actual_interest_rate_co({actual_interest_rate_co_in})},{name:"interest_rate",value:savings_rec.interest_rate({year_in,actual_interest_rate_co_in})}],[{name:"annual_payment",value:savings_rec.annual_payment({})},{name:"duration",value:savings_rec.duration({})}],[{name:"balance",value:savings_rec.balance({year_in,actual_interest_rate_co_in})},{name:"deposits",value:savings_rec.deposits({year_in})},{name:"interest",value:savings_rec.interest({year_in,actual_interest_rate_co_in})}]],"starfield":[[{name:"random_seed",value:starfield.random_seed({random_seed_in})},{name:"seeded",value:starfield.seeded({random_seed_in})},{name:"random",value:starfield.random({random_seed_in})},{name:"frame",value:starfield.frame({frame_in})},{name:"star",value:starfield.star({star_in})},{name:"x0",value:starfield.x0({random_seed_in,star_in})},{name:"y0",value:starfield.y0({random_seed_in,star_in})},{name:"z0",value:starfield.z0({random_seed_in,star_in})},{name:"speed",value:starfield.speed({speed_in})},{name:"z",value:starfield.z({frame_in,random_seed_in,star_in,speed_in})},{name:"visible",value:starfield.visible({frame_in,random_seed_in,star_in,speed_in})},{name:"x",value:starfield.x({frame_in,random_seed_in,star_in,speed_in})},{name:"y",value:starfield.y({frame_in,random_seed_in,star_in,speed_in})},{name:"px",value:starfield.px({frame_in,random_seed_in,star_in,speed_in})},{name:"py",value:starfield.py({frame_in,random_seed_in,star_in,speed_in})}]],"fizzbuzz":[[{name:"fizz",value:fizzbuzz.fizz({i_in})},{name:"buzz",value:fizzbuzz.buzz({i_in})},{name:"fizzbuzz",value:fizzbuzz.fizzbuzz({i_in})},{name:"i",value:fizzbuzz.i({i_in})}]],"year_remaining":[[{name:"date",value:year_remaining.date({date_in})},{name:"year",value:year_remaining.year({date_in})},{name:"isLeap",value:year_remaining.isLeap({date_in})},{name:"daysInYear",value:year_remaining.daysInYear({date_in})},{name:"daysIntoYearStartTomorrow",value:year_remaining.daysIntoYearStartTomorrow({date_in})},{name:"daysIntoYearStartToday",value:year_remaining.daysIntoYearStartToday({date_in})},{name:"daysIntoYear",value:year_remaining.daysIntoYear({timing_in,date_in})},{name:"fractionIntoYear",value:year_remaining.fractionIntoYear({timing_in,date_in})},{name:"fractionLeftInYear",value:year_remaining.fractionLeftInYear({timing_in,date_in})},{name:"timing",value:year_remaining.timing({timing_in})}]],"simple_loan":[[{name:"v",value:simple_loan.v({year_in,d_i_year_in,i_in,d_i_in})},{name:"v_pow_term_left",value:simple_loan.v_pow_term_left({year_in,d_i_year_in,i_in,d_i_in,term_in})},{name:"repayment_amount",value:simple_loan.repayment_amount({year_in,principal_in,d_i_year_in,i_in,d_i_in,missed_repayment_year_in,skip_interest_in,term_in})},{name:"interest",value:simple_loan.interest({year_in,principal_in,missed_repayment_year_in,skip_interest_in,term_in,d_i_year_in,i_in,d_i_in})},{name:"capital_repayment",value:simple_loan.capital_repayment({year_in,missed_repayment_year_in,skip_interest_in,principal_in,d_i_year_in,i_in,d_i_in,term_in})},{name:"interest_repayment",value:simple_loan.interest_repayment({year_in,missed_repayment_year_in,skip_interest_in,principal_in,d_i_year_in,i_in,d_i_in,term_in})},{name:"repayment_due",value:simple_loan.repayment_due({year_in,term_in})},{name:"repayment",value:simple_loan.repayment({year_in,missed_repayment_year_in,skip_interest_in,principal_in,d_i_year_in,i_in,d_i_in,term_in})},{name:"balance",value:simple_loan.balance({year_in,principal_in,d_i_year_in,i_in,d_i_in,missed_repayment_year_in,skip_interest_in,term_in})},{name:"interest_rate",value:simple_loan.interest_rate({year_in,d_i_year_in,i_in,d_i_in})},{name:"principal",value:simple_loan.principal({principal_in})},{name:"i",value:simple_loan.i({i_in})},{name:"term",value:simple_loan.term({term_in})},{name:"year",value:simple_loan.year({year_in})},{name:"missed_repayment_year",value:simple_loan.missed_repayment_year({missed_repayment_year_in})},{name:"skip_interest",value:simple_loan.skip_interest({skip_interest_in})},{name:"d_i_year",value:simple_loan.d_i_year({d_i_year_in})},{name:"d_i",value:simple_loan.d_i({d_i_in})}]]}
 )}
 
 
@@ -885,6 +887,9 @@ i = 0 // allows for bug processing simple_loan
 // is this a big bottleneck?
 fmt2 = (name, value) => {
   name = name.toLowerCase();
+  if (name == 'x' || name == 'y') return d3.format(',.4f')(value)
+  if (name == "map") return "[[..]]"
+  if (Array.isArray(value)) return "[..]"
   if (modelname == 'fizzbuzz') return typeof value == 'number' ? d3.format(',.0f')(value) : value // works well for fizzbuzz
       if (name == 'now' || name == 'date') return d3.timeFormat("%Y-%m-%d")(value)
 
@@ -894,14 +899,13 @@ fmt2 = (name, value) => {
     if (typeof value == 'number')
     return d3.format(".5k")(value)
   }
-  if (name == "map") return "[[..]]"
   if (name == "v") return d3.format(",.5f")(value)
   if (name == "v_pow_term_left") return d3.format(",.5f")(value)
   if (name.includes("_hit_object")) return "{..}"//`{x: ${value.x.toFixed(2)}, y: ${value.y.toFixed(2)}, v: ${value.v}, step_in: ${value.step_in}}`
   if (name.includes("_co")) return d3.format(",.0f")(value)
   if (name.includes("rate") && name.includes("interest")) return d3.format(".3%")(value)
   if (name.includes("rate") || name.includes("percent") || name.includes("fraction")) return d3.format(".2%")(value)
-  if ((name.includes("year")) || name.includes("term") || name.includes("duration") || name.includes("frame")) return d3.format(",.0f")(value)
+  if ((name.includes("year")) || name.includes("term") || name.includes("duration") || name.includes("frame")) return d3.format(".0f")(value)
   if (name.includes("object") || typeof value != 'number') return JSON.stringify(value)
 
   return d3.format(fmt_fmt)(value)
@@ -1085,7 +1089,7 @@ Inputs.button([
 
 viewof options = Inputs.checkbox(["export consts", "inputs"/*, "lists (todo)"*/], {label: "unhide?", value: ["export consts", "inputs"]})
 
-viewof overlay = Inputs.toggle({ label: "overlay?", value: false })
+viewof overlay = Inputs.toggle({ label: "overlay?", value: q.get('principal_in') ? true : false })
 
 //md`---`
 
@@ -1095,7 +1099,17 @@ viewof cul_js = Inputs.radio(["📝 calculang source 💬", "✨ JS/ESM output �
 cul_js_cul = cul_js == "📝 calculang source 💬" ? true : false
 viewof calculang_source_nomemo = Inputs.checkbox(["nomemo"], {value: ["nomemo"], label: 'see memo? 💀', disabled:cul_js=="📝 calculang source 💬"})
 
-viewof formulae_visible = Inputs.input(formulae_all)// modelname == 'savings' ? ["balance", "interest", "deposits"] : modelname == 'fizzbuzz' ? formulae_all : [])
+viewof formulae_visible = Inputs.input(modelname == 'simple_loan' ? ['repayment_amount'] : /*modelname == 'year_remaining' ? ['fractionLeftInYear'] :*/ formulae_all)// modelname == 'year_remaining' ? ['fractionLeftInYear'] : modelname == 'savings' ? ["balance", "interest", "deposits"] : modelname == 'fizzbuzz' ? formulae_all : [])
+
+{
+  if (modelname == 'year_remaining') // doesn't work ?
+    document.querySelector('.calculang_f_'+"fractionLeftInYear").scrollIntoView(scrollIntoViewOpts)
+}
+
+{
+  if (modelname == 'raycasting2')
+  set(viewof overlay, false)
+}
 
 viewof fmt_fmt = Inputs.text({value:",.2f", label: 'format'})
 
@@ -1174,6 +1188,14 @@ patch: s => {s.signals.push({
 })
 
 
+
+
+```
+
+```{ojs}
+//| output: false
+
+
 {f_in;
     mutable show_ray = false;
     set(viewof show_ray_h, false)
@@ -1185,13 +1207,6 @@ patch: s => {s.signals.push({
       set(viewof overlay, true)
     })
   }
-
-
-```
-
-```{ojs}
-//| output: false
-
 
 viewof scene_size = Inputs.range([0.1,1], {value:0.5, label: 'size'})
 
@@ -1209,38 +1224,6 @@ viewof show_ray_v = Inputs.toggle({label: 'show v ray?', value: false})
 }
 ```
 
-<details><summary>🤫</summary>
-
-
-```{ojs}
-
-mutable aaa = []
-
-viewof refresh = Inputs.button("refresh calculang model")
-
-raycasting222 = aaa[version]
-
-raycasting_latest = await require(`http://localhost:8080/raycasting/raycasting.js?${refresh}${Date.now()}`);
-raycasting2 = await require(`http://localhost:8080/raycasting/raycasting.js?${refresh}${Date.now()}`);
-simple_loan = await require(`https://calculang.dev/models/simple-loan/simple-loan.js`);
-//emissions_my_lifetime = //await require(`http://localhost:8080/emissions-my-lifetime/emissions-my-lifetime.js?${refresh}${Date.now()}`);
-
-
-//htl.html`<button onclick=${() => (mutable aaa = [...mutable aaa, raycasting_latest])}>refresh 2</button>`
-
-viewof version = Inputs.range([-1,10], {label: 'v', value: -1, step:1})
-
-
-//htl.html`<button onclick=${() => (mutable scene_data0 = scene_data)}>insert data -> vega editor (dev)</button>`
-
-viewof guides = Inputs.toggle({ label: "guides", value: false })
-
-//viewof model_x = Inputs.range([0,10], {step:1, label: 'model version'})
-
-viewof ray_angle_step_size = Inputs.select([0.02,0.01,0.005], {label: 'ray angle step size'})
-
-```
-</details>
 
 ```{ojs}
 //| output: false
@@ -1533,6 +1516,40 @@ ray_v_data = _.range(0,raycasting2.rv_hit_step({...c})+0.1).map(step_in => ({
 }))
 
 
+
+```
+</details>
+
+
+<details><summary>🤫</summary>
+
+
+```{ojs}
+
+mutable aaa = []
+
+viewof refresh = Inputs.button("hot reload")
+
+raycasting222 = aaa[version]
+
+raycasting_latest = await require(`http://localhost:8080/raycasting/raycasting.js?${refresh}${Date.now()}`);
+raycasting2 = await require(`http://localhost:8080/raycasting/raycasting.js?${refresh}${Date.now()}`);
+simple_loan = await require(`https://calculang.dev/models/simple-loan/simple-loan.js`);
+//emissions_my_lifetime = //await require(`http://localhost:8080/emissions-my-lifetime/emissions-my-lifetime.js?${refresh}${Date.now()}`);
+
+
+//htl.html`<button onclick=${() => (mutable aaa = [...mutable aaa, raycasting_latest])}>refresh 2</button>`
+
+viewof version = Inputs.range([-1,10], {label: 'hot reload version', value: -1, step:1})
+
+
+//htl.html`<button onclick=${() => (mutable scene_data0 = scene_data)}>insert data -> vega editor (dev)</button>`
+
+viewof guides = Inputs.toggle({ label: "guides", value: false })
+
+//viewof model_x = Inputs.range([0,10], {step:1, label: 'model version'})
+
+viewof ray_angle_step_size = Inputs.select([0.02,0.01,0.005], {label: 'step size (resolution)', value: 0.01})
 
 ```
 </details>
@@ -2101,7 +2118,7 @@ savings_data = calcuvegadata({
   models: [savings],
   spec: savings_spec,
   domains: {
-    year_in: _.range(-1,duration_in+0.1),
+    year_in: _.range(0,duration_in+0.1),
     formula: ['balance', 'interest', 'deposits']
   },
   input_cursors: [{duration_in,interest_rate_in,annual_payment_in}]
@@ -2245,9 +2262,9 @@ starfield_spec = { return ({
   background: 'black',//'lightblue',
   "data": {"name": "data"},
   "datasets": { "data": starfield_data0},
-    "height": 400, width: 400,
+    "height": 500, width: 500,
     layer: [{
-    "mark": {type: "point", tooltip: true, clip: false},
+    "mark": {type: "point", filled: true, tooltip: false, clip: false},
 
   params: [
     {
@@ -2278,13 +2295,13 @@ starfield_spec = { return ({
         "field": "x",
         "type": "quantitative",
         scale: {zero:false, nice: false, domain:[-50,50]},
-        //axis: {format:".0f", grid: false, tickCount:12, ticks:true }
+        axis: {format:".0f", gridOpacity:0.1, tickCount:12, ticks:true }
       },
       "y": {
         "field": "y",
         "type": "quantitative",
         scale: {zero:false, nice: false, domain:[-50,50]},
-        //"axis": { "grid": false, values: [0,1], format: '.0f'}
+        "axis": { "grid": false, gridOpacity:0.1, tickCount:12, ticks:true, format: '.0f'}
       },
       "size": {
         "field": "z",
@@ -2294,7 +2311,7 @@ starfield_spec = { return ({
         //scale: {zero:false, nice: false, domain:[-50,50]},
         //"axis": { "grid": false, values: [0,1], format: '.0f'}
       },
-      color: {value:'white'}, //opacity: {value:1}
+      color: {value:'white'}, opacity: {value:1}
     }
     },
     {
@@ -2341,18 +2358,6 @@ starfield_data = calcuvegadata({
 
 
 viewof starfield_viz = embed(starfield_spec, {actions})
-
-{
-  starfield_viz.data("data", starfield_data)/*.resize()*/.run();
-}
-
-{
-  starfield_viz.addSignalListener('star_select', (_, b) => {
-    set(viewof star_in, b.star_in[0])
-    //console.log(b)
-  })
-}
-
 /*
 {
   leap_year_viz.signal('brush', { x: [2000, 1990+50]}).run();
@@ -2365,7 +2370,25 @@ htl.html`<button onclick=${() => {leap_year_viz.signal('brush', { year_in: [2000
 
 mutable starfield_data0 = [] // includes data in spec for when I Open in Vega Editor
 
-htl.html`<button onclick=${() => (mutable starfield_data0 = starfield_data)}>insert data -> vega editor (dev)</button>`
+//htl.html`<button onclick=${() => (mutable starfield_data0 = starfield_data)}>insert data -> vega editor (dev)</button>`
+
+```
+
+```{ojs}
+//| output: false
+
+
+
+{
+  starfield_viz.data("data", starfield_data)/*.resize()*/.run();
+}
+
+{
+  starfield_viz.addSignalListener('star_select', (_, b) => {
+    set(viewof star_in, b.star_in[0])
+    //console.log(b)
+  })
+}
 
 ```
 
@@ -2381,6 +2404,7 @@ htl.html`<button onclick=${() => (mutable starfield_data0 = starfield_data)}>ins
 ```{ojs}
 //| output: false
 
+
 {
   savings_actualator;
   window.dispatchEvent(new Event('resize'))
@@ -2395,31 +2419,33 @@ savings_actualator.addSignalListener("y", (_, r) => { // this didn't improve per
 }) && 1
 
 
-```
-
-```{ojs}
-//| echo: false
-
-import {calcudata, calcuvizspec} from '@declann/little-calcu-helpers'
-
-
-savings_rec_data = calcudata({
-  models: [savings_rec],
-  input_domains: {year_in:_.range(0,6), actual_interest_rate_co_in: [actual_interest_rate_co_in-1,actual_interest_rate_co_in]},
-  input_cursors: [{annual_payment_in}], 
-  outputs: ['balance','interest','deposits','interest_rate']
-})
-
 {
   savings_actualator.addEventListener('click', (event, item) => { console.log(item) }) 
   // difficult for layers?
 }
 
+
+
+```
+
+```{ojs}
+//| echo: false
+
+import {calcudata, calcuvizspec} from '@declann/little-calculang-helpers-perf'
+
+
+savings_rec_data = calcudata({
+  models: [savings_rec],
+  input_domains: {year_in:_.range(0,duration_in+0.1), actual_interest_rate_co_in: [actual_interest_rate_co_in-1,actual_interest_rate_co_in]},
+  input_cursors: [{annual_payment_in}], 
+  outputs: ['balance','interest','deposits','interest_rate']
+})
+
 viewof savings_actualator = embed(
   {
   "data": {"name": "data"},
   width: "container",
-  height: 300,
+  height: 350,
   "transform": [
     {
       "window": [{"op": "lag", "field": "value", "as": "A_value"}],
@@ -2466,8 +2492,8 @@ viewof savings_actualator = embed(
   }
   },{
   "mark": {
-    "type": "text", dx:20, dy: -10,
-    "fontSize": 12,
+    "type": "text", dx:95, dy: -10,
+    "fontSize": 22,
     "fontWeight": "bold",//
     "tooltip": false
   },
@@ -2674,19 +2700,15 @@ viewof loan_viz = embed(loan_spec)
 
 
 
-:::::
-
-
-
-
-
-<!------------- --->
-
 ```{ojs}
 //| output: false
 
 html`
 <style>
+
+.fui-FluentProvider{
+  display: none;
+}
 
 .vega-embed {
   width: 100%;
@@ -2702,7 +2724,7 @@ html`
 }
   .answer .tooltiptext  {
     /*border: 2px dashed black;*/
-    background: lightgreen;
+    background: #af5a;
     padding: 10px;
     border-radius: 15px;
   
@@ -2761,7 +2783,12 @@ pre {
 
 viewof color = Inputs.text({ label: "color", value: "#0D0" })
 
-import {Tangle} from "@declann/colored-tangle" // todo use https://jsfiddle.net/api/post/library/pure/ ?
+//import {Tangle} from "@declann/colored-tangle" // todo use https://jsfiddle.net/api/post/library/pure/ ?
 // https://www.redblobgames.com/making-of/draggable/examples.html
 
+
 ```
+
+
+
+:::::

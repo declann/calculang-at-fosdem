@@ -37,3 +37,9 @@ To facilitate developing **different tools** it may help if I cleanup different 
 ### coordination
 
 A lot of the coordination between visuals and formulas is defined in cells that you can find by searching `set(viewof formulae_visible` to select formulae, though I also manipulate inputs from the visual size. Although manual coded, through formulas mapped directly to visual channels I think there may be a more uniform approach for certain cases.
+
+### known issues
+
+- Loan checker and savings calculator both share `year_in` so 2x sets of calcs are triggered by changes; this might explain why going into loan checker and increasing the year destroys performance?
+
+- When you are using the overlayed number to navigate, they will run a handler that sets parameters to match the number you clicked. When you click the identifier, it won't change inputs. This is a bug with the overlay - for now, to drill through numbers, click on the numbers
