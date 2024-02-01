@@ -1,5 +1,5 @@
 ---
-title: "calcing with calculang"
+title: "calc with calculang"
 author:
   - name: "Declan 🧮👨‍💻🧉"
     url: "https://calcwithdec.dev/about.html"
@@ -26,8 +26,19 @@ format:
 
 ---
 
+## Links
 
-# 📝 Imaginary loan paper
+The "experimental website" is   
+
+# Formula Observations
+
+1. looks like JS
+2. 2x primitives: formulas and inputs
+3. both are functions (uniformity)
+4. brackets mostly empty (input inference)
+
+
+# 📝 Imaginary paper
 
 ```{ojs}
 //| echo: false
@@ -36,15 +47,13 @@ md`You borrow **€ ${d3.format(',.0f')(principal_in)}** at **${d3.format('.1%')
 md`Your repayment amount is **€ ${d3.format(',.2f')(simple_loan.repayment({principal_in,i_in,term_in,year_in:1}))} pa**.`
 ```
 
-**Correct?**
-
 <br/>
 
 ```{ojs}
 //| echo: false
-viewof show_qr_code = Inputs.checkbox(["show QR code ⚠️"], {value: []}) //
+viewof show_qr_code = Inputs.checkbox([""], {value: []}) //
 
-qrcode = html`<div style="max-width: 300px;${show_qr_code.length == 0 ? 'opacity:0.03' : ''}">${await qr.toString(qr_url, {
+qrcode = html`<div style="max-width: 300px;${show_qr_code.length == 0 ? 'opacity:0.01' : ''}">${await qr.toString(qr_url, {
   margin: 10
 })}</div>`
 
@@ -80,4 +89,42 @@ md`Calculated repayment is **€ ${d3.format(',.2f')(simple_loan.repayment({prin
 ```{ojs}
 simple_loan = require(`https://calcy-quarty-vizys-online.pages.dev/models/loan-validator/simple-loan.js`)
 
+```
+
+##
+
+
+
+# Limitations
+
+- DX
+
+  - especially error reporting (generate types?)
+  - and coding recurrances with 0 visual space is hard!
+  - the nice things really come at the end and not the start
+
+- Performance
+
+  - Multiple-recurrances -> JS engine 🤯
+  - Only optimisation is memoization, but not tactical
+
+- Community/Support
+
+# calculang.party
+
+- community gallery
+
+- [join on matrix](https://matrix.to/#/#calculang.party:matrix.org) or [contact me](https://calcwithdec.dev/about.html)
+
+# Transparency, workings
+
+# Questions?
+
+![](./logo4.svg) <!--{width=100}-->
+
+```{ojs}
+//| echo: false
+import { calcuvizspec } from "@declann/little-calcu-helpers"
+
+embed = require('vega-embed');
 ```

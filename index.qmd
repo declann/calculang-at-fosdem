@@ -10,6 +10,8 @@ format:
         href: https://github.com/declann/calculang-at-fosdem
       - text: Slides
         href: /slides.html
+      - text: calculang.dev
+        href: https://calculang.dev
       - text: Reactive Workings
         href: /reactive-workings-notes.html
       - icon: twitter

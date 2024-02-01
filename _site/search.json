@@ -28,10 +28,24 @@
     "text": "calculang compilation & introspection\nThe calculang compiler does 2 jobs to convert calculang code into valid Javascript:\n\ndetermine and populate inputs in calls and in function definitions (input inference)\nimport appropriate function definitions to implement calculangs function precedence (parent-defined functions take precedence)\n\nThese language features are intended to make functions that are flexible.\n\nintrospection info and source maps\nAs the compiler manipulates calculang functions and calls, it also outputs a JSON file (.introspection.json) which provides information about calculang scopes, calculang functions and their determined inputs, and calls - including source code references.\nCombined with source maps - also output by the compiler - and given purity and separation then we can develop tools to interact with numbers and their workings including calculating them in real time or “reactively”.\n\n\nreactive workings\nIn reactive workings folder I output OJS to determine values used by reactive workings overlay.\nThrough CodeMirror plugins and introspection info, I display these values beside calls.\nThrough OJS reactive runtime, they update and coordinate on numerous interactions in the page.\nThis is a bit like instrumentation, except without manipulation of the original code as they are a new execution which is ok due to purity (note that if using memoization it will be an extremely cheap “new execution” to look at workings).\nEverything here is a little hurried, hacky and draft - developed as a demo of bringing the above together to make a tool - but OJS reactivity does hold together and will probably land for all examples on calculang.dev - feedback and improvements welcome!\nTo facilitate developing different tools it may help if I cleanup different pieces in reactive-workings or consider a more convenient API. Interested in suggestions and definitely reach out with usecases.\n\n\ncoordination\nA lot of the coordination between visuals and formulas is defined in cells that you can find by searching set(viewof formulae_visible to select formulae, though I also manipulate inputs from the visual size. Although manual coded, through formulas mapped directly to visual channels I think there may be a more uniform approach for certain cases.\n\n\nknown issues\n\nLoan checker and savings calculator both share year_in so 2x sets of calcs are triggered by changes; this might explain why going into loan checker and increasing the year destroys performance?\nWhen you are using the overlayed number to navigate, they will run a handler that sets parameters to match the number you clicked. When you click the identifier, it won’t change inputs. This is a bug with the overlay - for now, to drill through numbers, click on the numbers"
   },
   {
+    "objectID": "slides-revealjs.html#links",
+    "href": "slides-revealjs.html#links",
+    "title": "calc with calculang",
+    "section": "Links",
+    "text": "Links\nThe “experimental website” is"
+  },
+  {
     "objectID": "slides.html",
     "href": "slides.html",
-    "title": "calcing with calculang",
+    "title": "calc with calculang",
     "section": "",
-    "text": "📝 Imaginary loan paper\n\n\nCode\nmd`You borrow **€ ${d3.format(',.0f')(principal_in)}** at **${d3.format('.1%')(i_in)}** for **${term_in} years**.`\n\n\n\n\n\n\n\n\n\nCode\nmd`Your repayment amount is **€ ${d3.format(',.2f')(simple_loan.repayment({principal_in,i_in,term_in,year_in:1}))} pa**.`\n\n\n\n\n\n\n\n\n\nCorrect?\n\n\n\nCode\nviewof show_qr_code = Inputs.checkbox([\"show QR code ⚠️\"], {value: []}) //\n\nqrcode = html`&lt;div style=\"max-width: 300px;${show_qr_code.length == 0 ? 'opacity:0.03' : ''}\"&gt;${await qr.toString(qr_url, {\n  margin: 10\n})}&lt;/div&gt;`\n\nqr = require('https://unpkg.com/qrcode@1.4.4/build/qrcode.min.js')\n\nparams = ({principal_in,i_in,term_in})\nqr_params = Object.entries(params).map(e =&gt; e[0] + '=' + e[1]).join('&')\nqr_url = `http://calcuvizspec-presentation.pages.dev/calcuvizspec-revealjs.html?${qr_params}#/simple-loan`\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ninputs ⚙️\n\n\n\nCode\nviewof principal_in = Inputs.range([0, 500000], {label: \"Principal 💰 €\", step:10000, value:+(100000)});\n\nviewof i_in = Inputs.range([-5/100, 20/100], {label: \"Interest rate\", step: 0.1/100, value: +(4/100)}); // neg interest is probably contrary and not tested well\n\nviewof term_in = Inputs.select([25, 10, 5, 30, 35, 40, 1, 480], {label: \"Term (years)\", value: +(10)});\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCode\nmd`Calculated repayment is **€ ${d3.format(',.2f')(simple_loan.repayment({principal_in,i_in,term_in,year_in:1}))} pa**.`\n\n\n\n\n\n\n\n\n\nCode\nsimple_loan = require(`https://calcy-quarty-vizys-online.pages.dev/models/loan-validator/simple-loan.js`)"
+    "text": "The “experimental website” is"
+  },
+  {
+    "objectID": "slides.html#links",
+    "href": "slides.html#links",
+    "title": "calc with calculang",
+    "section": "",
+    "text": "The “experimental website” is"
   }
 ]

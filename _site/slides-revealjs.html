@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.4.543">
 
   <meta name="author" content="Declan 🧮👨‍💻🧉">
-  <title>calculang-at-fosdem - calcing with calculang</title>
+  <title>calculang-at-fosdem - calc with calculang</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -388,7 +388,7 @@
   </style>
   <script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
   <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
-<meta name="twitter:title" content="calculang-at-fosdem - calcing with calculang">
+<meta name="twitter:title" content="calculang-at-fosdem - calc with calculang">
 <meta name="twitter:card" content="summary">
 </head>
 <body class="quarto-light">
@@ -396,7 +396,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">calcing with calculang</h1>
+  <h1 class="title">calc with calculang</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -407,12 +407,27 @@
 </div>
 
 </section>
-<section id="imaginary-loan-paper" class="title-slide slide level1 center">
-<h1>📝 Imaginary loan paper</h1>
+<section id="links" class="slide level2">
+<h2>Links</h2>
+<p>The “experimental website” is</p>
+</section>
+<section id="formula-observations" class="title-slide slide level1 center scrollable">
+<h1>Formula Observations</h1>
+<ol type="1">
+<li>looks like JS</li>
+<li>2x primitives: formulas and inputs</li>
+<li>both are functions (uniformity)</li>
+<li>brackets mostly empty (input inference)</li>
+</ol>
+</section>
+
+<section>
+<section id="imaginary-paper" class="title-slide slide level1 center">
+<h1>📝 Imaginary paper</h1>
 <div class="cell">
 <details class="code-fold hidden">
 <summary>Code</summary>
-<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="34" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 33;"><span id="cb1-34"><a></a><span class="fu">md</span><span class="vs">`You borrow **€ </span><span class="sc">${</span>d3<span class="op">.</span><span class="fu">format</span>(<span class="st">',.0f'</span>)(principal_in)<span class="sc">}</span><span class="vs">** at **</span><span class="sc">${</span>d3<span class="op">.</span><span class="fu">format</span>(<span class="st">'.1%'</span>)(i_in)<span class="sc">}</span><span class="vs">** for **</span><span class="sc">${</span>term_in<span class="sc">}</span><span class="vs"> years**.`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="45" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 44;"><span id="cb1-45"><a></a><span class="fu">md</span><span class="vs">`You borrow **€ </span><span class="sc">${</span>d3<span class="op">.</span><span class="fu">format</span>(<span class="st">',.0f'</span>)(principal_in)<span class="sc">}</span><span class="vs">** at **</span><span class="sc">${</span>d3<span class="op">.</span><span class="fu">format</span>(<span class="st">'.1%'</span>)(i_in)<span class="sc">}</span><span class="vs">** for **</span><span class="sc">${</span>term_in<span class="sc">}</span><span class="vs"> years**.`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -423,7 +438,7 @@
 </div>
 <details class="code-fold hidden">
 <summary>Code</summary>
-<div class="sourceCode cell-code hidden" id="cb2" data-startfrom="36" data-source-offset="-116"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 35;"><span id="cb2-36"><a></a><span class="fu">md</span><span class="vs">`Your repayment amount is **€ </span><span class="sc">${</span>d3<span class="op">.</span><span class="fu">format</span>(<span class="st">',.2f'</span>)(simple_loan<span class="op">.</span><span class="fu">repayment</span>({principal_in<span class="op">,</span>i_in<span class="op">,</span>term_in<span class="op">,</span><span class="dt">year_in</span><span class="op">:</span><span class="dv">1</span>}))<span class="sc">}</span><span class="vs"> pa**.`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb2" data-startfrom="47" data-source-offset="-116"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 46;"><span id="cb2-47"><a></a><span class="fu">md</span><span class="vs">`Your repayment amount is **€ </span><span class="sc">${</span>d3<span class="op">.</span><span class="fu">format</span>(<span class="st">',.2f'</span>)(simple_loan<span class="op">.</span><span class="fu">repayment</span>({principal_in<span class="op">,</span>i_in<span class="op">,</span>term_in<span class="op">,</span><span class="dt">year_in</span><span class="op">:</span><span class="dv">1</span>}))<span class="sc">}</span><span class="vs"> pa**.`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -433,22 +448,21 @@
 </div>
 </div>
 </div>
-<p><strong>Correct?</strong></p>
 <p><br></p>
 <div class="cell">
 <details class="code-fold hidden">
 <summary>Code</summary>
-<div class="sourceCode cell-code hidden" id="cb3" data-startfrom="45" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 44;"><span id="cb3-45"><a></a>viewof show_qr_code <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">checkbox</span>([<span class="st">"show QR code ⚠️"</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> []}) <span class="co">//</span></span>
-<span id="cb3-46"><a></a></span>
-<span id="cb3-47"><a></a>qrcode <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="max-width: 300px;</span><span class="sc">${</span>show_qr_code<span class="op">.</span><span class="at">length</span> <span class="op">==</span> <span class="dv">0</span> <span class="op">?</span> <span class="st">'opacity:0.03'</span> <span class="op">:</span> <span class="st">''</span><span class="sc">}</span><span class="vs">"&gt;</span><span class="sc">${</span><span class="cf">await</span> qr<span class="op">.</span><span class="fu">toString</span>(qr_url<span class="op">,</span> {</span>
-<span id="cb3-48"><a></a>  <span class="dt">margin</span><span class="op">:</span> <span class="dv">10</span></span>
-<span id="cb3-49"><a></a>})<span class="sc">}</span><span class="vs">&lt;/div&gt;`</span></span>
-<span id="cb3-50"><a></a></span>
-<span id="cb3-51"><a></a>qr <span class="op">=</span> <span class="pp">require</span>(<span class="st">'https://unpkg.com/qrcode@1.4.4/build/qrcode.min.js'</span>)</span>
-<span id="cb3-52"><a></a></span>
-<span id="cb3-53"><a></a>params <span class="op">=</span> ({principal_in<span class="op">,</span>i_in<span class="op">,</span>term_in})</span>
-<span id="cb3-54"><a></a>qr_params <span class="op">=</span> <span class="bu">Object</span><span class="op">.</span><span class="fu">entries</span>(params)<span class="op">.</span><span class="fu">map</span>(e <span class="kw">=&gt;</span> e[<span class="dv">0</span>] <span class="op">+</span> <span class="st">'='</span> <span class="op">+</span> e[<span class="dv">1</span>])<span class="op">.</span><span class="fu">join</span>(<span class="st">'&amp;'</span>)</span>
-<span id="cb3-55"><a></a>qr_url <span class="op">=</span> <span class="vs">`http://calcuvizspec-presentation.pages.dev/calcuvizspec-revealjs.html?</span><span class="sc">${</span>qr_params<span class="sc">}</span><span class="vs">#/simple-loan`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb3" data-startfrom="54" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 53;"><span id="cb3-54"><a></a>viewof show_qr_code <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">checkbox</span>([<span class="st">""</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> []}) <span class="co">//</span></span>
+<span id="cb3-55"><a></a></span>
+<span id="cb3-56"><a></a>qrcode <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="max-width: 300px;</span><span class="sc">${</span>show_qr_code<span class="op">.</span><span class="at">length</span> <span class="op">==</span> <span class="dv">0</span> <span class="op">?</span> <span class="st">'opacity:0.01'</span> <span class="op">:</span> <span class="st">''</span><span class="sc">}</span><span class="vs">"&gt;</span><span class="sc">${</span><span class="cf">await</span> qr<span class="op">.</span><span class="fu">toString</span>(qr_url<span class="op">,</span> {</span>
+<span id="cb3-57"><a></a>  <span class="dt">margin</span><span class="op">:</span> <span class="dv">10</span></span>
+<span id="cb3-58"><a></a>})<span class="sc">}</span><span class="vs">&lt;/div&gt;`</span></span>
+<span id="cb3-59"><a></a></span>
+<span id="cb3-60"><a></a>qr <span class="op">=</span> <span class="pp">require</span>(<span class="st">'https://unpkg.com/qrcode@1.4.4/build/qrcode.min.js'</span>)</span>
+<span id="cb3-61"><a></a></span>
+<span id="cb3-62"><a></a>params <span class="op">=</span> ({principal_in<span class="op">,</span>i_in<span class="op">,</span>term_in})</span>
+<span id="cb3-63"><a></a>qr_params <span class="op">=</span> <span class="bu">Object</span><span class="op">.</span><span class="fu">entries</span>(params)<span class="op">.</span><span class="fu">map</span>(e <span class="kw">=&gt;</span> e[<span class="dv">0</span>] <span class="op">+</span> <span class="st">'='</span> <span class="op">+</span> e[<span class="dv">1</span>])<span class="op">.</span><span class="fu">join</span>(<span class="st">'&amp;'</span>)</span>
+<span id="cb3-64"><a></a>qr_url <span class="op">=</span> <span class="vs">`http://calcuvizspec-presentation.pages.dev/calcuvizspec-revealjs.html?</span><span class="sc">${</span>qr_params<span class="sc">}</span><span class="vs">#/simple-loan`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -500,11 +514,11 @@ inputs ⚙️
 <div class="cell panel-input">
 <details class="code-fold hidden">
 <summary>Code</summary>
-<div class="sourceCode cell-code hidden" id="cb4" data-startfrom="64" data-source-offset="-61"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 63;"><span id="cb4-64"><a></a>viewof principal_in <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">500000</span>]<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Principal 💰 €"</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span><span class="dv">10000</span><span class="op">,</span> <span class="dt">value</span><span class="op">:+</span>(<span class="dv">100000</span>)})<span class="op">;</span></span>
-<span id="cb4-65"><a></a></span>
-<span id="cb4-66"><a></a>viewof i_in <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">/</span><span class="dv">100</span><span class="op">,</span> <span class="dv">20</span><span class="op">/</span><span class="dv">100</span>]<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Interest rate"</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">/</span><span class="dv">100</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="op">+</span>(<span class="dv">4</span><span class="op">/</span><span class="dv">100</span>)})<span class="op">;</span> <span class="co">// neg interest is probably contrary and not tested well</span></span>
-<span id="cb4-67"><a></a></span>
-<span id="cb4-68"><a></a>viewof term_in <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">select</span>([<span class="dv">25</span><span class="op">,</span> <span class="dv">10</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">30</span><span class="op">,</span> <span class="dv">35</span><span class="op">,</span> <span class="dv">40</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">480</span>]<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Term (years)"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="op">+</span>(<span class="dv">10</span>)})<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb4" data-startfrom="73" data-source-offset="-61"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 72;"><span id="cb4-73"><a></a>viewof principal_in <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">500000</span>]<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Principal 💰 €"</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span><span class="dv">10000</span><span class="op">,</span> <span class="dt">value</span><span class="op">:+</span>(<span class="dv">100000</span>)})<span class="op">;</span></span>
+<span id="cb4-74"><a></a></span>
+<span id="cb4-75"><a></a>viewof i_in <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">/</span><span class="dv">100</span><span class="op">,</span> <span class="dv">20</span><span class="op">/</span><span class="dv">100</span>]<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Interest rate"</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">/</span><span class="dv">100</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="op">+</span>(<span class="dv">4</span><span class="op">/</span><span class="dv">100</span>)})<span class="op">;</span> <span class="co">// neg interest is probably contrary and not tested well</span></span>
+<span id="cb4-76"><a></a></span>
+<span id="cb4-77"><a></a>viewof term_in <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">select</span>([<span class="dv">25</span><span class="op">,</span> <span class="dv">10</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">30</span><span class="op">,</span> <span class="dv">35</span><span class="op">,</span> <span class="dv">40</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">480</span>]<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Term (years)"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="op">+</span>(<span class="dv">10</span>)})<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -532,7 +546,7 @@ inputs ⚙️
 <div class="cell">
 <details class="code-fold hidden">
 <summary>Code</summary>
-<div class="sourceCode cell-code hidden" id="cb5" data-startfrom="75" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 74;"><span id="cb5-75"><a></a><span class="fu">md</span><span class="vs">`Calculated repayment is **€ </span><span class="sc">${</span>d3<span class="op">.</span><span class="fu">format</span>(<span class="st">',.2f'</span>)(simple_loan<span class="op">.</span><span class="fu">repayment</span>({principal_in<span class="op">,</span>i_in<span class="op">,</span>term_in<span class="op">,</span><span class="dt">year_in</span><span class="op">:</span><span class="dv">1</span>}))<span class="sc">}</span><span class="vs"> pa**.`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb5" data-startfrom="84" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 83;"><span id="cb5-84"><a></a><span class="fu">md</span><span class="vs">`Calculated repayment is **€ </span><span class="sc">${</span>d3<span class="op">.</span><span class="fu">format</span>(<span class="st">',.2f'</span>)(simple_loan<span class="op">.</span><span class="fu">repayment</span>({principal_in<span class="op">,</span>i_in<span class="op">,</span>term_in<span class="op">,</span><span class="dt">year_in</span><span class="op">:</span><span class="dv">1</span>}))<span class="sc">}</span><span class="vs"> pa**.`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-4" data-nodetype="expression">
@@ -543,11 +557,71 @@ inputs ⚙️
 <div class="cell">
 <details class="code-fold hidden">
 <summary>Code</summary>
-<div class="sourceCode cell-code hidden" id="cb6" data-startfrom="80" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 79;"><span id="cb6-80"><a></a>simple_loan <span class="op">=</span> <span class="pp">require</span>(<span class="vs">`https://calcy-quarty-vizys-online.pages.dev/models/loan-validator/simple-loan.js`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb6" data-startfrom="89" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 88;"><span id="cb6-89"><a></a>simple_loan <span class="op">=</span> <span class="pp">require</span>(<span class="vs">`https://calcy-quarty-vizys-online.pages.dev/models/loan-validator/simple-loan.js`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-5" data-nodetype="declaration">
 
+</div>
+</div>
+</div>
+</section>
+<section id="section" class="slide level2">
+<h2></h2>
+</section></section>
+<section id="limitations" class="title-slide slide level1 center">
+<h1>Limitations</h1>
+<ul>
+<li><p>DX</p>
+<ul>
+<li>especially error reporting (generate types?)</li>
+<li>and coding recurrances with 0 visual space is hard!</li>
+<li>the nice things really come at the end and not the start</li>
+</ul></li>
+<li><p>Performance</p>
+<ul>
+<li>Multiple-recurrances -&gt; JS engine 🤯</li>
+<li>Only optimisation is memoization, but not tactical</li>
+</ul></li>
+<li><p>Community/Support</p></li>
+</ul>
+</section>
+
+<section id="calculang.party" class="title-slide slide level1 center">
+<h1>calculang.party</h1>
+<ul>
+<li><p>community gallery</p></li>
+<li><p><a href="https://matrix.to/#/#calculang.party:matrix.org">join on matrix</a> or <a href="https://calcwithdec.dev/about.html">contact me</a></p></li>
+</ul>
+</section>
+
+<section id="transparency-workings" class="title-slide slide level1 center">
+<h1>Transparency, workings</h1>
+
+</section>
+
+<section id="questions" class="title-slide slide level1 center">
+<h1>Questions?</h1>
+<p><img data-src="./logo4.svg"> <!--{width=100}--></p>
+<div class="cell">
+<details class="code-fold hidden">
+<summary>Code</summary>
+<div class="sourceCode cell-code hidden" id="cb7" data-startfrom="127" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 126;"><span id="cb7-127"><a></a><span class="im">import</span> { calcuvizspec } <span class="im">from</span> <span class="st">"@declann/little-calcu-helpers"</span></span>
+<span id="cb7-128"><a></a></span>
+<span id="cb7-129"><a></a>embed <span class="op">=</span> <span class="pp">require</span>(<span class="st">'vega-embed'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-6-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-6-2" data-nodetype="declaration">
+
+</div>
 </div>
 </div>
 </div>
@@ -769,7 +843,7 @@ inputs ⚙️
       });
     </script>
     <script type="ojs-module-contents">
-    eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Im1kYFlvdSBib3Jyb3cgKirigqwgJHtkMy5mb3JtYXQoJywuMGYnKShwcmluY2lwYWxfaW4pfSoqIGF0ICoqJHtkMy5mb3JtYXQoJy4xJScpKGlfaW4pfSoqIGZvciAqKiR7dGVybV9pbn0geWVhcnMqKi5gXG5cbm1kYFlvdXIgcmVwYXltZW50IGFtb3VudCBpcyAqKuKCrCAke2QzLmZvcm1hdCgnLC4yZicpKHNpbXBsZV9sb2FuLnJlcGF5bWVudCh7cHJpbmNpcGFsX2luLGlfaW4sdGVybV9pbix5ZWFyX2luOjF9KSl9IHBhKiouYFxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0yIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoidmlld29mIHNob3dfcXJfY29kZSA9IElucHV0cy5jaGVja2JveChbXCJzaG93IFFSIGNvZGUg4pqg77iPXCJdLCB7dmFsdWU6IFtdfSkgLy9cblxucXJjb2RlID0gaHRtbGA8ZGl2IHN0eWxlPVwibWF4LXdpZHRoOiAzMDBweDske3Nob3dfcXJfY29kZS5sZW5ndGggPT0gMCA/ICdvcGFjaXR5OjAuMDMnIDogJyd9XCI+JHthd2FpdCBxci50b1N0cmluZyhxcl91cmwsIHtcbiAgbWFyZ2luOiAxMFxufSl9PC9kaXY+YFxuXG5xciA9IHJlcXVpcmUoJ2h0dHBzOi8vdW5wa2cuY29tL3FyY29kZUAxLjQuNC9idWlsZC9xcmNvZGUubWluLmpzJylcblxucGFyYW1zID0gKHtwcmluY2lwYWxfaW4saV9pbix0ZXJtX2lufSlcbnFyX3BhcmFtcyA9IE9iamVjdC5lbnRyaWVzKHBhcmFtcykubWFwKGUgPT4gZVswXSArICc9JyArIGVbMV0pLmpvaW4oJyYnKVxucXJfdXJsID0gYGh0dHA6Ly9jYWxjdXZpenNwZWMtcHJlc2VudGF0aW9uLnBhZ2VzLmRldi9jYWxjdXZpenNwZWMtcmV2ZWFsanMuaHRtbD8ke3FyX3BhcmFtc30jL3NpbXBsZS1sb2FuYFxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0zIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiLy8vIGxheW91dC1uY29sOiAyIFJlcXVpcmVzIEV2ZW4gIyBjb21wb25lbnRzISBvciBvZGQgZXJyb3Jcblxudmlld29mIHByaW5jaXBhbF9pbiA9IElucHV0cy5yYW5nZShbMCwgNTAwMDAwXSwge2xhYmVsOiBcIlByaW5jaXBhbCDwn5KwIOKCrFwiLCBzdGVwOjEwMDAwLCB2YWx1ZTorKDEwMDAwMCl9KTtcblxudmlld29mIGlfaW4gPSBJbnB1dHMucmFuZ2UoWy01LzEwMCwgMjAvMTAwXSwge2xhYmVsOiBcIkludGVyZXN0IHJhdGVcIiwgc3RlcDogMC4xLzEwMCwgdmFsdWU6ICsoNC8xMDApfSk7IC8vIG5lZyBpbnRlcmVzdCBpcyBwcm9iYWJseSBjb250cmFyeSBhbmQgbm90IHRlc3RlZCB3ZWxsXG5cbnZpZXdvZiB0ZXJtX2luID0gSW5wdXRzLnNlbGVjdChbMjUsIDEwLCA1LCAzMCwgMzUsIDQwLCAxLCA0ODBdLCB7bGFiZWw6IFwiVGVybSAoeWVhcnMpXCIsIHZhbHVlOiArKDEwKX0pO1xuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC00IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoibWRgQ2FsY3VsYXRlZCByZXBheW1lbnQgaXMgKirigqwgJHtkMy5mb3JtYXQoJywuMmYnKShzaW1wbGVfbG9hbi5yZXBheW1lbnQoe3ByaW5jaXBhbF9pbixpX2luLHRlcm1faW4seWVhcl9pbjoxfSkpfSBwYSoqLmBcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InNpbXBsZV9sb2FuID0gcmVxdWlyZShgaHR0cHM6Ly9jYWxjeS1xdWFydHktdml6eXMtb25saW5lLnBhZ2VzLmRldi9tb2RlbHMvbG9hbi12YWxpZGF0b3Ivc2ltcGxlLWxvYW4uanNgKVxuXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3Nob3dfcXJfY29kZScpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdwcmluY2lwYWxfaW4nKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnaV9pbicpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCd0ZXJtX2luJykifV19
+    eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Im1kYFlvdSBib3Jyb3cgKirigqwgJHtkMy5mb3JtYXQoJywuMGYnKShwcmluY2lwYWxfaW4pfSoqIGF0ICoqJHtkMy5mb3JtYXQoJy4xJScpKGlfaW4pfSoqIGZvciAqKiR7dGVybV9pbn0geWVhcnMqKi5gXG5cbm1kYFlvdXIgcmVwYXltZW50IGFtb3VudCBpcyAqKuKCrCAke2QzLmZvcm1hdCgnLC4yZicpKHNpbXBsZV9sb2FuLnJlcGF5bWVudCh7cHJpbmNpcGFsX2luLGlfaW4sdGVybV9pbix5ZWFyX2luOjF9KSl9IHBhKiouYFxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0yIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoidmlld29mIHNob3dfcXJfY29kZSA9IElucHV0cy5jaGVja2JveChbXCJcIl0sIHt2YWx1ZTogW119KSAvL1xuXG5xcmNvZGUgPSBodG1sYDxkaXYgc3R5bGU9XCJtYXgtd2lkdGg6IDMwMHB4OyR7c2hvd19xcl9jb2RlLmxlbmd0aCA9PSAwID8gJ29wYWNpdHk6MC4wMScgOiAnJ31cIj4ke2F3YWl0IHFyLnRvU3RyaW5nKHFyX3VybCwge1xuICBtYXJnaW46IDEwXG59KX08L2Rpdj5gXG5cbnFyID0gcmVxdWlyZSgnaHR0cHM6Ly91bnBrZy5jb20vcXJjb2RlQDEuNC40L2J1aWxkL3FyY29kZS5taW4uanMnKVxuXG5wYXJhbXMgPSAoe3ByaW5jaXBhbF9pbixpX2luLHRlcm1faW59KVxucXJfcGFyYW1zID0gT2JqZWN0LmVudHJpZXMocGFyYW1zKS5tYXAoZSA9PiBlWzBdICsgJz0nICsgZVsxXSkuam9pbignJicpXG5xcl91cmwgPSBgaHR0cDovL2NhbGN1dml6c3BlYy1wcmVzZW50YXRpb24ucGFnZXMuZGV2L2NhbGN1dml6c3BlYy1yZXZlYWxqcy5odG1sPyR7cXJfcGFyYW1zfSMvc2ltcGxlLWxvYW5gXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTMiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiIvLy8gbGF5b3V0LW5jb2w6IDIgUmVxdWlyZXMgRXZlbiAjIGNvbXBvbmVudHMhIG9yIG9kZCBlcnJvclxuXG52aWV3b2YgcHJpbmNpcGFsX2luID0gSW5wdXRzLnJhbmdlKFswLCA1MDAwMDBdLCB7bGFiZWw6IFwiUHJpbmNpcGFsIPCfkrAg4oKsXCIsIHN0ZXA6MTAwMDAsIHZhbHVlOisoMTAwMDAwKX0pO1xuXG52aWV3b2YgaV9pbiA9IElucHV0cy5yYW5nZShbLTUvMTAwLCAyMC8xMDBdLCB7bGFiZWw6IFwiSW50ZXJlc3QgcmF0ZVwiLCBzdGVwOiAwLjEvMTAwLCB2YWx1ZTogKyg0LzEwMCl9KTsgLy8gbmVnIGludGVyZXN0IGlzIHByb2JhYmx5IGNvbnRyYXJ5IGFuZCBub3QgdGVzdGVkIHdlbGxcblxudmlld29mIHRlcm1faW4gPSBJbnB1dHMuc2VsZWN0KFsyNSwgMTAsIDUsIDMwLCAzNSwgNDAsIDEsIDQ4MF0sIHtsYWJlbDogXCJUZXJtICh5ZWFycylcIiwgdmFsdWU6ICsoMTApfSk7XG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTQiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJtZGBDYWxjdWxhdGVkIHJlcGF5bWVudCBpcyAqKuKCrCAke2QzLmZvcm1hdCgnLC4yZicpKHNpbXBsZV9sb2FuLnJlcGF5bWVudCh7cHJpbmNpcGFsX2luLGlfaW4sdGVybV9pbix5ZWFyX2luOjF9KSl9IHBhKiouYFxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC01IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoic2ltcGxlX2xvYW4gPSByZXF1aXJlKGBodHRwczovL2NhbGN5LXF1YXJ0eS12aXp5cy1vbmxpbmUucGFnZXMuZGV2L21vZGVscy9sb2FuLXZhbGlkYXRvci9zaW1wbGUtbG9hbi5qc2ApXG5cbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNiIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImltcG9ydCB7IGNhbGN1dml6c3BlYyB9IGZyb20gXCJAZGVjbGFubi9saXR0bGUtY2FsY3UtaGVscGVyc1wiXG5cbmVtYmVkID0gcmVxdWlyZSgndmVnYS1lbWJlZCcpO1xuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdzaG93X3FyX2NvZGUnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgncHJpbmNpcGFsX2luJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2lfaW4nKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgndGVybV9pbicpIn1dfQ==
     </script>
     <script type="module">
     if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
