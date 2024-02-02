@@ -150,17 +150,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="links-notes" class="level2">
 <h2 class="anchored" data-anchor-id="links-notes">Links &amp; notes</h2>
+<p><a href="./slides-revealjs.html">Presentation (RevealJS) view</a></p>
 <p>The “experimental website” is: <a href="https://calculang-at-fosdem.pages.dev">calculang-at-fosdem.pages.dev</a>; includes link to source.</p>
 <p>Everything else will appear in these slides, on the experimental site, or on <a href="https://calculang.dev">calculang.dev</a>.</p>
 <ul>
 <li>In my demo for the experimental site I use a <a href="https://discuss.codemirror.net/t/force-complete-dom-render/7777">hacky local patch</a> for CodeMirror; without this there are code navigation issues for larger examples</li>
 <li>Layout is very poor on mobile - try on desktop</li>
-<li>Includes other examples which I don’t touch, e.g.&nbsp;FizzBuzz without loops and with optional workings!</li>
+<li>Experimental site includes other examples which I don’t show, e.g.&nbsp;FizzBuzz without loops and with optional workings!</li>
 <li><a href="https://calculang.dev">calculang.dev</a> is the more complete gallery; there are some other things on <a href="https://observablehq.com/collection/@declann/calculang">ObservableHQ</a></li>
 </ul>
-<p>I may skip slides on Limitations and calculang.party. But you can find them here.</p>
-<p>You can <a href="https://matrix.to/#/#calculang.party:matrix.org">join calculang.party on matrix</a> or <a href="https://calcwithdec.dev/about.html">contact me</a>.</p>
-<p><a href="https://fosdem.org/2024/schedule/event/fosdem-2024-2636-declarative-calcs-and-visualization-with-calculang/">Tomorrows talk</a> will be about flexibility for calcs and a little bit about declarative visualization I use.</p>
+<p>Slides on Limitations and calculang.party are at the end, which I won’t have time to discuss.</p>
+<p>You can <a href="https://matrix.to/#/#calculang.party:matrix.org">join calculang.party on matrix</a> or talk to me!.</p>
 </section>
 <section id="imaginary-paper" class="level1">
 <h1>📝 Imaginary paper</h1>
@@ -318,52 +318,15 @@ inputs ⚙️
 <h1></h1>
 <p><img src="./pic-2.png" class="img-fluid"> <!--{width=100}--></p>
 </section>
-<section id="limitations" class="level1">
-<h1>Limitations</h1>
-<ul>
-<li><p>DX</p>
-<ul>
-<li>especially error reporting (generate types?)</li>
-<li>and coding recurrances with 0 visual space is hard!</li>
-<li>nice things really come at the end and not the start</li>
-</ul></li>
-<li><p>Performance</p>
-<ul>
-<li>Multiple-recurrances -&gt; JS engine 🤯</li>
-<li>Only optimisation is memoization, but not tactical</li>
-<li>Perf not in my list of important things; doesn’t mean I don’t welcome perf feedback - it just means you will have a field day</li>
-</ul></li>
-<li><p>Community/Support</p>
-<ul>
-<li>a fraction of me is all you get now! but…</li>
-</ul></li>
-</ul>
-</section>
-<section id="calculang.party" class="level1">
-<h1>calculang.party</h1>
-<ul>
-<li>community gallery for things made with calculang
-<ul>
-<li>other contributions also welcome!</li>
-</ul></li>
-<li>you can bring your own idea and opinions
-<ul>
-<li>remember the previous slide about DX and performance and support</li>
-<li>simplify! thing must to be simple computationally</li>
-<li>known nice things: educational/informative things, arty things which are simple</li>
-</ul></li>
-<li><a href="https://matrix.to/#/#calculang.party:matrix.org">join on matrix</a> or <a href="https://calcwithdec.dev/about.html">contact me</a></li>
-</ul>
-</section>
 <section id="questions" class="level1">
 <h1>Questions?</h1>
 <p><img src="./logo4.svg" class="img-fluid"> <!--{width=100}--></p>
 <div class="cell">
 <details class="code-fold hidden">
 <summary>Code</summary>
-<div class="sourceCode cell-code hidden" id="cb7" data-startfrom="150" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 149;"><span id="cb7-150"><a href="#cb7-150" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { calcuvizspec } <span class="im">from</span> <span class="st">"@declann/little-calcu-helpers"</span></span>
-<span id="cb7-151"><a href="#cb7-151" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-152"><a href="#cb7-152" aria-hidden="true" tabindex="-1"></a>embed <span class="op">=</span> <span class="pp">require</span>(<span class="st">'vega-embed'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb7" data-startfrom="120" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 119;"><span id="cb7-120"><a href="#cb7-120" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { calcuvizspec } <span class="im">from</span> <span class="st">"@declann/little-calcu-helpers"</span></span>
+<span id="cb7-121"><a href="#cb7-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-122"><a href="#cb7-122" aria-hidden="true" tabindex="-1"></a>embed <span class="op">=</span> <span class="pp">require</span>(<span class="st">'vega-embed'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -380,6 +343,51 @@ inputs ⚙️
 </div>
 </div>
 </div>
+</section>
+<section id="section-3" class="level1">
+<h1></h1>
+<p><a href="https://fosdem.org/2024/schedule/event/fosdem-2024-2636-declarative-calcs-and-visualization-with-calculang/">Tomorrows talk</a> @ 9:40am CET in <a href="https://fosdem.org/2024/schedule/track/declarative-and-minimalistic-computing/">Declarative and Minimalistic Computing devroom</a></p>
+<p>Fosstodon <a href="https://fosstodon.org/@calculang"><span class="citation" data-cites="calculang">@calculang</span></a></p>
+<p>Twitter <a href="https://twitter.com/calculang"><span class="citation" data-cites="calculang">@calculang</span></a></p>
+<p>Matrix <a href="https://matrix.to/#/#calculang.party:matrix.org">#calculang.party:matrix.org</a></p>
+<p><img src="./logo4.svg" class="img-fluid"> <!--{width=100}--></p>
+</section>
+<section id="limitations" class="level1">
+<h1>Limitations</h1>
+<ul>
+<li><p>DX</p>
+<ul>
+<li>especially error reporting (generate types?)</li>
+<li>coding recurrances with 0 visual space is hard!</li>
+<li>now nice things really come at the end and not the start: TOFIX?</li>
+</ul></li>
+<li><p>Performance</p>
+<ul>
+<li>Multiple-recurrances -&gt; JS engine 🤯</li>
+<li>Singular optimisation is memoization, but not tactical</li>
+<li>You will have a field day if you look at optimising/recording performance</li>
+</ul></li>
+<li><p>Community/Support</p>
+<ul>
+<li>but…</li>
+</ul></li>
+</ul>
+</section>
+<section id="calculang.party" class="level1">
+<h1>calculang.party (💡?)</h1>
+<ul>
+<li><strong>community gallery</strong> for things made with calculang
+<ul>
+<li>other contributions also welcome!</li>
+</ul></li>
+<li>you can bring your own idea and opinions
+<ul>
+<li>remember the previous slide about DX and performance and support</li>
+<li>simplify! thing must to be simple computationally</li>
+<li>known nice things: educational/informative things, arty things which are simple, ???</li>
+</ul></li>
+<li><a href="https://matrix.to/#/#calculang.party:matrix.org">join on matrix</a> or <a href="https://calcwithdec.dev/about.html">contact me</a></li>
+</ul>
 
 
 <!-- -->
@@ -884,20 +892,20 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="fu">## Links &amp; notes</span></span>
 <span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>The "experimental website" is: <span class="co">[</span><span class="ot">calculang-at-fosdem.pages.dev</span><span class="co">](https://calculang-at-fosdem.pages.dev)</span>; includes link to source.</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Presentation (RevealJS) view</span><span class="co">](/slides-revealjs.html)</span></span>
 <span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>Everything else will appear in these slides, on the experimental site, or on <span class="co">[</span><span class="ot">calculang.dev</span><span class="co">](https://calculang.dev)</span>.</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>The "experimental website" is: <span class="co">[</span><span class="ot">calculang-at-fosdem.pages.dev</span><span class="co">](https://calculang-at-fosdem.pages.dev)</span>; includes link to source.</span>
 <span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In my demo for the experimental site I use a <span class="co">[</span><span class="ot">hacky local patch</span><span class="co">](https://discuss.codemirror.net/t/force-complete-dom-render/7777)</span> for CodeMirror; without this there are code navigation issues for larger examples</span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Layout is very poor on mobile - try on desktop</span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Includes other examples which I don't touch, e.g. FizzBuzz without loops and with optional workings!</span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">calculang.dev</span><span class="co">](https://calculang.dev)</span> is the more complete gallery; there are some other things on <span class="co">[</span><span class="ot">ObservableHQ</span><span class="co">](https://observablehq.com/collection/@declann/calculang)</span></span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>I may skip slides on Limitations and calculang.party. But you can find them here.</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>Everything else will appear in these slides, on the experimental site, or on <span class="co">[</span><span class="ot">calculang.dev</span><span class="co">](https://calculang.dev)</span>.</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In my demo for the experimental site I use a <span class="co">[</span><span class="ot">hacky local patch</span><span class="co">](https://discuss.codemirror.net/t/force-complete-dom-render/7777)</span> for CodeMirror; without this there are code navigation issues for larger examples</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Layout is very poor on mobile - try on desktop</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Experimental site includes other examples which I don't show, e.g. FizzBuzz without loops and with optional workings!</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">calculang.dev</span><span class="co">](https://calculang.dev)</span> is the more complete gallery; there are some other things on <span class="co">[</span><span class="ot">ObservableHQ</span><span class="co">](https://observablehq.com/collection/@declann/calculang)</span></span>
 <span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>You can <span class="co">[</span><span class="ot">join calculang.party on matrix</span><span class="co">](https://matrix.to/#/#calculang.party:matrix.org)</span> or <span class="co">[</span><span class="ot">contact me</span><span class="co">](https://calcwithdec.dev/about.html)</span>.</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>Slides on Limitations and calculang.party are at the end, which I won't have time to discuss.</span>
 <span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Tomorrows talk</span><span class="co">](https://fosdem.org/2024/schedule/event/fosdem-2024-2636-declarative-calcs-and-visualization-with-calculang/)</span> will be about flexibility for calcs and a little bit about declarative visualization I use.</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>You can <span class="co">[</span><span class="ot">join calculang.party on matrix</span><span class="co">](https://matrix.to/#/#calculang.party:matrix.org)</span> or talk to me!.</span>
 <span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a><span class="fu"># 📝 Imaginary paper</span></span>
 <span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a></span>
@@ -967,46 +975,58 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb8-121"><a href="#cb8-121" aria-hidden="true" tabindex="-1"></a><span class="al">![](./pic-2.png)</span> <span class="co">&lt;!--{width=100}--&gt;</span></span>
 <span id="cb8-122"><a href="#cb8-122" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-123"><a href="#cb8-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-124"><a href="#cb8-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-125"><a href="#cb8-125" aria-hidden="true" tabindex="-1"></a><span class="fu"># Limitations</span></span>
-<span id="cb8-126"><a href="#cb8-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-127"><a href="#cb8-127" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>DX</span>
-<span id="cb8-128"><a href="#cb8-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-129"><a href="#cb8-129" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>especially error reporting (generate types?)</span>
-<span id="cb8-130"><a href="#cb8-130" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>and coding recurrances with 0 visual space is hard!</span>
-<span id="cb8-131"><a href="#cb8-131" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>nice things really come at the end and not the start</span>
-<span id="cb8-132"><a href="#cb8-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-133"><a href="#cb8-133" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Performance</span>
-<span id="cb8-134"><a href="#cb8-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-135"><a href="#cb8-135" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Multiple-recurrances -&gt; JS engine 🤯</span>
-<span id="cb8-136"><a href="#cb8-136" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Only optimisation is memoization, but not tactical</span>
-<span id="cb8-137"><a href="#cb8-137" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Perf not in my list of important things; doesn't mean I don't welcome perf feedback - it just means you will have a field day</span>
+<span id="cb8-124"><a href="#cb8-124" aria-hidden="true" tabindex="-1"></a><span class="fu"># Questions?</span></span>
+<span id="cb8-125"><a href="#cb8-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-126"><a href="#cb8-126" aria-hidden="true" tabindex="-1"></a><span class="al">![](./logo4.svg)</span> <span class="co">&lt;!--{width=100}--&gt;</span></span>
+<span id="cb8-127"><a href="#cb8-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-130"><a href="#cb8-130" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
+<span id="cb8-131"><a href="#cb8-131" aria-hidden="true" tabindex="-1"></a><span class="in">//| echo: false</span></span>
+<span id="cb8-132"><a href="#cb8-132" aria-hidden="true" tabindex="-1"></a><span class="in">import { calcuvizspec } from "@declann/little-calcu-helpers"</span></span>
+<span id="cb8-133"><a href="#cb8-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-134"><a href="#cb8-134" aria-hidden="true" tabindex="-1"></a><span class="in">embed = require('vega-embed');</span></span>
+<span id="cb8-135"><a href="#cb8-135" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-136"><a href="#cb8-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-137"><a href="#cb8-137" aria-hidden="true" tabindex="-1"></a><span class="fu"># </span></span>
 <span id="cb8-138"><a href="#cb8-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-139"><a href="#cb8-139" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Community/Support</span>
-<span id="cb8-140"><a href="#cb8-140" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>a fraction of me is all you get now! but...</span>
-<span id="cb8-141"><a href="#cb8-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-142"><a href="#cb8-142" aria-hidden="true" tabindex="-1"></a><span class="fu"># calculang.party</span></span>
-<span id="cb8-143"><a href="#cb8-143" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-144"><a href="#cb8-144" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>community gallery for things made with calculang</span>
-<span id="cb8-145"><a href="#cb8-145" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>other contributions also welcome!</span>
+<span id="cb8-139"><a href="#cb8-139" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Tomorrows talk</span><span class="co">](https://fosdem.org/2024/schedule/event/fosdem-2024-2636-declarative-calcs-and-visualization-with-calculang/)</span> @ 9:40am CET in <span class="co">[</span><span class="ot">Declarative and Minimalistic Computing devroom</span><span class="co">](https://fosdem.org/2024/schedule/track/declarative-and-minimalistic-computing/)</span></span>
+<span id="cb8-140"><a href="#cb8-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-141"><a href="#cb8-141" aria-hidden="true" tabindex="-1"></a>Fosstodon <span class="co">[</span><span class="ot">@calculang</span><span class="co">](https://fosstodon.org/@calculang)</span></span>
+<span id="cb8-142"><a href="#cb8-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-143"><a href="#cb8-143" aria-hidden="true" tabindex="-1"></a>Twitter <span class="co">[</span><span class="ot">@calculang</span><span class="co">](https://twitter.com/calculang)</span></span>
+<span id="cb8-144"><a href="#cb8-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-145"><a href="#cb8-145" aria-hidden="true" tabindex="-1"></a>Matrix <span class="co">[</span><span class="ot">#calculang.party:matrix.org</span><span class="co">](https://matrix.to/#/#calculang.party:matrix.org)</span></span>
 <span id="cb8-146"><a href="#cb8-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-147"><a href="#cb8-147" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>you can bring your own idea and opinions</span>
-<span id="cb8-148"><a href="#cb8-148" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>remember the previous slide about DX and performance and support</span>
-<span id="cb8-149"><a href="#cb8-149" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>simplify! thing must to be simple computationally</span>
-<span id="cb8-150"><a href="#cb8-150" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>known nice things: educational/informative things, arty things which are simple</span>
+<span id="cb8-147"><a href="#cb8-147" aria-hidden="true" tabindex="-1"></a><span class="al">![](./logo4.svg)</span> <span class="co">&lt;!--{width=100}--&gt;</span></span>
+<span id="cb8-148"><a href="#cb8-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-149"><a href="#cb8-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-150"><a href="#cb8-150" aria-hidden="true" tabindex="-1"></a><span class="fu"># Limitations</span></span>
 <span id="cb8-151"><a href="#cb8-151" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-152"><a href="#cb8-152" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">join on matrix</span><span class="co">](https://matrix.to/#/#calculang.party:matrix.org)</span> or <span class="co">[</span><span class="ot">contact me</span><span class="co">](https://calcwithdec.dev/about.html)</span></span>
+<span id="cb8-152"><a href="#cb8-152" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>DX</span>
 <span id="cb8-153"><a href="#cb8-153" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-154"><a href="#cb8-154" aria-hidden="true" tabindex="-1"></a><span class="fu"># Questions?</span></span>
-<span id="cb8-155"><a href="#cb8-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-156"><a href="#cb8-156" aria-hidden="true" tabindex="-1"></a><span class="al">![](./logo4.svg)</span> <span class="co">&lt;!--{width=100}--&gt;</span></span>
+<span id="cb8-154"><a href="#cb8-154" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>especially error reporting (generate types?)</span>
+<span id="cb8-155"><a href="#cb8-155" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>coding recurrances with 0 visual space is hard!</span>
+<span id="cb8-156"><a href="#cb8-156" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>now nice things really come at the end and not the start: TOFIX?</span>
 <span id="cb8-157"><a href="#cb8-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-160"><a href="#cb8-160" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
-<span id="cb8-161"><a href="#cb8-161" aria-hidden="true" tabindex="-1"></a><span class="in">//| echo: false</span></span>
-<span id="cb8-162"><a href="#cb8-162" aria-hidden="true" tabindex="-1"></a><span class="in">import { calcuvizspec } from "@declann/little-calcu-helpers"</span></span>
+<span id="cb8-158"><a href="#cb8-158" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Performance</span>
+<span id="cb8-159"><a href="#cb8-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-160"><a href="#cb8-160" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Multiple-recurrances -&gt; JS engine 🤯</span>
+<span id="cb8-161"><a href="#cb8-161" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Singular optimisation is memoization, but not tactical</span>
+<span id="cb8-162"><a href="#cb8-162" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>You will have a field day if you look at optimising/recording performance</span>
 <span id="cb8-163"><a href="#cb8-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-164"><a href="#cb8-164" aria-hidden="true" tabindex="-1"></a><span class="in">embed = require('vega-embed');</span></span>
-<span id="cb8-165"><a href="#cb8-165" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-164"><a href="#cb8-164" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Community/Support</span>
+<span id="cb8-165"><a href="#cb8-165" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>but...</span>
+<span id="cb8-166"><a href="#cb8-166" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-167"><a href="#cb8-167" aria-hidden="true" tabindex="-1"></a><span class="fu"># calculang.party (💡?)</span></span>
+<span id="cb8-168"><a href="#cb8-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-169"><a href="#cb8-169" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**community gallery** for things made with calculang</span>
+<span id="cb8-170"><a href="#cb8-170" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>other contributions also welcome!</span>
+<span id="cb8-171"><a href="#cb8-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-172"><a href="#cb8-172" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>you can bring your own idea and opinions</span>
+<span id="cb8-173"><a href="#cb8-173" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>remember the previous slide about DX and performance and support</span>
+<span id="cb8-174"><a href="#cb8-174" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>simplify! thing must to be simple computationally</span>
+<span id="cb8-175"><a href="#cb8-175" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>known nice things: educational/informative things, arty things which are simple, ???</span>
+<span id="cb8-176"><a href="#cb8-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-177"><a href="#cb8-177" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">join on matrix</span><span class="co">](https://matrix.to/#/#calculang.party:matrix.org)</span> or <span class="co">[</span><span class="ot">contact me</span><span class="co">](https://calcwithdec.dev/about.html)</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

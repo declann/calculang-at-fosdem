@@ -409,17 +409,17 @@
 </section>
 <section id="links-notes" class="slide level2">
 <h2>Links &amp; notes</h2>
+<p><a href="./slides-revealjs.html">Presentation (RevealJS) view</a></p>
 <p>The “experimental website” is: <a href="https://calculang-at-fosdem.pages.dev">calculang-at-fosdem.pages.dev</a>; includes link to source.</p>
 <p>Everything else will appear in these slides, on the experimental site, or on <a href="https://calculang.dev">calculang.dev</a>.</p>
 <ul>
 <li>In my demo for the experimental site I use a <a href="https://discuss.codemirror.net/t/force-complete-dom-render/7777">hacky local patch</a> for CodeMirror; without this there are code navigation issues for larger examples</li>
 <li>Layout is very poor on mobile - try on desktop</li>
-<li>Includes other examples which I don’t touch, e.g.&nbsp;FizzBuzz without loops and with optional workings!</li>
+<li>Experimental site includes other examples which I don’t show, e.g.&nbsp;FizzBuzz without loops and with optional workings!</li>
 <li><a href="https://calculang.dev">calculang.dev</a> is the more complete gallery; there are some other things on <a href="https://observablehq.com/collection/@declann/calculang">ObservableHQ</a></li>
 </ul>
-<p>I may skip slides on Limitations and calculang.party. But you can find them here.</p>
-<p>You can <a href="https://matrix.to/#/#calculang.party:matrix.org">join calculang.party on matrix</a> or <a href="https://calcwithdec.dev/about.html">contact me</a>.</p>
-<p><a href="https://fosdem.org/2024/schedule/event/fosdem-2024-2636-declarative-calcs-and-visualization-with-calculang/">Tomorrows talk</a> will be about flexibility for calcs and a little bit about declarative visualization I use.</p>
+<p>Slides on Limitations and calculang.party are at the end, which I won’t have time to discuss.</p>
+<p>You can <a href="https://matrix.to/#/#calculang.party:matrix.org">join calculang.party on matrix</a> or talk to me!.</p>
 </section>
 <section id="imaginary-paper" class="title-slide slide level1 center">
 <h1>📝 Imaginary paper</h1>
@@ -581,54 +581,15 @@ inputs ⚙️
 <p><img data-src="./pic-2.png"> <!--{width=100}--></p>
 </section>
 
-<section id="limitations" class="title-slide slide level1 center">
-<h1>Limitations</h1>
-<ul>
-<li><p>DX</p>
-<ul>
-<li>especially error reporting (generate types?)</li>
-<li>and coding recurrances with 0 visual space is hard!</li>
-<li>nice things really come at the end and not the start</li>
-</ul></li>
-<li><p>Performance</p>
-<ul>
-<li>Multiple-recurrances -&gt; JS engine 🤯</li>
-<li>Only optimisation is memoization, but not tactical</li>
-<li>Perf not in my list of important things; doesn’t mean I don’t welcome perf feedback - it just means you will have a field day</li>
-</ul></li>
-<li><p>Community/Support</p>
-<ul>
-<li>a fraction of me is all you get now! but…</li>
-</ul></li>
-</ul>
-</section>
-
-<section id="calculang.party" class="title-slide slide level1 center">
-<h1>calculang.party</h1>
-<ul>
-<li>community gallery for things made with calculang
-<ul>
-<li>other contributions also welcome!</li>
-</ul></li>
-<li>you can bring your own idea and opinions
-<ul>
-<li>remember the previous slide about DX and performance and support</li>
-<li>simplify! thing must to be simple computationally</li>
-<li>known nice things: educational/informative things, arty things which are simple</li>
-</ul></li>
-<li><a href="https://matrix.to/#/#calculang.party:matrix.org">join on matrix</a> or <a href="https://calcwithdec.dev/about.html">contact me</a></li>
-</ul>
-</section>
-
 <section id="questions" class="title-slide slide level1 center">
 <h1>Questions?</h1>
 <p><img data-src="./logo4.svg"> <!--{width=100}--></p>
 <div class="cell">
 <details class="code-fold hidden">
 <summary>Code</summary>
-<div class="sourceCode cell-code hidden" id="cb7" data-startfrom="150" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 149;"><span id="cb7-150"><a></a><span class="im">import</span> { calcuvizspec } <span class="im">from</span> <span class="st">"@declann/little-calcu-helpers"</span></span>
-<span id="cb7-151"><a></a></span>
-<span id="cb7-152"><a></a>embed <span class="op">=</span> <span class="pp">require</span>(<span class="st">'vega-embed'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb7" data-startfrom="120" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 119;"><span id="cb7-120"><a></a><span class="im">import</span> { calcuvizspec } <span class="im">from</span> <span class="st">"@declann/little-calcu-helpers"</span></span>
+<span id="cb7-121"><a></a></span>
+<span id="cb7-122"><a></a>embed <span class="op">=</span> <span class="pp">require</span>(<span class="st">'vega-embed'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -645,6 +606,54 @@ inputs ⚙️
 </div>
 </div>
 </div>
+</section>
+
+<section id="section-3" class="title-slide slide level1 center">
+<h1></h1>
+<p><a href="https://fosdem.org/2024/schedule/event/fosdem-2024-2636-declarative-calcs-and-visualization-with-calculang/">Tomorrows talk</a> @ 9:40am CET in <a href="https://fosdem.org/2024/schedule/track/declarative-and-minimalistic-computing/">Declarative and Minimalistic Computing devroom</a></p>
+<p>Fosstodon <a href="https://fosstodon.org/@calculang"><span class="citation" data-cites="calculang">@calculang</span></a></p>
+<p>Twitter <a href="https://twitter.com/calculang"><span class="citation" data-cites="calculang">@calculang</span></a></p>
+<p>Matrix <a href="https://matrix.to/#/#calculang.party:matrix.org">#calculang.party:matrix.org</a></p>
+<p><img data-src="./logo4.svg"> <!--{width=100}--></p>
+</section>
+
+<section id="limitations" class="title-slide slide level1 center">
+<h1>Limitations</h1>
+<ul>
+<li><p>DX</p>
+<ul>
+<li>especially error reporting (generate types?)</li>
+<li>coding recurrances with 0 visual space is hard!</li>
+<li>now nice things really come at the end and not the start: TOFIX?</li>
+</ul></li>
+<li><p>Performance</p>
+<ul>
+<li>Multiple-recurrances -&gt; JS engine 🤯</li>
+<li>Singular optimisation is memoization, but not tactical</li>
+<li>You will have a field day if you look at optimising/recording performance</li>
+</ul></li>
+<li><p>Community/Support</p>
+<ul>
+<li>but…</li>
+</ul></li>
+</ul>
+</section>
+
+<section id="calculang.party" class="title-slide slide level1 center">
+<h1>calculang.party (💡?)</h1>
+<ul>
+<li><strong>community gallery</strong> for things made with calculang
+<ul>
+<li>other contributions also welcome!</li>
+</ul></li>
+<li>you can bring your own idea and opinions
+<ul>
+<li>remember the previous slide about DX and performance and support</li>
+<li>simplify! thing must to be simple computationally</li>
+<li>known nice things: educational/informative things, arty things which are simple, ???</li>
+</ul></li>
+<li><a href="https://matrix.to/#/#calculang.party:matrix.org">join on matrix</a> or <a href="https://calcwithdec.dev/about.html">contact me</a></li>
+</ul>
 
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
