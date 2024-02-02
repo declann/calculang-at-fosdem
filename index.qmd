@@ -1537,12 +1537,12 @@ viewof refresh = Inputs.button("hot reload")
 raycasting222 = aaa[version]
 
 /* FOR DEV */
-//raycasting_latest = await require(`http://localhost:8080/raycasting/raycasting.js?${refresh}${Date.now()}`);
-//raycasting2 = await require(`http://localhost:8080/raycasting/raycasting.js?${refresh}${Date.now()}`);
+raycasting_latest = await require(`http://localhost:8080/raycasting/raycasting.js?${refresh}${Date.now()}`);
+raycasting2 = await require(`http://localhost:8080/raycasting/raycasting.js?${refresh}${Date.now()}`);
 
 // FOR PUBLISH
-raycasting_latest = await require(`/models/raycasting/raycasting.js?`)
-raycasting2 = await require(`/models/raycasting/raycasting.js`)
+//raycasting_latest = await require(`/models/raycasting/raycasting.js?`)
+//raycasting2 = await require(`/models/raycasting/raycasting.js`)
 
 
 simple_loan = await require(`https://calculang.dev/models/simple-loan/simple-loan.js`);
