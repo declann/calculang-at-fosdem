@@ -10,7 +10,7 @@
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.4.543">
 
-  <meta name="author" content="Declan 🧮👨‍💻🧉">
+  <meta name="author" content="Declan 🧮👨‍💻">
   <title>calculang-at-fosdem - calc with calculang</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -401,33 +401,32 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-<a href="https://calcwithdec.dev/about.html">Declan 🧮👨‍💻🧉</a> 
+<a href="https://calcwithdec.dev/about.html">Declan 🧮👨‍💻</a> 
 </div>
 </div>
 </div>
 
 </section>
-<section id="links" class="slide level2">
-<h2>Links</h2>
-<p>The “experimental website” is</p>
+<section id="links-notes" class="slide level2">
+<h2>Links &amp; notes</h2>
+<p>The “experimental website” is: <a href="https://calculang-at-fosdem.pages.dev">calculang-at-fosdem.pages.dev</a>; includes link to source.</p>
+<p>Everything else will appear in these slides, on the experimental site, or on <a href="https://calculang.dev">calculang.dev</a>.</p>
+<ul>
+<li>In my demo for the experimental site I use a <a href="https://discuss.codemirror.net/t/force-complete-dom-render/7777">hacky local patch</a> for CodeMirror; without this there are code navigation issues for larger examples</li>
+<li>Layout is very poor on mobile - try on desktop</li>
+<li>Includes other examples which I don’t touch, e.g.&nbsp;FizzBuzz without loops and with optional workings!</li>
+<li><a href="https://calculang.dev">calculang.dev</a> is the more complete gallery; there are some other things on <a href="https://observablehq.com/collection/@declann/calculang">ObservableHQ</a></li>
+</ul>
+<p>I may skip slides on Limitations and calculang.party. But you can find them here.</p>
+<p>You can <a href="https://matrix.to/#/#calculang.party:matrix.org">join calculang.party on matrix</a> or <a href="https://calcwithdec.dev/about.html">contact me</a>.</p>
+<p><a href="https://fosdem.org/2024/schedule/event/fosdem-2024-2636-declarative-calcs-and-visualization-with-calculang/">Tomorrows talk</a> will be about flexibility for calcs and a little bit about declarative visualization I use.</p>
 </section>
-<section id="formula-observations" class="title-slide slide level1 center scrollable">
-<h1>Formula Observations</h1>
-<ol type="1">
-<li>looks like JS</li>
-<li>2x primitives: formulas and inputs</li>
-<li>both are functions (uniformity)</li>
-<li>brackets mostly empty (input inference)</li>
-</ol>
-</section>
-
-<section>
 <section id="imaginary-paper" class="title-slide slide level1 center">
 <h1>📝 Imaginary paper</h1>
 <div class="cell">
 <details class="code-fold hidden">
 <summary>Code</summary>
-<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="45" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 44;"><span id="cb1-45"><a></a><span class="fu">md</span><span class="vs">`You borrow **€ </span><span class="sc">${</span>d3<span class="op">.</span><span class="fu">format</span>(<span class="st">',.0f'</span>)(principal_in)<span class="sc">}</span><span class="vs">** at **</span><span class="sc">${</span>d3<span class="op">.</span><span class="fu">format</span>(<span class="st">'.1%'</span>)(i_in)<span class="sc">}</span><span class="vs">** for **</span><span class="sc">${</span>term_in<span class="sc">}</span><span class="vs"> years**.`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="50" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 49;"><span id="cb1-50"><a></a><span class="fu">md</span><span class="vs">`You borrow **€ </span><span class="sc">${</span>d3<span class="op">.</span><span class="fu">format</span>(<span class="st">',.0f'</span>)(principal_in)<span class="sc">}</span><span class="vs">** at **</span><span class="sc">${</span>d3<span class="op">.</span><span class="fu">format</span>(<span class="st">'.1%'</span>)(i_in)<span class="sc">}</span><span class="vs">** for **</span><span class="sc">${</span>term_in<span class="sc">}</span><span class="vs"> years**.`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -438,7 +437,7 @@
 </div>
 <details class="code-fold hidden">
 <summary>Code</summary>
-<div class="sourceCode cell-code hidden" id="cb2" data-startfrom="47" data-source-offset="-116"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 46;"><span id="cb2-47"><a></a><span class="fu">md</span><span class="vs">`Your repayment amount is **€ </span><span class="sc">${</span>d3<span class="op">.</span><span class="fu">format</span>(<span class="st">',.2f'</span>)(simple_loan<span class="op">.</span><span class="fu">repayment</span>({principal_in<span class="op">,</span>i_in<span class="op">,</span>term_in<span class="op">,</span><span class="dt">year_in</span><span class="op">:</span><span class="dv">1</span>}))<span class="sc">}</span><span class="vs"> pa**.`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb2" data-startfrom="52" data-source-offset="-116"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 51;"><span id="cb2-52"><a></a><span class="fu">md</span><span class="vs">`Your repayment amount is **€ </span><span class="sc">${</span>d3<span class="op">.</span><span class="fu">format</span>(<span class="st">',.2f'</span>)(simple_loan<span class="op">.</span><span class="fu">repayment</span>({principal_in<span class="op">,</span>i_in<span class="op">,</span>term_in<span class="op">,</span><span class="dt">year_in</span><span class="op">:</span><span class="dv">1</span>}))<span class="sc">}</span><span class="vs"> pa**.`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -452,17 +451,17 @@
 <div class="cell">
 <details class="code-fold hidden">
 <summary>Code</summary>
-<div class="sourceCode cell-code hidden" id="cb3" data-startfrom="54" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 53;"><span id="cb3-54"><a></a>viewof show_qr_code <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">checkbox</span>([<span class="st">""</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> []}) <span class="co">//</span></span>
-<span id="cb3-55"><a></a></span>
-<span id="cb3-56"><a></a>qrcode <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="max-width: 300px;</span><span class="sc">${</span>show_qr_code<span class="op">.</span><span class="at">length</span> <span class="op">==</span> <span class="dv">0</span> <span class="op">?</span> <span class="st">'opacity:0.01'</span> <span class="op">:</span> <span class="st">''</span><span class="sc">}</span><span class="vs">"&gt;</span><span class="sc">${</span><span class="cf">await</span> qr<span class="op">.</span><span class="fu">toString</span>(qr_url<span class="op">,</span> {</span>
-<span id="cb3-57"><a></a>  <span class="dt">margin</span><span class="op">:</span> <span class="dv">10</span></span>
-<span id="cb3-58"><a></a>})<span class="sc">}</span><span class="vs">&lt;/div&gt;`</span></span>
-<span id="cb3-59"><a></a></span>
-<span id="cb3-60"><a></a>qr <span class="op">=</span> <span class="pp">require</span>(<span class="st">'https://unpkg.com/qrcode@1.4.4/build/qrcode.min.js'</span>)</span>
-<span id="cb3-61"><a></a></span>
-<span id="cb3-62"><a></a>params <span class="op">=</span> ({principal_in<span class="op">,</span>i_in<span class="op">,</span>term_in})</span>
-<span id="cb3-63"><a></a>qr_params <span class="op">=</span> <span class="bu">Object</span><span class="op">.</span><span class="fu">entries</span>(params)<span class="op">.</span><span class="fu">map</span>(e <span class="kw">=&gt;</span> e[<span class="dv">0</span>] <span class="op">+</span> <span class="st">'='</span> <span class="op">+</span> e[<span class="dv">1</span>])<span class="op">.</span><span class="fu">join</span>(<span class="st">'&amp;'</span>)</span>
-<span id="cb3-64"><a></a>qr_url <span class="op">=</span> <span class="vs">`https://calculang-at-fosdem.pages.dev/?id=simple-loan&amp;</span><span class="sc">${</span>qr_params<span class="sc">}</span><span class="vs">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb3" data-startfrom="59" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 58;"><span id="cb3-59"><a></a>viewof show_qr_code <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">checkbox</span>([<span class="st">""</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> []}) <span class="co">//</span></span>
+<span id="cb3-60"><a></a></span>
+<span id="cb3-61"><a></a>qrcode <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="max-width: 300px;</span><span class="sc">${</span>show_qr_code<span class="op">.</span><span class="at">length</span> <span class="op">==</span> <span class="dv">0</span> <span class="op">?</span> <span class="st">'opacity:0.01'</span> <span class="op">:</span> <span class="st">''</span><span class="sc">}</span><span class="vs">"&gt;</span><span class="sc">${</span><span class="cf">await</span> qr<span class="op">.</span><span class="fu">toString</span>(qr_url<span class="op">,</span> {</span>
+<span id="cb3-62"><a></a>  <span class="dt">margin</span><span class="op">:</span> <span class="dv">10</span></span>
+<span id="cb3-63"><a></a>})<span class="sc">}</span><span class="vs">&lt;/div&gt;`</span></span>
+<span id="cb3-64"><a></a></span>
+<span id="cb3-65"><a></a>qr <span class="op">=</span> <span class="pp">require</span>(<span class="st">'https://unpkg.com/qrcode@1.4.4/build/qrcode.min.js'</span>)</span>
+<span id="cb3-66"><a></a></span>
+<span id="cb3-67"><a></a>params <span class="op">=</span> ({principal_in<span class="op">,</span>i_in<span class="op">,</span>term_in})</span>
+<span id="cb3-68"><a></a>qr_params <span class="op">=</span> <span class="bu">Object</span><span class="op">.</span><span class="fu">entries</span>(params)<span class="op">.</span><span class="fu">map</span>(e <span class="kw">=&gt;</span> e[<span class="dv">0</span>] <span class="op">+</span> <span class="st">'='</span> <span class="op">+</span> e[<span class="dv">1</span>])<span class="op">.</span><span class="fu">join</span>(<span class="st">'&amp;'</span>)</span>
+<span id="cb3-69"><a></a>qr_url <span class="op">=</span> <span class="vs">`https://calculang-at-fosdem.pages.dev/?id=simple-loan&amp;</span><span class="sc">${</span>qr_params<span class="sc">}</span><span class="vs">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -514,11 +513,11 @@ inputs ⚙️
 <div class="cell panel-input">
 <details class="code-fold hidden">
 <summary>Code</summary>
-<div class="sourceCode cell-code hidden" id="cb4" data-startfrom="74" data-source-offset="-61"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 73;"><span id="cb4-74"><a></a>viewof principal_in <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">500000</span>]<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Principal 💰 €"</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span><span class="dv">10000</span><span class="op">,</span> <span class="dt">value</span><span class="op">:+</span>(<span class="dv">100000</span>)})<span class="op">;</span></span>
-<span id="cb4-75"><a></a></span>
-<span id="cb4-76"><a></a>viewof i_in <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">/</span><span class="dv">100</span><span class="op">,</span> <span class="dv">20</span><span class="op">/</span><span class="dv">100</span>]<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Interest rate"</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">/</span><span class="dv">100</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="op">+</span>(<span class="dv">4</span><span class="op">/</span><span class="dv">100</span>)})<span class="op">;</span> <span class="co">// neg interest is probably contrary and not tested well</span></span>
-<span id="cb4-77"><a></a></span>
-<span id="cb4-78"><a></a>viewof term_in <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">select</span>([<span class="dv">25</span><span class="op">,</span> <span class="dv">10</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">30</span><span class="op">,</span> <span class="dv">35</span><span class="op">,</span> <span class="dv">40</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">480</span>]<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Term (years)"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="op">+</span>(<span class="dv">10</span>)})<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb4" data-startfrom="79" data-source-offset="-61"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 78;"><span id="cb4-79"><a></a>viewof principal_in <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">500000</span>]<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Principal 💰 €"</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span><span class="dv">10000</span><span class="op">,</span> <span class="dt">value</span><span class="op">:+</span>(<span class="dv">100000</span>)})<span class="op">;</span></span>
+<span id="cb4-80"><a></a></span>
+<span id="cb4-81"><a></a>viewof i_in <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="op">-</span><span class="dv">5</span><span class="op">/</span><span class="dv">100</span><span class="op">,</span> <span class="dv">20</span><span class="op">/</span><span class="dv">100</span>]<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Interest rate"</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">/</span><span class="dv">100</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="op">+</span>(<span class="dv">4</span><span class="op">/</span><span class="dv">100</span>)})<span class="op">;</span> <span class="co">// neg interest is probably contrary and not tested well</span></span>
+<span id="cb4-82"><a></a></span>
+<span id="cb4-83"><a></a>viewof term_in <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">select</span>([<span class="dv">25</span><span class="op">,</span> <span class="dv">10</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">30</span><span class="op">,</span> <span class="dv">35</span><span class="op">,</span> <span class="dv">40</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">480</span>]<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Term (years)"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="op">+</span>(<span class="dv">10</span>)})<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -546,7 +545,7 @@ inputs ⚙️
 <div class="cell">
 <details class="code-fold hidden">
 <summary>Code</summary>
-<div class="sourceCode cell-code hidden" id="cb5" data-startfrom="85" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 84;"><span id="cb5-85"><a></a><span class="fu">md</span><span class="vs">`Calculated repayment is **€ </span><span class="sc">${</span>d3<span class="op">.</span><span class="fu">format</span>(<span class="st">',.2f'</span>)(simple_loan<span class="op">.</span><span class="fu">repayment</span>({principal_in<span class="op">,</span>i_in<span class="op">,</span>term_in<span class="op">,</span><span class="dt">year_in</span><span class="op">:</span><span class="dv">1</span>}))<span class="sc">}</span><span class="vs"> pa**.`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb5" data-startfrom="90" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 89;"><span id="cb5-90"><a></a><span class="fu">md</span><span class="vs">`Calculated repayment is **€ </span><span class="sc">${</span>d3<span class="op">.</span><span class="fu">format</span>(<span class="st">',.2f'</span>)(simple_loan<span class="op">.</span><span class="fu">repayment</span>({principal_in<span class="op">,</span>i_in<span class="op">,</span>term_in<span class="op">,</span><span class="dt">year_in</span><span class="op">:</span><span class="dv">1</span>}))<span class="sc">}</span><span class="vs"> pa**.`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-4" data-nodetype="expression">
@@ -557,7 +556,7 @@ inputs ⚙️
 <div class="cell">
 <details class="code-fold hidden">
 <summary>Code</summary>
-<div class="sourceCode cell-code hidden" id="cb6" data-startfrom="90" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 89;"><span id="cb6-90"><a></a>simple_loan <span class="op">=</span> <span class="pp">require</span>(<span class="vs">`https://calcy-quarty-vizys-online.pages.dev/models/loan-validator/simple-loan.js`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb6" data-startfrom="95" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 94;"><span id="cb6-95"><a></a>simple_loan <span class="op">=</span> <span class="pp">require</span>(<span class="vs">`https://calcy-quarty-vizys-online.pages.dev/models/loan-validator/simple-loan.js`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-5" data-nodetype="declaration">
@@ -566,9 +565,22 @@ inputs ⚙️
 </div>
 </div>
 </section>
-<section id="section" class="slide level2">
-<h2></h2>
-</section></section>
+
+<section id="section" class="title-slide slide level1 center">
+<h1></h1>
+<p>.</p>
+</section>
+
+<section id="section-1" class="title-slide slide level1 center">
+<h1></h1>
+<p><img data-src="./pic-1.png"> <!--{width=100}--></p>
+</section>
+
+<section id="section-2" class="title-slide slide level1 center">
+<h1></h1>
+<p><img data-src="./pic-2.png"> <!--{width=100}--></p>
+</section>
+
 <section id="limitations" class="title-slide slide level1 center">
 <h1>Limitations</h1>
 <ul>
@@ -582,22 +594,30 @@ inputs ⚙️
 <ul>
 <li>Multiple-recurrances -&gt; JS engine 🤯</li>
 <li>Only optimisation is memoization, but not tactical</li>
+<li>Perf not in my list of important things; doesn’t mean I don’t welcome perf feedback - it just means you will have a field day</li>
 </ul></li>
-<li><p>Community/Support</p></li>
+<li><p>Community/Support</p>
+<ul>
+<li>a fraction of me is all you get now! but…</li>
+</ul></li>
 </ul>
 </section>
 
 <section id="calculang.party" class="title-slide slide level1 center">
 <h1>calculang.party</h1>
 <ul>
-<li><p>community gallery</p></li>
-<li><p><a href="https://matrix.to/#/#calculang.party:matrix.org">join on matrix</a> or <a href="https://calcwithdec.dev/about.html">contact me</a></p></li>
+<li>community gallery for things made with calculang
+<ul>
+<li>other contributions also welcome!</li>
+</ul></li>
+<li>you can bring your own idea and opinions
+<ul>
+<li>remember the previous slide about DX and performance and support</li>
+<li>simplify! thing must to be simple computationally</li>
+<li>known nice things: educational/informative things, arty things which are simple</li>
+</ul></li>
+<li><a href="https://matrix.to/#/#calculang.party:matrix.org">join on matrix</a> or <a href="https://calcwithdec.dev/about.html">contact me</a></li>
 </ul>
-</section>
-
-<section id="transparency-workings" class="title-slide slide level1 center">
-<h1>Transparency, workings</h1>
-
 </section>
 
 <section id="questions" class="title-slide slide level1 center">
@@ -606,9 +626,9 @@ inputs ⚙️
 <div class="cell">
 <details class="code-fold hidden">
 <summary>Code</summary>
-<div class="sourceCode cell-code hidden" id="cb7" data-startfrom="128" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 127;"><span id="cb7-128"><a></a><span class="im">import</span> { calcuvizspec } <span class="im">from</span> <span class="st">"@declann/little-calcu-helpers"</span></span>
-<span id="cb7-129"><a></a></span>
-<span id="cb7-130"><a></a>embed <span class="op">=</span> <span class="pp">require</span>(<span class="st">'vega-embed'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb7" data-startfrom="150" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 149;"><span id="cb7-150"><a></a><span class="im">import</span> { calcuvizspec } <span class="im">from</span> <span class="st">"@declann/little-calcu-helpers"</span></span>
+<span id="cb7-151"><a></a></span>
+<span id="cb7-152"><a></a>embed <span class="op">=</span> <span class="pp">require</span>(<span class="st">'vega-embed'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
