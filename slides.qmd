@@ -1,7 +1,7 @@
 ---
 title: "calc with calculang"
 author:
-  - name: "Declan 🧮👨‍💻🧉"
+  - name: "Declan 🧮👨‍💻"
     url: "https://calcwithdec.dev/about.html"
 
 format:
@@ -26,17 +26,22 @@ format:
 
 ---
 
-## Links
+## Links & notes
 
-The "experimental website" is   
+The "experimental website" is: [calculang-at-fosdem.pages.dev](https://calculang-at-fosdem.pages.dev); includes link to source.
 
-# Formula Observations
+Everything else will appear in these slides, on the experimental site, or on [calculang.dev](https://calculang.dev).
 
-1. looks like JS
-2. 2x primitives: formulas and inputs
-3. both are functions (uniformity)
-4. brackets mostly empty (input inference)
+- In my demo for the experimental site I use a [hacky local patch](https://discuss.codemirror.net/t/force-complete-dom-render/7777) for CodeMirror; without this there are code navigation issues for larger examples
+- Layout is very poor on mobile - try on desktop
+- Includes other examples which I don't touch, e.g. FizzBuzz without loops and with optional workings!
+- [calculang.dev](https://calculang.dev) is the more complete gallery; there are some other things on [ObservableHQ](https://observablehq.com/collection/@declann/calculang)
 
+I may skip slides on Limitations and calculang.party. But you can find them here.
+
+You can [join calculang.party on matrix](https://matrix.to/#/#calculang.party:matrix.org) or [contact me](https://calcwithdec.dev/about.html).
+
+[Tomorrows talk](https://fosdem.org/2024/schedule/event/fosdem-2024-2636-declarative-calcs-and-visualization-with-calculang/) will be about flexibility for calcs and a little bit about declarative visualization I use.
 
 # 📝 Imaginary paper
 
@@ -61,8 +66,9 @@ qr = require('https://unpkg.com/qrcode@1.4.4/build/qrcode.min.js')
 
 params = ({principal_in,i_in,term_in})
 qr_params = Object.entries(params).map(e => e[0] + '=' + e[1]).join('&')
-qr_url = `http://calcuvizspec-presentation.pages.dev/calcuvizspec-revealjs.html?${qr_params}#/simple-loan`
+qr_url = `https://calculang-at-fosdem.pages.dev/?id=simple-loan&${qr_params}`
 ```
+
 
 <details><summary>inputs ⚙️</summary>
 
@@ -91,7 +97,18 @@ simple_loan = require(`https://calcy-quarty-vizys-online.pages.dev/models/loan-v
 
 ```
 
-##
+#
+
+.
+
+#
+
+![](./pic-1.png) <!--{width=100}-->
+
+
+#
+
+![](./pic-2.png) <!--{width=100}-->
 
 
 
@@ -101,22 +118,28 @@ simple_loan = require(`https://calcy-quarty-vizys-online.pages.dev/models/loan-v
 
   - especially error reporting (generate types?)
   - and coding recurrances with 0 visual space is hard!
-  - the nice things really come at the end and not the start
+  - nice things really come at the end and not the start
 
 - Performance
 
   - Multiple-recurrances -> JS engine 🤯
   - Only optimisation is memoization, but not tactical
+  - Perf not in my list of important things; doesn't mean I don't welcome perf feedback - it just means you will have a field day
 
 - Community/Support
+  - a fraction of me is all you get now! but...
 
 # calculang.party
 
-- community gallery
+- community gallery for things made with calculang
+  - other contributions also welcome!
+
+- you can bring your own idea and opinions
+  - remember the previous slide about DX and performance and support
+  - simplify! thing must to be simple computationally
+  - known nice things: educational/informative things, arty things which are simple
 
 - [join on matrix](https://matrix.to/#/#calculang.party:matrix.org) or [contact me](https://calcwithdec.dev/about.html)
-
-# Transparency, workings
 
 # Questions?
 
