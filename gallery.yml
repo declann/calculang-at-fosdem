@@ -27,7 +27,7 @@
     - title: Loan Checker 🕵️
       disabled: false
       subtitle: to scenario-out and validate loans and mortgages 🏡
-      entrypoint: /models/simple-loan/simple-loan.cul.js
+      entrypoint: http://localhost:8080/simple-loan/simple-loan.cul.js
       id: simple-loan
       modular: false
       thumbnail: thumbnails/loan-validator.png
