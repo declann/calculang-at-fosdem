@@ -1534,6 +1534,9 @@ mutable aaa = []
 
 viewof refresh = Inputs.button("hot reload")
 
+simple_loan = await require(`/models/raycasting/raycasting.js`)
+
+
 raycasting222 = aaa[version]
 
 /* FOR DEV */

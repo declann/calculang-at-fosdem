@@ -6,6 +6,7 @@
     "serve": "cd ./models && http-server -a localhost -c-1 --cors",
     "preview": "quarto preview",
     "raycasting:compile": "cul-js compile --memo ./models/raycasting/raycasting.cul.js",
+    "simple-loan:compile": "cul-js compile --memo ./models/simple-loan/simple-loan.cul.js && cp ./models/simple-loan/simple-loan.cul.js ./models/simple-loan/simple-loan-nomemo.cul.js && cul-js compile ./models/simple-loan/simple-loan-nomemo.cul.js",
     "render": "quarto render",
     "down-gallery-yml": "curl https://calculang.dev/gallery.yml -o ./gallery.yml"
   },
