@@ -1,0 +1,165 @@
+---
+title: "calc with calculang"
+author:
+  - name: "Declan 🧮👨‍💻"
+    url: "https://calcwithdec.dev/about.html"
+
+format:
+  html:
+    #page-footer:
+    #  right: "Made with 💓 and [calculang](https://github.com/calculang/calculang)"
+    echo: false
+    code-fold: true
+    #code-summary: "Show the code"
+  revealjs:
+    #min-scale: 0.1
+    #max-scale: 1
+
+    controls: true
+
+    #footer: "Made with 💓 and [calculang](https://github.com/calculang/calculang)"
+    output-file: slides-revealjs.html
+    echo: false
+    code-fold: true
+    smaller: true
+    scrollable: true
+
+---
+
+## Links & notes
+
+[Presentation (RevealJS) view](/slides-revealjs.html)
+
+The "experimental website" is: [calculang-at-fosdem.pages.dev](https://calculang-at-fosdem.pages.dev); includes link to source.
+
+Everything else will appear in these slides, on the experimental site, or on [calculang.dev](https://calculang.dev).
+
+- In my demo for the experimental site I use a [hacky local patch](https://discuss.codemirror.net/t/force-complete-dom-render/7777) for CodeMirror; without this there are code navigation issues for larger examples
+- Layout is very poor on mobile - try on desktop
+- Experimental site includes other examples which I don't show, e.g. FizzBuzz without loops and with optional workings!
+- [calculang.dev](https://calculang.dev) is the more complete gallery; there are some other things on [ObservableHQ](https://observablehq.com/collection/@declann/calculang)
+
+Slides on Limitations and calculang.party are at the end, which I won't have time to discuss.
+
+You can [join calculang.party on matrix](https://matrix.to/#/#calculang.party:matrix.org) or talk to me!.
+
+# 📝 Imaginary paper
+
+```{ojs}
+//| echo: false
+md`You borrow **€ ${d3.format(',.0f')(principal_in)}** at **${d3.format('.1%')(i_in)}** for **${term_in} years**.`
+
+md`Your repayment amount is **€ ${d3.format(',.2f')(simple_loan.repayment({principal_in,i_in,term_in,year_in:1}))} pa**.`
+```
+
+<br/>
+
+```{ojs}
+//| echo: false
+viewof show_qr_code = Inputs.checkbox([""], {value: []}) //
+
+qrcode = html`<div style="max-width: 300px;${show_qr_code.length == 0 ? 'opacity:0.01' : ''}">${await qr.toString(qr_url, {
+  margin: 10
+})}</div>`
+
+qr = require('https://unpkg.com/qrcode@1.4.4/build/qrcode.min.js')
+
+params = ({principal_in,i_in,term_in})
+qr_params = Object.entries(params).map(e => e[0] + '=' + e[1]).join('&')
+qr_url = `https://calculang-at-fosdem.pages.dev/?id=simple-loan&${qr_params}`
+```
+
+
+<details><summary>inputs ⚙️</summary>
+
+```{ojs}
+//| panel: input
+/// layout-ncol: 2 Requires Even # components! or odd error
+
+viewof principal_in = Inputs.range([0, 500000], {label: "Principal 💰 €", step:10000, value:+(100000)});
+
+viewof i_in = Inputs.range([-5/100, 20/100], {label: "Interest rate", step: 0.1/100, value: +(4/100)}); // neg interest is probably contrary and not tested well
+
+viewof term_in = Inputs.select([25, 10, 5, 30, 35, 40, 1, 480], {label: "Term (years)", value: +(10)});
+```
+
+</details>
+
+
+```{ojs}
+//| echo: false
+md`Calculated repayment is **€ ${d3.format(',.2f')(simple_loan.repayment({principal_in,i_in,term_in,year_in:1}))} pa**.`
+```
+
+
+```{ojs}
+simple_loan = require(`https://calcy-quarty-vizys-online.pages.dev/models/loan-validator/simple-loan.js`)
+
+```
+
+#
+
+.
+
+#
+
+![](./pic-1.png) <!--{width=100}-->
+
+
+#
+
+![](./pic-2.png) <!--{width=100}-->
+
+
+# Questions?
+
+![](./logo4.svg) <!--{width=100}-->
+
+```{ojs}
+//| echo: false
+import { calcuvizspec } from "@declann/little-calcu-helpers"
+
+embed = require('vega-embed');
+```
+
+# 
+
+[Tomorrows talk](https://fosdem.org/2024/schedule/event/fosdem-2024-2636-declarative-calcs-and-visualization-with-calculang/) @ 9:40am CET in [Declarative and Minimalistic Computing devroom](https://fosdem.org/2024/schedule/track/declarative-and-minimalistic-computing/)
+
+Fosstodon [@calculang](https://fosstodon.org/@calculang)
+
+Twitter [@calculang](https://twitter.com/calculang)
+
+Matrix [#calculang.party:matrix.org](https://matrix.to/#/#calculang.party:matrix.org)
+
+![](./logo4.svg) <!--{width=100}-->
+
+
+# Limitations
+
+- DX
+
+  - especially error reporting (generate types?)
+  - coding recurrances with 0 visual space is hard!
+  - now nice things really come at the end and not the start: TOFIX?
+
+- Performance
+
+  - Multiple-recurrances -> JS engine 🤯
+  - Singular optimisation is memoization, but not tactical
+  - You will have a field day if you look at optimising/recording performance
+
+- Community/Support
+  - but...
+
+# calculang.party (💡?)
+
+- **community gallery** for things made with calculang
+  - other contributions also welcome!
+
+- you can bring your own idea and opinions
+  - remember the previous slide about DX and performance and support
+  - simplify! thing must to be simple computationally
+  - known nice things: educational/informative things, arty things which are simple, ???
+
+- [join on matrix](https://matrix.to/#/#calculang.party:matrix.org) or [contact me](https://calcwithdec.dev/about.html)
