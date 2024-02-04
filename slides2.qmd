@@ -34,7 +34,7 @@ format:
 
 I'll use examples on [calculang.dev](https://calculang.dev).
 
-For visualization API, see a [previous presentation](https://calcuvizspec-presentation.pages.dev/calcuvizspec-revealjs).
+calcuvizspec Visualization API based on Vega-Lite presentation: [link](https://calcuvizspec-presentation.pages.dev/calcuvizspec-revealjs) (but, calculang is non-opinionated!)
 
 You can [join calculang.party on matrix](https://matrix.to/#/#calculang.party:matrix.org) or talk to me!
 
