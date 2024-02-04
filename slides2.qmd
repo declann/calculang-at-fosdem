@@ -52,10 +52,6 @@ You can [join calculang.party on matrix](https://matrix.to/#/#calculang.party:ma
 ![](./pic-2.png) <!--{width=100}-->
 
 
-# Questions?
-
-![](./logo4.svg) <!--{width=100}-->
-
 ```{ojs}
 //| echo: false
 import { calcuvizspec } from "@declann/little-calcu-helpers"
