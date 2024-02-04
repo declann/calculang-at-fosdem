@@ -1,17 +1,45 @@
 [
   {
-    "objectID": "privacy.html",
-    "href": "privacy.html",
-    "title": "Privacy Policy",
+    "objectID": "slides2.html",
+    "href": "slides2.html",
+    "title": "calculang",
     "section": "",
-    "text": "This website includes resources from Content Delivery Network services such as JsDelivr and other remote sources notably ObservableHQ; these third parties recieve your IP address whenever you use the site.\nThis website uses a cookie banner to present you with privacy-related preferences. You can re-open these preferences via “Cookies/analytics preferences” at the bottom of each page on the website.\nRegardless of your chosen preferences, “essential” cookies are used to store those preferences."
+    "text": "Presentation view (RevealJS)\nYesterdays talk which was different (and more about interactivity and workings)\nI’ll use examples on calculang.dev.\nFor visualization API, see a previous presentation.\nYou can join calculang.party on matrix or talk to me!"
   },
   {
-    "objectID": "privacy.html#analytics-are-opt-in",
-    "href": "privacy.html#analytics-are-opt-in",
-    "title": "Privacy Policy",
-    "section": "Analytics are opt-in",
-    "text": "Analytics are opt-in\nAnalytics provide me with useful statistical information to improve the website and consider it for effectiveness. On this website analytics are opt-in.\nIf you opt-in, information will be gathered via Plausible, a “Privacy focused Google Analytics alternative”. You can read their Data Policy. Your IP address and other information may be made available to them; they will then aggregate information I can use to understand website audience, improve the website/content, and to consider reach and effectiveness of the website/content. I do not get or store raw data such as IP address.\nIf you “reject non-essential” the cookie banner, or if you disable analytics scripts, or if you make no action at all, then analytics functionality is not used. No information is made available to Plausible, including your IP address. You can still use the website in the normal way.\nIf you use an ad-blocker, then analytics may be disabled regardless of your preferences here. In this case also, you can still use the website in the normal way."
+    "objectID": "slides2.html#links-notes",
+    "href": "slides2.html#links-notes",
+    "title": "calculang",
+    "section": "",
+    "text": "Presentation view (RevealJS)\nYesterdays talk which was different (and more about interactivity and workings)\nI’ll use examples on calculang.dev.\nFor visualization API, see a previous presentation.\nYou can join calculang.party on matrix or talk to me!"
+  },
+  {
+    "objectID": "slides2-revealjs.html#links-notes",
+    "href": "slides2-revealjs.html#links-notes",
+    "title": "calculang",
+    "section": "Links & notes",
+    "text": "Links & notes\nPresentation view (RevealJS)\nYesterdays talk which was different (and more about interactivity and workings)\nI’ll use examples on calculang.dev.\nFor visualization API, see a previous presentation.\nYou can join calculang.party on matrix or talk to me!"
+  },
+  {
+    "objectID": "slides.html",
+    "href": "slides.html",
+    "title": "calc with calculang",
+    "section": "",
+    "text": "Presentation (RevealJS) view\nThe “experimental website” is: calculang-at-fosdem.pages.dev; includes link to source.\nEverything else will appear in these slides, on the experimental site, or on calculang.dev.\n\nIn my demo for the experimental site I use a hacky local patch for CodeMirror; without this there are code navigation issues for larger examples\nLayout is very poor on mobile - try on desktop\nExperimental site includes other examples which I don’t show, e.g. FizzBuzz without loops and with optional workings!\ncalculang.dev is the more complete gallery; there are some other things on ObservableHQ\n\nSlides on Limitations and calculang.party are at the end, which I won’t have time to discuss.\nYou can join calculang.party on matrix or talk to me!."
+  },
+  {
+    "objectID": "slides.html#links-notes",
+    "href": "slides.html#links-notes",
+    "title": "calc with calculang",
+    "section": "",
+    "text": "Presentation (RevealJS) view\nThe “experimental website” is: calculang-at-fosdem.pages.dev; includes link to source.\nEverything else will appear in these slides, on the experimental site, or on calculang.dev.\n\nIn my demo for the experimental site I use a hacky local patch for CodeMirror; without this there are code navigation issues for larger examples\nLayout is very poor on mobile - try on desktop\nExperimental site includes other examples which I don’t show, e.g. FizzBuzz without loops and with optional workings!\ncalculang.dev is the more complete gallery; there are some other things on ObservableHQ\n\nSlides on Limitations and calculang.party are at the end, which I won’t have time to discuss.\nYou can join calculang.party on matrix or talk to me!."
+  },
+  {
+    "objectID": "slides-revealjs.html#links-notes",
+    "href": "slides-revealjs.html#links-notes",
+    "title": "calc with calculang",
+    "section": "Links & notes",
+    "text": "Links & notes\nPresentation (RevealJS) view\nThe “experimental website” is: calculang-at-fosdem.pages.dev; includes link to source.\nEverything else will appear in these slides, on the experimental site, or on calculang.dev.\n\nIn my demo for the experimental site I use a hacky local patch for CodeMirror; without this there are code navigation issues for larger examples\nLayout is very poor on mobile - try on desktop\nExperimental site includes other examples which I don’t show, e.g. FizzBuzz without loops and with optional workings!\ncalculang.dev is the more complete gallery; there are some other things on ObservableHQ\n\nSlides on Limitations and calculang.party are at the end, which I won’t have time to discuss.\nYou can join calculang.party on matrix or talk to me!."
   },
   {
     "objectID": "reactive-workings-notes.html",
@@ -28,24 +56,17 @@
     "text": "calculang compilation & introspection\nThe calculang compiler does 2 jobs to convert calculang code into valid Javascript:\n\ndetermine and populate inputs in calls and in function definitions (input inference)\nimport appropriate function definitions to implement calculangs function precedence (parent-defined functions take precedence)\n\nThese language features are intended to make functions that are flexible.\n\nintrospection info and source maps\nAs the compiler manipulates calculang functions and calls, it also outputs a JSON file (.introspection.json) which provides information about calculang scopes, calculang functions and their determined inputs, and calls - including source code references.\nCombined with source maps - also output by the compiler - and given purity and separation then we can develop tools to interact with numbers and their workings including calculating them in real time or “reactively”.\n\n\nreactive workings\nIn reactive workings folder I output OJS to determine values used by reactive workings overlay.\nThrough CodeMirror plugins and introspection info, I display these values beside calls.\nThrough OJS reactive runtime, they update and coordinate on numerous interactions in the page.\nThis is a bit like instrumentation, except without manipulation of the original code as they are a new execution which is ok due to purity (note that if using memoization it will be an extremely cheap “new execution” to look at workings).\nEverything here is a little hurried, hacky and draft - developed as a demo of bringing the above together to make a tool - but OJS reactivity does hold together and will probably land for all examples on calculang.dev - feedback and improvements welcome!\nTo facilitate developing different tools it may help if I cleanup different pieces in reactive-workings or consider a more convenient API. Interested in suggestions and definitely reach out with usecases.\n\n\ncoordination\nA lot of the coordination between visuals and formulas is defined in cells that you can find by searching set(viewof formulae_visible to select formulae, though I also manipulate inputs from the visual size. Although manual coded, through formulas mapped directly to visual channels I think there may be a more uniform approach for certain cases.\n\n\nknown issues\n\nLoan checker and savings calculator both share year_in so 2x sets of calcs are triggered by changes; this might explain why going into loan checker and increasing the year destroys performance?\nWhen you are using the overlayed number to navigate, they will run a handler that sets parameters to match the number you clicked. When you click the identifier, it won’t change inputs. This is a bug with the overlay - for now, to drill through numbers, click on the numbers"
   },
   {
-    "objectID": "slides-revealjs.html#links-notes",
-    "href": "slides-revealjs.html#links-notes",
-    "title": "calc with calculang",
-    "section": "Links & notes",
-    "text": "Links & notes\nPresentation (RevealJS) view\nThe “experimental website” is: calculang-at-fosdem.pages.dev; includes link to source.\nEverything else will appear in these slides, on the experimental site, or on calculang.dev.\n\nIn my demo for the experimental site I use a hacky local patch for CodeMirror; without this there are code navigation issues for larger examples\nLayout is very poor on mobile - try on desktop\nExperimental site includes other examples which I don’t show, e.g. FizzBuzz without loops and with optional workings!\ncalculang.dev is the more complete gallery; there are some other things on ObservableHQ\n\nSlides on Limitations and calculang.party are at the end, which I won’t have time to discuss.\nYou can join calculang.party on matrix or talk to me!."
+    "objectID": "privacy.html",
+    "href": "privacy.html",
+    "title": "Privacy Policy",
+    "section": "",
+    "text": "This website includes resources from Content Delivery Network services such as JsDelivr and other remote sources notably ObservableHQ; these third parties recieve your IP address whenever you use the site.\nThis website uses a cookie banner to present you with privacy-related preferences. You can re-open these preferences via “Cookies/analytics preferences” at the bottom of each page on the website.\nRegardless of your chosen preferences, “essential” cookies are used to store those preferences."
   },
   {
-    "objectID": "slides.html",
-    "href": "slides.html",
-    "title": "calc with calculang",
-    "section": "",
-    "text": "Presentation (RevealJS) view\nThe “experimental website” is: calculang-at-fosdem.pages.dev; includes link to source.\nEverything else will appear in these slides, on the experimental site, or on calculang.dev.\n\nIn my demo for the experimental site I use a hacky local patch for CodeMirror; without this there are code navigation issues for larger examples\nLayout is very poor on mobile - try on desktop\nExperimental site includes other examples which I don’t show, e.g. FizzBuzz without loops and with optional workings!\ncalculang.dev is the more complete gallery; there are some other things on ObservableHQ\n\nSlides on Limitations and calculang.party are at the end, which I won’t have time to discuss.\nYou can join calculang.party on matrix or talk to me!."
-  },
-  {
-    "objectID": "slides.html#links-notes",
-    "href": "slides.html#links-notes",
-    "title": "calc with calculang",
-    "section": "",
-    "text": "Presentation (RevealJS) view\nThe “experimental website” is: calculang-at-fosdem.pages.dev; includes link to source.\nEverything else will appear in these slides, on the experimental site, or on calculang.dev.\n\nIn my demo for the experimental site I use a hacky local patch for CodeMirror; without this there are code navigation issues for larger examples\nLayout is very poor on mobile - try on desktop\nExperimental site includes other examples which I don’t show, e.g. FizzBuzz without loops and with optional workings!\ncalculang.dev is the more complete gallery; there are some other things on ObservableHQ\n\nSlides on Limitations and calculang.party are at the end, which I won’t have time to discuss.\nYou can join calculang.party on matrix or talk to me!."
+    "objectID": "privacy.html#analytics-are-opt-in",
+    "href": "privacy.html#analytics-are-opt-in",
+    "title": "Privacy Policy",
+    "section": "Analytics are opt-in",
+    "text": "Analytics are opt-in\nAnalytics provide me with useful statistical information to improve the website and consider it for effectiveness. On this website analytics are opt-in.\nIf you opt-in, information will be gathered via Plausible, a “Privacy focused Google Analytics alternative”. You can read their Data Policy. Your IP address and other information may be made available to them; they will then aggregate information I can use to understand website audience, improve the website/content, and to consider reach and effectiveness of the website/content. I do not get or store raw data such as IP address.\nIf you “reject non-essential” the cookie banner, or if you disable analytics scripts, or if you make no action at all, then analytics functionality is not used. No information is made available to Plausible, including your IP address. You can still use the website in the normal way.\nIf you use an ad-blocker, then analytics may be disabled regardless of your preferences here. In this case also, you can still use the website in the normal way."
   }
 ]
