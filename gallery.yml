@@ -63,7 +63,7 @@
 
   - title: Raycasting 3d worlds 🔫
     subtitle: Rendering a 3d world, to a bar chart! 📊
-    entrypoint: /models/raycasting/raycasting.cul.js
+    entrypoint: https://calculang-at-fosdem.pages.dev/models/raycasting/raycasting.cul.js
     id: raycasting
     modular: false
     thumbnail: thumbnails/raycasting.gif
