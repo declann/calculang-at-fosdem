@@ -5,7 +5,8 @@
   "scripts": {
     "preview": "quarto preview",
     "serve": "cd ./models && http-server -a localhost -c-1 --cors",
-    "raycasting:compile": "cul-js compile --memo ./models/raycasting/raycasting.cul.js && cp ./models/raycasting/raycasting.cul.js ./models/raycasting/raycasting-nomemo.cul.js && cul-js compile ./models/raycasting/raycasting-nomemo.cul.js",
+    "raycasting:compile": "cul-js compile --memo ./models/raycasting/raycasting.cul.js",
+    "raycasting:compile-complete": "cul-js compile --memo ./models/raycasting/raycasting.cul.js && cp ./models/raycasting/raycasting.cul.js ./models/raycasting/raycasting-nomemo.cul.js && cul-js compile ./models/raycasting/raycasting-nomemo.cul.js",
     "render": "quarto render",
     "down-gallery-yml": "curl https://calculang.dev/gallery.yml -o ./gallery.yml"
   },

@@ -71,7 +71,7 @@
   - title: Bars 📊
     disabled: false
     subtitle: Bar chart of a formula
-    entrypoint: https://calculang-at-fosdem.pages.dev/models/raycasting/raycasting.cul.js
+    entrypoint: http://localhost:8080/raycasting/raycasting.cul.js
     id: raycasting2
     modular: false
     thumbnail: thumbnails/raycasting.gif
